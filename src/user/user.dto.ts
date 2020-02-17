@@ -7,3 +7,8 @@ export class GetUserByIdArgs {
   @Field(() => ID)
   id: string;
 }
+
+@ArgsType()
+export class GetUsersArgs {
+
+}
