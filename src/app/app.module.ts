@@ -17,8 +17,10 @@ import { UserEntity } from '../user/user.entity';
       entities: [UserEntity],
     }),
     GraphQLModule.forRoot({
+      debug: false,
+      playground: true,
       installSubscriptionHandlers: true,
-      autoSchemaFile: './schema.gql',
+      autoSchemaFile: '../schema.graphql',
     }),
     UserModule,
   ],
