@@ -1,5 +1,5 @@
 import { InputType, Field, ID } from 'type-graphql';
-import { IsUUID } from 'class-validator';
+import { IsUUID, MinLength } from 'class-validator';
 import { User } from './user';
 
 @InputType()
@@ -16,5 +16,6 @@ export class UpdateUserNameInput implements Partial<User> {
   id: string;
 
   @Field(() => String)
+  @MinLength(3)
   name: string;
 }

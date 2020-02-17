@@ -1,6 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
 import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
-import { Arg } from 'type-graphql';
 import { UserService } from './user.service';
 import { User } from './user';
 import { GetUserByIdInput, UpdateUserNameInput } from './user.input';
@@ -10,11 +9,7 @@ export class UserResolvers {
   constructor(private readonly userService: UserService) {}
 
   @Query(returns => User)
-  async getUserById(
-    @Arg('input', { validate: true })
-    @Args('input')
-    input: GetUserByIdInput,
-  ): Promise<User> {
+  async getUserById(@Args('input') input: GetUserByIdInput): Promise<User> {
     try {
       return await this.userService.findOneById(input.id);
     } catch (e) {
@@ -28,11 +23,7 @@ export class UserResolvers {
   }
 
   @Mutation(returns => User)
-  async changeUserName(
-    @Args('input')
-    @Arg('input', { validate: true })
-    input: UpdateUserNameInput,
-  ): Promise<User> {
+  async changeUserName(@Args('input') input: UpdateUserNameInput): Promise<User> {
     return await this.userService.changeUserName(input.id, input.name);
   }
 }
