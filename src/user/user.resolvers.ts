@@ -1,12 +1,9 @@
-import { NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { PubSub } from 'apollo-server-express';
 import { UserService } from './user.service';
 import { UserEntity } from './user.entity';
 import { GetUserByIdArgs, GetUsersArgs } from './user.dto';
 import { validateDto } from '../utils/api.utils';
-
-const pubSub = new PubSub();
 
 @Resolver(of => UserEntity)
 export class UserResolvers {
