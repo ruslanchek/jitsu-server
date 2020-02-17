@@ -12,7 +12,10 @@ export class UserService {
 
   async findAll(): Promise<UserEntity[]> {
     // await this.userRepository.insert(new UserEntity());
+    return await this.userRepository.find();
+  }
 
-    return this.userRepository.find();
+  async findOneById(id: string): Promise<UserEntity> {
+    return (await this.userRepository.findByIds([id]))[0];
   }
 }
