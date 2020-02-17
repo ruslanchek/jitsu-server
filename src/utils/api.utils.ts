@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { validate } from 'class-validator';
 
-export async function validateDto(validationClass: any, args: Object): Promise<boolean> {
+export async function validateDto(validationClass, args): Promise<boolean> {
   const validationClassInstance = new validationClass();
 
   for (const key in args) {

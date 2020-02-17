@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '../user/user.entity';
+import { User } from '../user/user';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { UserEntity } from '../user/user.entity';
       password: '123321',
       database: 'jitsu',
       synchronize: true,
-      entities: [UserEntity],
+      entities: [User],
     }),
     GraphQLModule.forRoot({
       debug: false,
