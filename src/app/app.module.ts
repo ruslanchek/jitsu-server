@@ -5,6 +5,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity';
 import { AuthModule } from '../auth/auth.module';
+import { ProjectModule } from '../project/project.module';
+import { ProjectEntity } from '../project/project.entity';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { AuthModule } from '../auth/auth.module';
       username: ENV.PG_USER,
       password: ENV.PG_PASS,
       database: ENV.PG_DB,
-      entities: [UserEntity],
+      entities: [UserEntity, ProjectEntity],
     }),
     GraphQLModule.forRoot({
       context: ({ req }) => ({ req }),
@@ -27,6 +29,7 @@ import { AuthModule } from '../auth/auth.module';
     }),
     AuthModule,
     UserModule,
+    ProjectModule,
   ],
 })
 export class AppModule {}
