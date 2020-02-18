@@ -1,9 +1,10 @@
+import { ENV } from '../env';
 import { Module } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity';
-import { ENV } from '../env';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -18,11 +19,13 @@ import { ENV } from '../env';
       entities: [UserEntity],
     }),
     GraphQLModule.forRoot({
+      context: ({ req }) => ({ req }),
       debug: false,
       playground: true,
       installSubscriptionHandlers: true,
       autoSchemaFile: '../schema.graphql',
     }),
+    AuthModule,
     UserModule,
   ],
 })

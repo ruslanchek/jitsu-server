@@ -11,7 +11,7 @@ export class UserResolvers {
   constructor(private readonly userService: UserService) {}
 
   @Query(returns => UserTokenResponse)
-  @UseGuards(new GqlAuthGuard())
+  @UseGuards(GqlAuthGuard)
   async me(): Promise<UserTokenResponse> {
     return {token: '1'};
   }
