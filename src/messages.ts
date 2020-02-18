@@ -12,4 +12,5 @@ export enum EErrorMessage {
   LoginIncorrect = 'LOGIN_INCORRECT',
   InvalidUser = 'INVALID_USER',
   InvalidToken = 'INVALID_TOKEN',
+  ProjectNameMinLength = 'PROJECT_NAME_MIN_LENGTH',
 }

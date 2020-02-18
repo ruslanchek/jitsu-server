@@ -49,26 +49,36 @@ export class UserService {
     return await this.findById(id, ['id']);
   }
 
-  async findByEmail(email: string, fields?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {
-    const users = await this.userRepository.find({
+  async findByEmail(
+    email: string,
+    select?: Array<keyof UserEntity>,
+    relations?: Array<keyof UserEntity>,
+  ): Promise<UserEntity | undefined> {
+    const items = await this.userRepository.find({
       where: {
         email,
       },
-      select: fields ? fields : undefined,
+      select,
+      relations,
     });
 
-    return users.length > 0 ? users[0] : undefined;
+    return items.length > 0 ? items[0] : undefined;
   }
 
-  async findById(id: string, fields?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {
-    const users = await this.userRepository.find({
+  async findById(
+    id: string,
+    select?: Array<keyof UserEntity>,
+    relations?: Array<keyof UserEntity>,
+  ): Promise<UserEntity | undefined> {
+    const items = await this.userRepository.find({
       where: {
         id,
       },
-      select: fields ? fields : undefined,
+      relations,
+      select,
     });
 
-    return users.length > 0 ? users[0] : undefined;
+    return items.length > 0 ? items[0] : undefined;
   }
 
   async findByWhere(where: Partial<UserEntity>, fields?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {

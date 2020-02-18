@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
+import { ProjectEntity } from '../project/project.entity';
 
 @Entity()
 @ObjectType()
@@ -57,4 +58,7 @@ export class UserEntity {
     nullable: true,
   })
   registeredDate!: Date;
+
+  @OneToMany(type => ProjectEntity, project => project.user)
+  projects: ProjectEntity[];
 }
