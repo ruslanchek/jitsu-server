@@ -1,8 +1,8 @@
-export enum EMessageType {
+export enum EErrorMessage {
   IsEmail = 'NOT_AN_EMAIL',
   EmptyPassword = 'EMPTY_PASSWORD',
   UserNotFound = 'USER_NOT_FOUND',
-  IsUserAlreadyExists = 'USER_EXISTS',
+  UserAlreadyExists = 'USER_EXISTS',
   PasswordMinLength = 'PASSWORD_MIN_LENGTH',
   PasswordMaxLength = 'PASSWORD_MAX_LENGTH',
   PasswordResetInterval = 'PASSWORD_RESET_INTERVAL',

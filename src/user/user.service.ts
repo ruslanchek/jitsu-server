@@ -1,8 +1,15 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user';
 import bcrypt from 'bcrypt';
+import { EErrorMessage } from '../messages';
 
 @Injectable()
 export class UserService {
@@ -23,6 +30,14 @@ export class UserService {
       `${string}${Date.now()}`,
       bcrypt.genSaltSync(10),
     );
+  }
+
+  async getUserWithPrivateFields(id: string): Promise<User | undefined> {
+    return await this.findById(id, ['id', 'email']);
+  }
+
+  async getUserWithPublicFields(id: string): Promise<User | undefined> {
+    return await this.findById(id, ['id']);
   }
 
   async findByEmail(email: string, fields?: Array<keyof User>): Promise<User | undefined> {
@@ -72,11 +87,21 @@ export class UserService {
     }
   }
 
-  async create(email: string, password: string): Promise<User> {
+  async login(email: string, password: string): Promise<User> {
+    const foundUserCompare = await this.findByEmail(email, ['id', 'passwordHash']);
+
+    if(foundUserCompare && bcrypt.compareSync(password, foundUserCompare.passwordHash)) {
+      return await this.getUserWithPrivateFields(foundUserCompare.id);
+    } else {
+      throw new BadRequestException(EErrorMessage.LoginIncorrect);
+    }
+  }
+
+  async register(email: string, password: string): Promise<User> {
     const foundUser = await this.findByEmail(email);
 
     if (foundUser) {
-      throw new ConflictException();
+      throw new ConflictException(EErrorMessage.UserAlreadyExists);
     } else {
       const emailConfirmationCode = this.generateCodeHash(email);
       const result = await this.userRepository.insert({
