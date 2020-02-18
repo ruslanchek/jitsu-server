@@ -3,6 +3,16 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ENV } from '../env';
 
+interface IJwtPayload {
+  id: string; // User id
+  iat: number; // Date created
+  exp: number; // Date expire
+}
+
+export interface IAuthCurrentUserPayload {
+  id: string;
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
@@ -13,7 +23,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
-    return { id: payload.sub };
+  async validate(payload: IJwtPayload): Promise<IAuthCurrentUserPayload> {
+    return {
+      id: payload.id,
+    };
   }
 }

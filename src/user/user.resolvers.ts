@@ -5,15 +5,17 @@ import { UserInputLogin, UserInputRegister } from './user.input';
 import { UserTokenResponse } from './user.responses';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from '../common/decorators/currentUser.decorator';
+import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 
 @Resolver(of => UserEntity)
 export class UserResolvers {
   constructor(private readonly userService: UserService) {}
 
-  @Query(returns => UserTokenResponse)
+  @Query(returns => UserEntity)
   @UseGuards(GqlAuthGuard)
-  async me(): Promise<UserTokenResponse> {
-    return {token: '1'};
+  async me(@CurrentUser() user: IAuthCurrentUserPayload): Promise<UserEntity> {
+    return await this.userService.getUserWithPrivateFields(user.id);
   }
 
   @Query(returns => UserTokenResponse)
