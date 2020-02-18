@@ -12,17 +12,21 @@ export class ProjectService {
     private readonly userService: UserService,
   ) {}
 
+  async getUserProject(id, userId): Promise<ProjectEntity> {
+    return await this.findById(id);
+  }
+
   async findUserProjects(userId: string): Promise<ProjectEntity[]> {
-    const user = await this.userService.findById(userId, ['id'], ['projects']);
+    const user = await this.userService.findById(userId, ['id'], ['projects', 'invitedToProjects']);
     return user.projects;
   }
 
-  async findById(id: string, fields?: Array<keyof ProjectEntity>): Promise<ProjectEntity | undefined> {
+  async findById(id: string, select?: Array<keyof ProjectEntity>): Promise<ProjectEntity | undefined> {
     const items = await this.projectRepository.find({
       where: {
         id,
       },
-      select: fields ? fields : undefined,
+      select,
     });
 
     return items.length > 0 ? items[0] : undefined;
