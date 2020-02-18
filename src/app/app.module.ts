@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../user/user';
+import { UserEntity } from '../user/user.entity';
 import { ENV } from '../env';
 
 @Module({
@@ -15,7 +15,7 @@ import { ENV } from '../env';
       username: ENV.PG_USER,
       password: ENV.PG_PASS,
       database: ENV.PG_DB,
-      entities: [User],
+      entities: [UserEntity],
     }),
     GraphQLModule.forRoot({
       debug: false,

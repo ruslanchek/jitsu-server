@@ -1,10 +1,10 @@
 import { InputType, Field, ID } from 'type-graphql';
 import { IsUUID, IsEmail, MinLength, MaxLength } from 'class-validator';
-import { User } from './user';
+import { UserEntity } from './user.entity';
 import { EErrorMessage } from '../messages';
 
 @InputType()
-export class UserInputLogin implements Partial<User> {
+export class UserInputLogin implements Partial<UserEntity> {
   @Field(() => String)
   @IsEmail({}, { message: EErrorMessage.IsEmail })
   email: string;
@@ -16,7 +16,7 @@ export class UserInputLogin implements Partial<User> {
 }
 
 @InputType()
-export class UserInputRegister implements Partial<User> {
+export class UserInputRegister implements Partial<UserEntity> {
   @Field(() => String)
   @IsEmail({}, { message: EErrorMessage.IsEmail })
   email: string;

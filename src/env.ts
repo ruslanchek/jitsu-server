@@ -1,5 +1,7 @@
 export const ENV = {
   PORT: process.env.PORT || 4000,
+  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_EXPIRES_SECONDS: Number(process.env.JWT_EXPIRES_SECONDS),
 
   PG_SYNC: Boolean(process.env.PG_SYNC === 'true'),
   PG_HOST: process.env.PG_HOST,

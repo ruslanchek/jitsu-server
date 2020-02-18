@@ -1,23 +1,20 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { DateScalar } from '../common/scalars/date.scalar';
 
 @Entity()
 @ObjectType()
-export class User {
-  @Field(() => ID)
+export class UserEntity {
+  @Field(type => ID)
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Field(() => String)
+  @Field(type => String)
   @Column({ type: 'text', unique: true })
   email!: string;
 
-  @Field(() => String)
   @Column({ type: 'text', select: false })
   passwordHash!: string;
 
-  @Field(() => Date)
   @Column({
     type: 'timestamp',
     select: false,
@@ -26,7 +23,6 @@ export class User {
   })
   passwordChangedDate!: Date;
 
-  @Field(() => Date)
   @Column({
     type: 'timestamp',
     select: false,
@@ -35,7 +31,6 @@ export class User {
   })
   passwordResetCodeExpires!: Date;
 
-  @Field(() => Date)
   @Column({
     type: 'timestamp',
     select: false,
@@ -44,15 +39,22 @@ export class User {
   })
   passwordResetInterval!: Date;
 
-  @Field(() => String)
   @Column({ type: 'text', select: false, nullable: true })
   passwordResetCode!: string;
 
-  @Field(() => String)
   @Column({ type: 'text', select: false, nullable: true })
   emailConfirmationCode!: string;
 
-  @Field(() => Boolean)
+  @Field(type => Boolean)
   @Column({ type: 'boolean', select: false, default: false })
   isEmailConfirmed!: boolean;
+
+  @Field(type => Date)
+  @Column({
+    type: 'timestamp',
+    select: false,
+    default: 'now()',
+    nullable: true,
+  })
+  registeredDate!: Date;
 }

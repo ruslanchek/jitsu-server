@@ -7,40 +7,49 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './user';
+import { UserEntity } from './user.entity';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { EErrorMessage } from '../messages';
+import { ENV } from '../env';
+import { UserTokenResponse } from './user.responses';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   private generatePasswordHash(password: string): string {
-    return bcrypt.hashSync(
-      password,
-      bcrypt.genSaltSync(10),
-    );
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   }
 
   private generateCodeHash(string: string): string {
-    return bcrypt.hashSync(
-      `${string}${Date.now()}`,
-      bcrypt.genSaltSync(10),
-    );
+    return bcrypt.hashSync(`${string}${Date.now()}`, bcrypt.genSaltSync(10));
   }
 
-  async getUserWithPrivateFields(id: string): Promise<User | undefined> {
+  private generateTokenResponse(id: string) {
+    const tokenResponse = new UserTokenResponse();
+    tokenResponse.token = jwt.sign(
+      {
+        id,
+      },
+      ENV.JWT_SECRET,
+      { expiresIn: ENV.JWT_EXPIRES_SECONDS },
+    );
+    return tokenResponse;
+  }
+
+  async getUserWithPrivateFields(id: string): Promise<UserEntity | undefined> {
     return await this.findById(id, ['id', 'email']);
   }
 
-  async getUserWithPublicFields(id: string): Promise<User | undefined> {
+  async getUserWithPublicFields(id: string): Promise<UserEntity | undefined> {
     return await this.findById(id, ['id']);
   }
 
-  async findByEmail(email: string, fields?: Array<keyof User>): Promise<User | undefined> {
+  async findByEmail(email: string, fields?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {
     const users = await this.userRepository.find({
       where: {
         email,
@@ -51,7 +60,7 @@ export class UserService {
     return users.length > 0 ? users[0] : undefined;
   }
 
-  async findById(id: string, fields?: Array<keyof User>): Promise<User | undefined> {
+  async findById(id: string, fields?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {
     const users = await this.userRepository.find({
       where: {
         id,
@@ -62,7 +71,7 @@ export class UserService {
     return users.length > 0 ? users[0] : undefined;
   }
 
-  async findByWhere(where: Partial<User>, fields?: Array<keyof User>): Promise<User | undefined> {
+  async findByWhere(where: Partial<UserEntity>, fields?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {
     const users = await this.userRepository.find({
       where,
       select: fields ? fields : undefined,
@@ -74,7 +83,7 @@ export class UserService {
     }
   }
 
-  async update(id: string, userData: Partial<User>): Promise<User | undefined> {
+  async update(id: string, userData: Partial<UserEntity>): Promise<UserEntity | undefined> {
     const foundUser = await this.findById(id);
     if (foundUser) {
       await this.userRepository.update(id, userData);
@@ -84,16 +93,16 @@ export class UserService {
     }
   }
 
-  async login(email: string, password: string): Promise<User> {
-    const foundUserCompare = await this.findByEmail(email, ['id', 'passwordHash']);
-    if(foundUserCompare && bcrypt.compareSync(password, foundUserCompare.passwordHash)) {
-      return await this.getUserWithPrivateFields(foundUserCompare.id);
+  async login(email: string, password: string): Promise<UserTokenResponse> {
+    const user = await this.findByEmail(email, ['id', 'passwordHash']);
+    if (user && bcrypt.compareSync(password, user.passwordHash)) {
+      return this.generateTokenResponse(user.id);
     } else {
       throw new BadRequestException(EErrorMessage.LoginIncorrect);
     }
   }
 
-  async register(email: string, password: string): Promise<User> {
+  async register(email: string, password: string): Promise<UserTokenResponse> {
     const foundUser = await this.findByEmail(email);
     if (foundUser) {
       throw new ConflictException(EErrorMessage.UserAlreadyExists);
@@ -104,10 +113,8 @@ export class UserService {
         passwordHash: this.generatePasswordHash(password),
         emailConfirmationCode,
       });
-
       if (result.identifiers.length > 0) {
-        const { id } = result.identifiers[0];
-        return await this.userRepository.findOne(id);
+        return this.generateTokenResponse(result.identifiers[0].id);
       } else {
         throw new InternalServerErrorException(EErrorMessage.ServerError);
       }
