@@ -71,25 +71,21 @@ export class UserService {
 
     if (users.length > 0) {
       return users[0];
-    } else {
-      return undefined;
     }
   }
 
   async update(id: string, userData: Partial<User>): Promise<User | undefined> {
     const foundUser = await this.findById(id);
-
     if (foundUser) {
       await this.userRepository.update(id, userData);
       return await this.userRepository.findOne(id);
     } else {
-      throw new NotFoundException();
+      throw new NotFoundException(EErrorMessage.InvalidUser);
     }
   }
 
   async login(email: string, password: string): Promise<User> {
     const foundUserCompare = await this.findByEmail(email, ['id', 'passwordHash']);
-
     if(foundUserCompare && bcrypt.compareSync(password, foundUserCompare.passwordHash)) {
       return await this.getUserWithPrivateFields(foundUserCompare.id);
     } else {
@@ -99,7 +95,6 @@ export class UserService {
 
   async register(email: string, password: string): Promise<User> {
     const foundUser = await this.findByEmail(email);
-
     if (foundUser) {
       throw new ConflictException(EErrorMessage.UserAlreadyExists);
     } else {
@@ -114,7 +109,7 @@ export class UserService {
         const { id } = result.identifiers[0];
         return await this.userRepository.findOne(id);
       } else {
-        throw new InternalServerErrorException();
+        throw new InternalServerErrorException(EErrorMessage.ServerError);
       }
     }
   }
