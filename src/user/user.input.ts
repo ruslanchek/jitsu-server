@@ -1,6 +1,7 @@
 import { InputType, Field, ID } from 'type-graphql';
-import { IsUUID, MinLength } from 'class-validator';
+import { IsUUID, IsEmail } from 'class-validator';
 import { User } from './user';
+import { EMessageType } from '../messages';
 
 @InputType()
 export class GetUserByIdInput implements Partial<User> {
@@ -10,12 +11,12 @@ export class GetUserByIdInput implements Partial<User> {
 }
 
 @InputType()
-export class UpdateUserNameInput implements Partial<User> {
+export class UpdateUserEmailInput implements Partial<User> {
   @Field(() => ID)
   @IsUUID()
   id: string;
 
   @Field(() => String)
-  @MinLength(3)
-  name: string;
+  @IsEmail({}, { message: EMessageType.IsEmail })
+  email: string;
 }

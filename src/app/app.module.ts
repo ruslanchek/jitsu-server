@@ -3,17 +3,18 @@ import { UserModule } from '../user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/user';
+import { ENV } from '../env';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'root',
-      password: '123321',
-      database: 'jitsu',
-      synchronize: true,
+      synchronize: ENV.PG_SYNC,
+      host: ENV.PG_HOST,
+      port: ENV.PG_PORT,
+      username: ENV.PG_USER,
+      password: ENV.PG_PASS,
+      database: ENV.PG_DB,
       entities: [User],
     }),
     GraphQLModule.forRoot({
