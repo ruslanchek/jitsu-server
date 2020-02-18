@@ -15,7 +15,7 @@ export class UserResolvers {
   @Query(returns => UserEntity)
   @UseGuards(GqlAuthGuard)
   async me(@CurrentUser() user: IAuthCurrentUserPayload): Promise<UserEntity> {
-    return await this.userService.getUserWithPrivateFields(user.id);
+    return await this.userService.findById(user.id);
   }
 
   @Query(returns => UserTokenResponse)

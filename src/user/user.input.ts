@@ -1,5 +1,5 @@
-import { InputType, Field, ID } from 'type-graphql';
-import { IsUUID, IsEmail, MinLength, MaxLength } from 'class-validator';
+import { InputType, Field } from 'type-graphql';
+import { IsEmail, MinLength, MaxLength } from 'class-validator';
 import { UserEntity } from './user.entity';
 import { EErrorMessage } from '../messages';
 

@@ -41,14 +41,6 @@ export class UserService {
     return tokenResponse;
   }
 
-  async getUserWithPrivateFields(id: string): Promise<UserEntity | undefined> {
-    return await this.findById(id, ['id', 'email', 'isEmailConfirmed', 'registeredDate']);
-  }
-
-  async getUserWithPublicFields(id: string): Promise<UserEntity | undefined> {
-    return await this.findById(id, ['id']);
-  }
-
   async findByEmail(
     email: string,
     select?: Array<keyof UserEntity>,

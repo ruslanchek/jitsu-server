@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { ProjectEntity } from '../project/project.entity';
 
@@ -47,18 +47,23 @@ export class UserEntity {
   emailConfirmationCode!: string;
 
   @Field(type => Boolean)
-  @Column({ type: 'boolean', select: false, default: false })
+  @Column({ type: 'boolean', default: false })
   isEmailConfirmed!: boolean;
 
   @Field(type => Date)
   @Column({
     type: 'timestamp',
-    select: false,
     default: 'now()',
     nullable: true,
   })
   registeredDate!: Date;
 
-  @OneToMany(type => ProjectEntity, project => project.user)
+  @Field(type => [ProjectEntity])
+  @OneToMany(type => ProjectEntity, project => project.user, { lazy: true })
   projects: ProjectEntity[];
+
+  @Field(type => [ProjectEntity])
+  @ManyToMany(type => ProjectEntity, { lazy: true })
+  @JoinTable()
+  invitedToProjects: ProjectEntity[];
 }

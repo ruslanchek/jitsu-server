@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { UserEntity } from '../user/user.entity';
 
@@ -13,6 +13,16 @@ export class ProjectEntity {
   @Column()
   name: string;
 
-  @ManyToOne(type => UserEntity, user => user.projects)
+  @Field(type => UserEntity)
+  @ManyToOne(
+    type => UserEntity,
+    user => user.projects,
+    { lazy: true },
+  )
   user: UserEntity;
+
+  @Field(type => [UserEntity])
+  @ManyToMany(type => UserEntity, { lazy: true })
+  @JoinTable()
+  invitedUsers: UserEntity[];
 }
