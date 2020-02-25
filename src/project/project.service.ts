@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectEntity } from './project.entity';
@@ -12,7 +12,7 @@ export class ProjectService {
     private readonly userService: UserService,
   ) {}
 
-  async getUserProject(id, userId): Promise<ProjectEntity> {
+  async getUserProject(id: string, userId: string): Promise<ProjectEntity> {
     return await this.findById(id);
   }
 

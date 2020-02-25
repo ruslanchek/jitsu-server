@@ -17,13 +17,13 @@ export class ProjectResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('input') input: ProjectGetByIdInput,
   ): Promise<ProjectEntity> {
-    return await this.projectService.getUserProject(input.id, user.id); // TODO: Only users that hae access to specified projects
+    return await this.projectService.getUserProject(input.id, user.id); // TODO: Only users that have access to specified projects
   }
 
   @Query(returns => [ProjectEntity])
   @UseGuards(GqlAuthGuard)
   async getMyProjects(@CurrentUser() user: IAuthCurrentUserPayload): Promise<ProjectEntity[]> {
-    return await this.projectService.findUserProjects(user.id); // TODO: Only users that hae access to specified projects
+    return await this.projectService.findUserProjects(user.id); // TODO: Only users that have access to specified projects
   }
 
   @Mutation(returns => ProjectEntity)
