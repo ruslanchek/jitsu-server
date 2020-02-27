@@ -1,4 +1,4 @@
-import { Args, Resolver, Mutation, Query } from '@nestjs/graphql';
+import { Args, Resolver, Mutation, Query, Subscription } from '@nestjs/graphql';
 import { ProjectService } from './project.service';
 import { ProjectEntity } from './project.entity';
 import { ProjectCreateInput, ProjectGetByIdInput } from './project.input';
@@ -6,6 +6,9 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
+import { PubSub } from 'graphql-subscriptions';
+
+const pubSub = new PubSub();
 
 @Resolver(of => ProjectEntity)
 export class ProjectResolvers {
@@ -32,6 +35,14 @@ export class ProjectResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('input') input: ProjectCreateInput,
   ): Promise<ProjectEntity> {
-    return await this.projectService.create(input.name, user.id);
+    const createdProject = await this.projectService.create(input.name, user.id);
+    await pubSub.publish('projectCreated', { projectCreated: createdProject });
+    return createdProject;
+  }
+
+  @Subscription(returns => ProjectEntity)
+  // @UseGuards(GqlAuthGuard)
+  projectCreated() {
+    return pubSub.asyncIterator('projectCreated'); // TODO: Only users that have access to specified projects
   }
 }

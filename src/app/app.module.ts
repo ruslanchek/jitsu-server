@@ -21,11 +21,11 @@ import { ProjectEntity } from '../project/project.entity';
       entities: [UserEntity, ProjectEntity],
     }),
     GraphQLModule.forRoot({
-      context: ({ req }) => ({ req }),
       debug: false,
       playground: true,
       installSubscriptionHandlers: true,
       autoSchemaFile: '../schema.graphql',
+      context: ({ req, connection }) => (connection ? { req: { headers: connection.context } } : { req }),
     }),
     AuthModule,
     UserModule,
