@@ -24,7 +24,7 @@ import { ProjectEntity } from '../project/project.entity';
       debug: false,
       playground: true,
       installSubscriptionHandlers: true,
-      autoSchemaFile: '../schema.graphql',
+      autoSchemaFile: 'schema.graphql',
       context: ({ req, connection }) => (connection ? { req: { headers: connection.context } } : { req }),
     }),
     AuthModule,
