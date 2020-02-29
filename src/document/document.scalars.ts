@@ -14,6 +14,14 @@ export enum EDocumentPriority {
   High,
 }
 
+export enum EDocumentStatus {
+  Idle,
+  Paused,
+  InProgress,
+  Completed,
+  Archived,
+}
+
 @Scalar('DocumentType', type => EDocumentType)
 export class DocumentTypeScalar implements CustomScalar<number, EDocumentType> {
   description = 'EDocumentType custom scalar type';
@@ -54,3 +62,22 @@ export class DocumentPriorityScalar implements CustomScalar<number, EDocumentPri
   }
 }
 
+@Scalar('DocumentStatus', type => EDocumentStatus)
+export class DocumentStatusScalar implements CustomScalar<number, EDocumentStatus> {
+  description = 'EDocumentType custom scalar type';
+
+  parseValue(value: number): EDocumentStatus {
+    return value;
+  }
+
+  serialize(value: EDocumentStatus): number {
+    return value;
+  }
+
+  parseLiteral(ast: any): EDocumentStatus {
+    if (ast.kind === Kind.INT) {
+      return ast.value;
+    }
+    return null;
+  }
+}

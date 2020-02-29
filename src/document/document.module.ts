@@ -8,7 +8,7 @@ import { DocumentService } from './document.service';
 import { DocumentResolvers } from './document.resolvers';
 import { ProjectService } from '../project/project.service';
 import { ProjectEntity } from '../project/project.entity';
-import { DocumentPriorityScalar, DocumentTypeScalar } from './document.scalars';
+import { DocumentPriorityScalar, DocumentStatusScalar, DocumentTypeScalar } from './document.scalars';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DocumentEntity, DocumentEntity, UserEntity, ProjectEntity])],
@@ -18,6 +18,7 @@ import { DocumentPriorityScalar, DocumentTypeScalar } from './document.scalars';
     DateScalar,
     DocumentTypeScalar,
     DocumentPriorityScalar,
+    DocumentStatusScalar,
     UserService,
     ProjectService,
   ],

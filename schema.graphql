@@ -16,11 +16,19 @@ type DocumentEntity {
   name: String!
   project: ProjectEntity!
   type: DocumentType!
+  priority: DocumentPriority!
+  status: DocumentStatus!
 }
 
 input DocumentGetByIdInput {
   id: ID!
 }
+
+"""EDocumentType custom scalar type"""
+scalar DocumentPriority
+
+"""EDocumentType custom scalar type"""
+scalar DocumentStatus
 
 """EDocumentType custom scalar type"""
 scalar DocumentType
