@@ -15,11 +15,15 @@ type DocumentEntity {
   id: ID!
   name: String!
   project: ProjectEntity!
+  type: DocumentType!
 }
 
 input DocumentGetByIdInput {
   id: ID!
 }
+
+"""EDocumentType custom scalar type"""
+scalar DocumentType
 
 type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!

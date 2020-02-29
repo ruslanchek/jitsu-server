@@ -1,7 +1,7 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { UserEntity } from '../user/user.entity';
 import { ProjectEntity } from '../project/project.entity';
+import { EDocumentType } from './document.scalars';
 
 @Entity()
 @ObjectType()
@@ -21,4 +21,8 @@ export class DocumentEntity {
     { lazy: true },
   )
   project: ProjectEntity;
+
+  @Field(type => EDocumentType)
+  @Column({ type: 'enum', enum: EDocumentType, default: EDocumentType.Document })
+  type: EDocumentType;
 }
