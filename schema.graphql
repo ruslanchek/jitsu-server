@@ -15,6 +15,7 @@ type DocumentEntity {
   id: ID!
   name: String!
   project: ProjectEntity!
+  dueDate: Date!
   type: DocumentType!
   priority: DocumentPriority!
   status: DocumentStatus!

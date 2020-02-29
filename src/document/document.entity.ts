@@ -22,6 +22,14 @@ export class DocumentEntity {
   )
   project: ProjectEntity;
 
+  @Field(type => Date)
+  @Column({
+    type: 'timestamp',
+    default: 'now()',
+    nullable: true,
+  })
+  dueDate: Date;
+
   @Field(type => EDocumentType)
   @Column({ type: 'enum', enum: EDocumentType, default: EDocumentType.Document })
   type: EDocumentType;

@@ -7,14 +7,14 @@ import { ProjectEntity } from '../project/project.entity';
 export class UserEntity {
   @Field(type => ID)
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
   @Field(type => String)
   @Column({ type: 'text', unique: true })
-  email!: string;
+  email: string;
 
   @Column({ type: 'text', select: false })
-  passwordHash!: string;
+  passwordHash: string;
 
   @Column({
     type: 'timestamp',
@@ -22,7 +22,7 @@ export class UserEntity {
     default: 'now()',
     nullable: true,
   })
-  passwordChangedDate!: Date;
+  passwordChangedDate: Date;
 
   @Column({
     type: 'timestamp',
@@ -30,7 +30,7 @@ export class UserEntity {
     default: 'now()',
     nullable: true,
   })
-  passwordResetCodeExpires!: Date;
+  passwordResetCodeExpires: Date;
 
   @Column({
     type: 'timestamp',
@@ -38,17 +38,17 @@ export class UserEntity {
     default: 'now()',
     nullable: true,
   })
-  passwordResetInterval!: Date;
+  passwordResetInterval: Date;
 
   @Column({ type: 'text', select: false, nullable: true })
-  passwordResetCode!: string;
+  passwordResetCode: string;
 
   @Column({ type: 'text', select: false, nullable: true })
-  emailConfirmationCode!: string;
+  emailConfirmationCode: string;
 
   @Field(type => Boolean)
   @Column({ type: 'boolean', default: false })
-  isEmailConfirmed!: boolean;
+  isEmailConfirmed: boolean;
 
   @Field(type => Date)
   @Column({
@@ -56,7 +56,7 @@ export class UserEntity {
     default: 'now()',
     nullable: true,
   })
-  registeredDate!: Date;
+  registeredDate: Date;
 
   @Field(type => [ProjectEntity])
   @OneToMany(
