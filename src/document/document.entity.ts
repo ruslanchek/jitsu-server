@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { ProjectEntity } from '../project/project.entity';
-import { EDocumentType } from './document.scalars';
+import { EDocumentPriority, EDocumentType } from './document.scalars';
 
 @Entity()
 @ObjectType()
@@ -25,4 +25,8 @@ export class DocumentEntity {
   @Field(type => EDocumentType)
   @Column({ type: 'enum', enum: EDocumentType, default: EDocumentType.Document })
   type: EDocumentType;
+
+  @Field(type => EDocumentPriority)
+  @Column({ type: 'enum', enum: EDocumentPriority, default: EDocumentPriority.Default })
+  priority: EDocumentPriority;
 }

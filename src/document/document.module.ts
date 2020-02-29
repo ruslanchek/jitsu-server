@@ -8,11 +8,19 @@ import { DocumentService } from './document.service';
 import { DocumentResolvers } from './document.resolvers';
 import { ProjectService } from '../project/project.service';
 import { ProjectEntity } from '../project/project.entity';
-import { DocumentTypeScalar } from './document.scalars';
+import { DocumentPriorityScalar, DocumentTypeScalar } from './document.scalars';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DocumentEntity, DocumentEntity, UserEntity, ProjectEntity])],
-  providers: [DocumentService, DocumentResolvers, DateScalar, DocumentTypeScalar, UserService, ProjectService],
+  providers: [
+    DocumentService,
+    DocumentResolvers,
+    DateScalar,
+    DocumentTypeScalar,
+    DocumentPriorityScalar,
+    UserService,
+    ProjectService,
+  ],
   exports: [DocumentService],
 })
 export class DocumentModule {}
