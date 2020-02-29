@@ -59,7 +59,11 @@ export class UserEntity {
   registeredDate!: Date;
 
   @Field(type => [ProjectEntity])
-  @OneToMany(type => ProjectEntity, project => project.user, { lazy: true })
+  @OneToMany(
+    type => ProjectEntity,
+    project => project.user,
+    { lazy: true },
+  )
   projects: ProjectEntity[];
 
   @Field(type => [ProjectEntity])

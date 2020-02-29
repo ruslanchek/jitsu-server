@@ -1,6 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { UserEntity } from '../user/user.entity';
+import { DocumentEntity } from '../document/document.entity';
 
 @Entity()
 @ObjectType()
@@ -25,4 +26,12 @@ export class ProjectEntity {
   @ManyToMany(type => UserEntity, { lazy: true })
   @JoinTable()
   invitedUsers: UserEntity[];
+
+  @Field(type => [DocumentEntity])
+  @OneToMany(
+    type => DocumentEntity,
+    document => document.project,
+    { lazy: true },
+  )
+  documents: DocumentEntity[];
 }

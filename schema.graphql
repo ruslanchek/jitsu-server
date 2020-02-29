@@ -6,9 +6,25 @@
 """Date custom scalar type"""
 scalar Date
 
+input DocumentCreateInput {
+  name: String!
+  projectId: ID!
+}
+
+type DocumentEntity {
+  id: ID!
+  name: String!
+  project: ProjectEntity!
+}
+
+input DocumentGetByIdInput {
+  id: ID!
+}
+
 type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!
   createProject(input: ProjectCreateInput!): ProjectEntity!
+  createDocument(input: DocumentCreateInput!): DocumentEntity!
 }
 
 input ProjectCreateInput {
@@ -20,6 +36,7 @@ type ProjectEntity {
   name: String!
   user: UserEntity!
   invitedUsers: [UserEntity!]!
+  documents: [DocumentEntity!]!
 }
 
 input ProjectGetByIdInput {
@@ -31,10 +48,13 @@ type Query {
   login(input: UserInputLogin!): UserTokenResponse!
   getProject(input: ProjectGetByIdInput!): ProjectEntity!
   getMyProjects: [ProjectEntity!]!
+  getDocument(input: DocumentGetByIdInput!): DocumentEntity!
+  getDocuments: [DocumentEntity!]!
 }
 
 type Subscription {
   projectCreated: ProjectEntity!
+  documentCreated: DocumentEntity!
 }
 
 type UserEntity {

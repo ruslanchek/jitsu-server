@@ -41,7 +41,6 @@ export class ProjectResolvers {
   }
 
   @Subscription(returns => ProjectEntity)
-  // @UseGuards(GqlAuthGuard)
   projectCreated() {
     return pubSub.asyncIterator('projectCreated'); // TODO: Only users that have access to specified projects
   }

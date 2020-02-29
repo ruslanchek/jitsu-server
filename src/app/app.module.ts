@@ -7,6 +7,8 @@ import { UserEntity } from '../user/user.entity';
 import { AuthModule } from '../auth/auth.module';
 import { ProjectModule } from '../project/project.module';
 import { ProjectEntity } from '../project/project.entity';
+import { DocumentEntity } from '../document/document.entity';
+import { DocumentModule } from '../document/document.module';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { ProjectEntity } from '../project/project.entity';
       username: ENV.PG_USER,
       password: ENV.PG_PASS,
       database: ENV.PG_DB,
-      entities: [UserEntity, ProjectEntity],
+      entities: [UserEntity, ProjectEntity, DocumentEntity],
     }),
     GraphQLModule.forRoot({
       debug: false,
@@ -30,6 +32,7 @@ import { ProjectEntity } from '../project/project.entity';
     AuthModule,
     UserModule,
     ProjectModule,
+    DocumentModule,
   ],
 })
 export class AppModule {}

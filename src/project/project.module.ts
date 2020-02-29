@@ -10,6 +10,6 @@ import { UserEntity } from '../user/user.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([ProjectEntity, UserEntity])],
   providers: [ProjectService, ProjectResolvers, DateScalar, UserService],
-  exports: [ProjectService, UserService],
+  exports: [ProjectService],
 })
 export class ProjectModule {}
