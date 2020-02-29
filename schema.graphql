@@ -25,13 +25,13 @@ input DocumentGetByIdInput {
   id: ID!
 }
 
-"""EDocumentType custom scalar type"""
+"""DocumentPriority custom scalar type"""
 scalar DocumentPriority
 
-"""EDocumentType custom scalar type"""
+"""DocumentStatus custom scalar type"""
 scalar DocumentStatus
 
-"""EDocumentType custom scalar type"""
+"""DocumentType custom scalar type"""
 scalar DocumentType
 
 type Mutation {

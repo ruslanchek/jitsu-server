@@ -24,7 +24,7 @@ export enum EDocumentStatus {
 
 @Scalar('DocumentType', type => EDocumentType)
 export class DocumentTypeScalar implements CustomScalar<number, EDocumentType> {
-  description = 'EDocumentType custom scalar type';
+  description = 'DocumentType custom scalar type';
 
   parseValue(value: number): EDocumentType {
     return value;
@@ -44,7 +44,7 @@ export class DocumentTypeScalar implements CustomScalar<number, EDocumentType> {
 
 @Scalar('DocumentPriority', type => EDocumentPriority)
 export class DocumentPriorityScalar implements CustomScalar<number, EDocumentPriority> {
-  description = 'EDocumentType custom scalar type';
+  description = 'DocumentPriority custom scalar type';
 
   parseValue(value: number): EDocumentPriority {
     return value;
@@ -64,7 +64,7 @@ export class DocumentPriorityScalar implements CustomScalar<number, EDocumentPri
 
 @Scalar('DocumentStatus', type => EDocumentStatus)
 export class DocumentStatusScalar implements CustomScalar<number, EDocumentStatus> {
-  description = 'EDocumentType custom scalar type';
+  description = 'DocumentStatus custom scalar type';
 
   parseValue(value: number): EDocumentStatus {
     return value;
