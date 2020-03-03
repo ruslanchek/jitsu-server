@@ -3,6 +3,7 @@ import { MinLength, IsUUID, IsOptional } from 'class-validator';
 import { EErrorMessage } from '../messages';
 import { DocumentEntity } from './document.entity';
 import { EDocumentPriority, EDocumentStatus } from './document.scalars';
+import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
 
 @InputType()
 export class DocumentCreateInput implements Partial<DocumentEntity> {
@@ -29,6 +30,10 @@ export class DocumentChangeInput implements Partial<DocumentEntity> {
   @Field(() => EDocumentStatus, { nullable: true })
   @IsOptional()
   status: EDocumentStatus;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  @IsOptional()
+  data: Object;
 }
 
 

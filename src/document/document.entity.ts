@@ -3,6 +3,7 @@ import { Field, ID, ObjectType } from 'type-graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { EDocumentPriority, EDocumentStatus, EDocumentType } from './document.scalars';
 import { UserEntity } from '../user/user.entity';
+import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
 
 @Entity()
 @ObjectType()
@@ -46,4 +47,8 @@ export class DocumentEntity {
   @Field(type => UserEntity)
   @OneToOne(type => UserEntity)
   user: UserEntity;
+
+  @Field(type => GraphQLJSON)
+  @Column({ type: 'json', default: {} })
+  data: Object;
 }

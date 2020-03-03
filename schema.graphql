@@ -11,6 +11,7 @@ input DocumentChangeInput {
   dueDate: Date
   priority: DocumentPriority
   status: DocumentStatus
+  data: JSON
 }
 
 input DocumentCreateInput {
@@ -26,6 +27,7 @@ type DocumentEntity {
   priority: DocumentPriority!
   status: DocumentStatus!
   user: UserEntity!
+  data: JSON!
 }
 
 input DocumentGetByIdInput {
@@ -40,6 +42,11 @@ scalar DocumentStatus
 
 """DocumentType custom scalar type"""
 scalar DocumentType
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
 
 type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!

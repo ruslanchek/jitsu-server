@@ -9,6 +9,7 @@ import { ProjectModule } from '../project/project.module';
 import { ProjectEntity } from '../project/project.entity';
 import { DocumentEntity } from '../document/document.entity';
 import { DocumentModule } from '../document/document.module';
+import { GraphQLJSON } from 'graphql-type-json';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DocumentModule } from '../document/document.module';
       debug: false,
       playground: true,
       installSubscriptionHandlers: true,
+      resolvers: { JSON: GraphQLJSON },
       autoSchemaFile: 'schema.graphql',
       context: ({ req, connection }) => (connection ? { req: { headers: connection.context } } : { req }),
     }),
