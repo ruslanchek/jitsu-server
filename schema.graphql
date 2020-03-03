@@ -9,6 +9,8 @@ scalar Date
 input DocumentChangeInput {
   name: String
   dueDate: Date
+  priority: DocumentPriority
+  status: DocumentStatus
 }
 
 input DocumentCreateInput {

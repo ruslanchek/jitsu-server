@@ -2,6 +2,7 @@ import { InputType, Field, ID } from 'type-graphql';
 import { MinLength, IsUUID, IsOptional } from 'class-validator';
 import { EErrorMessage } from '../messages';
 import { DocumentEntity } from './document.entity';
+import { EDocumentPriority, EDocumentStatus } from './document.scalars';
 
 @InputType()
 export class DocumentCreateInput implements Partial<DocumentEntity> {
@@ -20,6 +21,14 @@ export class DocumentChangeInput implements Partial<DocumentEntity> {
   @Field(() => Date, { nullable: true })
   @IsOptional()
   dueDate: Date;
+
+  @Field(() => EDocumentPriority, { nullable: true })
+  @IsOptional()
+  priority: EDocumentPriority;
+
+  @Field(() => EDocumentStatus, { nullable: true })
+  @IsOptional()
+  status: EDocumentStatus;
 }
 
 
