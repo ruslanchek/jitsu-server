@@ -6,9 +6,19 @@ import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 import { PubSub } from 'graphql-subscriptions';
 import { DocumentService } from './document.service';
 import { DocumentEntity } from './document.entity';
-import { DocumentCreateInput, DocumentGetByIdInput } from './document.input';
+import {
+  DocumentChangeInput,
+  DocumentCreateInput,
+  DocumentGetByIdInput,
+  DocumentProjectIdInput,
+} from './document.inputs';
 
 const pubSub = new PubSub();
+
+enum ETriggers {
+  DocumentCreated = 'documentCreated',
+  DocumentChanged = 'documentChanged',
+}
 
 @Resolver(of => DocumentEntity)
 export class DocumentResolvers {
@@ -33,15 +43,33 @@ export class DocumentResolvers {
   @UseGuards(GqlAuthGuard)
   async createDocument(
     @CurrentUser() user: IAuthCurrentUserPayload,
+    @Args('projectIdInput') projectIdInput: DocumentProjectIdInput,
     @Args('input') input: DocumentCreateInput,
   ): Promise<DocumentEntity> {
-    const createdDocument = await this.documentService.create(input.name, input.projectId, user.id);
-    await pubSub.publish('documentCreated', { documentCreated: createdDocument });
+    const createdDocument = await this.documentService.create(user.id, projectIdInput, input);
+    await pubSub.publish(ETriggers.DocumentCreated, { documentCreated: createdDocument });
     return createdDocument;
+  }
+
+  @Mutation(returns => DocumentEntity)
+  @UseGuards(GqlAuthGuard)
+  async changeDocument(
+    @CurrentUser() user: IAuthCurrentUserPayload,
+    @Args('getByIdInput') getByIdInput: DocumentGetByIdInput,
+    @Args('input') input: DocumentChangeInput,
+  ): Promise<DocumentEntity> {
+    const changedDocument = await this.documentService.change(user.id, getByIdInput, input);
+    await pubSub.publish(ETriggers.DocumentChanged, { documentChanged: changedDocument });
+    return changedDocument;
   }
 
   @Subscription(returns => DocumentEntity)
   documentCreated() {
-    return pubSub.asyncIterator('documentCreated'); // TODO: Only users that have access to specified documents
+    return pubSub.asyncIterator(ETriggers.DocumentCreated); // TODO: Only users that have access to specified documents
+  }
+
+  @Subscription(returns => DocumentEntity)
+  documentChanged() {
+    return pubSub.asyncIterator(ETriggers.DocumentChanged); // TODO: Only users that have access to specified documents
   }
 }

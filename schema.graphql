@@ -6,9 +6,12 @@
 """Date custom scalar type"""
 scalar Date
 
+input DocumentChangeInput {
+  name: String
+}
+
 input DocumentCreateInput {
   name: String!
-  projectId: ID!
 }
 
 type DocumentEntity {
@@ -19,6 +22,7 @@ type DocumentEntity {
   type: DocumentType!
   priority: DocumentPriority!
   status: DocumentStatus!
+  user: UserEntity!
 }
 
 input DocumentGetByIdInput {
@@ -27,6 +31,10 @@ input DocumentGetByIdInput {
 
 """DocumentPriority custom scalar type"""
 scalar DocumentPriority
+
+input DocumentProjectIdInput {
+  projectId: ID!
+}
 
 """DocumentStatus custom scalar type"""
 scalar DocumentStatus
@@ -37,7 +45,8 @@ scalar DocumentType
 type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!
   createProject(input: ProjectCreateInput!): ProjectEntity!
-  createDocument(input: DocumentCreateInput!): DocumentEntity!
+  createDocument(input: DocumentCreateInput!, projectIdInput: DocumentProjectIdInput!): DocumentEntity!
+  changeDocument(input: DocumentChangeInput!, getByIdInput: DocumentGetByIdInput!): DocumentEntity!
 }
 
 input ProjectCreateInput {
@@ -68,6 +77,7 @@ type Query {
 type Subscription {
   projectCreated: ProjectEntity!
   documentCreated: DocumentEntity!
+  documentChanged: DocumentEntity!
 }
 
 type UserEntity {

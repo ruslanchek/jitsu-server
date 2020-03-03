@@ -5,6 +5,12 @@ import { UserService } from '../user/user.service';
 import { DocumentEntity } from './document.entity';
 import { ProjectService } from '../project/project.service';
 import { EErrorMessage } from '../messages';
+import {
+  DocumentChangeInput,
+  DocumentCreateInput,
+  DocumentGetByIdInput,
+  DocumentProjectIdInput,
+} from './document.inputs';
 
 @Injectable()
 export class DocumentService {
@@ -34,17 +40,33 @@ export class DocumentService {
     return items.length > 0 ? items[0] : undefined;
   }
 
-  async create(name: string, projectId: string, userId: string): Promise<DocumentEntity> {
-    const project = await this.projectService.getUserProject(projectId, userId);
+  async create(userId: string, projectIdInput: DocumentProjectIdInput, input: DocumentCreateInput): Promise<DocumentEntity> {
+    const project = await this.projectService.getUserProject(projectIdInput.projectId, userId);
 
-    if(!project) {
-      throw new NotFoundException(EErrorMessage.ProjectNotFound);
+    if (!project) {
+      throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
 
     const result = await this.documentRepository.insert({
-      name,
+      ...input,
       project,
     });
     return await this.findById(result.identifiers[0].id);
+  }
+
+  async change(
+    userId: string,
+    getByIdInput: DocumentGetByIdInput,
+    input: DocumentChangeInput,
+  ): Promise<DocumentEntity> {
+    const document = await this.findById(getByIdInput.id);
+    const user = await this.userService.findById(userId);
+
+    if (!document) {
+      throw new NotFoundException(EErrorMessage.DocumentNotFound);
+    }
+
+    await this.documentRepository.update({ id: getByIdInput.id, user }, { ...input });
+    return await this.findById(getByIdInput.id);
   }
 }

@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { EDocumentPriority, EDocumentStatus, EDocumentType } from './document.scalars';
+import { UserEntity } from '../user/user.entity';
 
 @Entity()
 @ObjectType()
@@ -41,4 +42,8 @@ export class DocumentEntity {
   @Field(type => EDocumentStatus)
   @Column({ type: 'enum', enum: EDocumentStatus, default: EDocumentStatus.Idle })
   status: EDocumentStatus;
+
+  @Field(type => UserEntity)
+  @OneToOne(type => UserEntity)
+  user: UserEntity;
 }
