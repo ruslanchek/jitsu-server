@@ -5,12 +5,8 @@ import { UserService } from '../user/user.service';
 import { DocumentEntity } from './document.entity';
 import { ProjectService } from '../project/project.service';
 import { EErrorMessage } from '../messages';
-import {
-  DocumentChangeInput,
-  DocumentCreateInput,
-  DocumentGetByIdInput,
-  DocumentProjectIdInput,
-} from './document.inputs';
+import { DocumentChangeInput, DocumentCreateInput, DocumentGetByIdInput } from './document.inputs';
+import { ProjectGetByIdInput } from '../project/project.inputs';
 
 @Injectable()
 export class DocumentService {
@@ -40,8 +36,12 @@ export class DocumentService {
     return items.length > 0 ? items[0] : undefined;
   }
 
-  async create(userId: string, projectIdInput: DocumentProjectIdInput, input: DocumentCreateInput): Promise<DocumentEntity> {
-    const project = await this.projectService.getUserProject(projectIdInput.projectId, userId);
+  async create(
+    userId: string,
+    projectIdInput: ProjectGetByIdInput,
+    input: DocumentCreateInput,
+  ): Promise<DocumentEntity> {
+    const project = await this.projectService.getUserProject(userId, projectIdInput);
 
     if (!project) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);

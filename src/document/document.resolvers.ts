@@ -10,8 +10,8 @@ import {
   DocumentChangeInput,
   DocumentCreateInput,
   DocumentGetByIdInput,
-  DocumentProjectIdInput,
 } from './document.inputs';
+import { ProjectGetByIdInput } from '../project/project.inputs';
 
 const pubSub = new PubSub();
 
@@ -43,7 +43,7 @@ export class DocumentResolvers {
   @UseGuards(GqlAuthGuard)
   async createDocument(
     @CurrentUser() user: IAuthCurrentUserPayload,
-    @Args('projectIdInput') projectIdInput: DocumentProjectIdInput,
+    @Args('projectIdInput') projectIdInput: ProjectGetByIdInput,
     @Args('input') input: DocumentCreateInput,
   ): Promise<DocumentEntity> {
     const createdDocument = await this.documentService.create(user.id, projectIdInput, input);

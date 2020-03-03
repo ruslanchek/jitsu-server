@@ -8,6 +8,7 @@ scalar Date
 
 input DocumentChangeInput {
   name: String
+  dueDate: Date
 }
 
 input DocumentCreateInput {
@@ -32,10 +33,6 @@ input DocumentGetByIdInput {
 """DocumentPriority custom scalar type"""
 scalar DocumentPriority
 
-input DocumentProjectIdInput {
-  projectId: ID!
-}
-
 """DocumentStatus custom scalar type"""
 scalar DocumentStatus
 
@@ -45,7 +42,7 @@ scalar DocumentType
 type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!
   createProject(input: ProjectCreateInput!): ProjectEntity!
-  createDocument(input: DocumentCreateInput!, projectIdInput: DocumentProjectIdInput!): DocumentEntity!
+  createDocument(input: DocumentCreateInput!, projectIdInput: ProjectGetByIdInput!): DocumentEntity!
   changeDocument(input: DocumentChangeInput!, getByIdInput: DocumentGetByIdInput!): DocumentEntity!
 }
 
