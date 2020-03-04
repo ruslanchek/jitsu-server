@@ -13,6 +13,7 @@ import jwt from 'jsonwebtoken';
 import { EErrorMessage } from '../messages';
 import { ENV } from '../env';
 import { UserTokenResponse } from './user.responses';
+import { uniqueNamesGenerator, adjectives, animals, names, colors, countries, starWars } from 'unique-names-generator';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,14 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
+
+  private generateNickname() {
+    return uniqueNamesGenerator({
+      dictionaries: [adjectives, animals, names, colors, countries, starWars],
+      length: 2,
+      separator: '-',
+    });
+  }
 
   private generatePasswordHash(password: string): string {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -112,6 +121,7 @@ export class UserService {
       const emailConfirmationCode = this.generateCodeHash(email);
       const result = await this.userRepository.insert({
         email,
+        nickname: this.generateNickname(),
         passwordHash: this.generatePasswordHash(password),
         emailConfirmationCode,
       });

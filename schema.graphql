@@ -98,6 +98,7 @@ type Subscription {
 type UserEntity {
   id: ID!
   email: String!
+  nickname: String!
   isEmailConfirmed: Boolean!
   registeredDate: Date!
   projects: [ProjectEntity!]!

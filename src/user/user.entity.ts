@@ -14,6 +14,13 @@ export class UserEntity {
   @Column({ type: 'text', unique: true })
   email: string;
 
+  @Field(type => String)
+  @Column({
+    type: 'text',
+    unique: true,
+  })
+  nickname: string;
+
   @Column({ type: 'text', select: false })
   passwordHash: string;
 
