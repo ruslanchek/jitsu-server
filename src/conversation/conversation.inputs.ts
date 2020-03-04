@@ -6,6 +6,6 @@ import { ConversationEntity } from './conversation.entity';
 @InputType()
 export class ConversationCreateInput implements Partial<ConversationEntity> {
   @Field(() => String)
-  @MinLength(3, { message: EErrorMessage.DocumentNameMinLength })
+  @MinLength(1, { message: EErrorMessage.ConversationTextMinLength })
   text: string;
 }
