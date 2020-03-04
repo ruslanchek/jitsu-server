@@ -42,14 +42,16 @@ export class DocumentService {
     input: DocumentCreateInput,
   ): Promise<DocumentEntity> {
     const project = await this.projectService.getProject(userId, projectIdInput);
+    const user = await this.userService.findById(userId);
 
-    if (!project) {
+    if (!project || !user) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
 
     const result = await this.documentRepository.insert({
       ...input,
       project,
+      user,
     });
     return await this.findById(result.identifiers[0].id);
   }

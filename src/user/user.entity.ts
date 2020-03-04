@@ -1,6 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { ProjectEntity } from '../project/project.entity';
+import { ConversationEntity } from '../conversation/conversation.entity';
 
 @Entity()
 @ObjectType()
@@ -70,4 +71,13 @@ export class UserEntity {
   @ManyToMany(type => ProjectEntity, { lazy: true })
   @JoinTable()
   invitedToProjects: ProjectEntity[];
+
+  @Field(type => [ConversationEntity])
+  @OneToMany(
+    type => ConversationEntity,
+    conversation => conversation.user,
+    { lazy: true },
+  )
+  @JoinTable()
+  conversations: ConversationEntity[];
 }

@@ -3,11 +3,19 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input ConversationCreateInput {
+  text: String!
+}
+
 type ConversationEntity {
   id: ID!
   text: String!
   document: DocumentEntity!
   user: UserEntity!
+}
+
+input ConversationGetByIdInput {
+  id: ID!
 }
 
 """Date custom scalar type"""
@@ -61,6 +69,7 @@ type Mutation {
   createProject(input: ProjectCreateInput!): ProjectEntity!
   createDocument(input: DocumentCreateInput!, projectIdInput: ProjectGetByIdInput!): DocumentEntity!
   changeDocument(input: DocumentChangeInput!, getByIdInput: DocumentGetByIdInput!): DocumentEntity!
+  createConversation(input: ConversationCreateInput!, documentIdInput: DocumentGetByIdInput!): ConversationEntity!
 }
 
 input ProjectCreateInput {
@@ -83,15 +92,18 @@ type Query {
   me: UserEntity!
   login(input: UserInputLogin!): UserTokenResponse!
   getProject(input: ProjectGetByIdInput!): ProjectEntity!
-  getMyProjects: [ProjectEntity!]!
+  getProjects: [ProjectEntity!]!
   getDocument(input: DocumentGetByIdInput!): DocumentEntity!
   getDocuments: [DocumentEntity!]!
+  getConversation(input: ConversationGetByIdInput!): ConversationEntity!
+  getConversations(documentIdInput: DocumentGetByIdInput!): [ConversationEntity!]!
 }
 
 type Subscription {
   projectCreated: ProjectEntity!
   documentCreated: DocumentEntity!
   documentChanged: DocumentEntity!
+  conversationCreated: ConversationEntity!
 }
 
 type UserEntity {
@@ -101,6 +113,7 @@ type UserEntity {
   registeredDate: Date!
   projects: [ProjectEntity!]!
   invitedToProjects: [ProjectEntity!]!
+  conversations: [ConversationEntity!]!
 }
 
 input UserInputLogin {

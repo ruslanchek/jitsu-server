@@ -29,7 +29,7 @@ export class ProjectResolvers {
 
   @Query(returns => [ProjectEntity])
   @UseGuards(GqlAuthGuard)
-  async getMyProjects(@CurrentUser() user: IAuthCurrentUserPayload): Promise<ProjectEntity[]> {
+  async getProjects(@CurrentUser() user: IAuthCurrentUserPayload): Promise<ProjectEntity[]> {
     return await this.projectService.findProjects(user.id); // TODO: Only users that have access to specified projects
   }
 

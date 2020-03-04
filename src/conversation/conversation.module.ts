@@ -9,11 +9,13 @@ import { DocumentEntity } from '../document/document.entity';
 import { DocumentService } from '../document/document.service';
 import { ProjectService } from '../project/project.service';
 import { ProjectEntity } from '../project/project.entity';
+import { ConversationResolvers } from './conversation.resolvers';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ConversationEntity, UserEntity, DocumentEntity, ProjectEntity])],
   providers: [
     ConversationService,
+    ConversationResolvers,
     UserService,
     DocumentService,
     ProjectService,

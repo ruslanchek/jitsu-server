@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { DocumentEntity } from '../document/document.entity';
 import { UserEntity } from '../user/user.entity';
@@ -20,9 +20,15 @@ export class ConversationEntity {
     document => document.conversations,
     { lazy: true },
   )
+  @JoinTable()
   document: DocumentEntity;
 
   @Field(type => UserEntity)
-  @OneToOne(type => UserEntity)
+  @ManyToOne(
+    type => UserEntity,
+    user => user.conversations,
+    { lazy: true },
+  )
+  @JoinTable()
   user: UserEntity;
 }

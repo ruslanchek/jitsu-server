@@ -17,12 +17,21 @@ export class ConversationService {
     private readonly documentService: DocumentService,
   ) {}
 
-  async getConversation(conversationIdInput: ConversationGetByIdInput, userId: string): Promise<ConversationEntity> {
+  async getConversation(userId: string, conversationIdInput: ConversationGetByIdInput): Promise<ConversationEntity> {
     return await this.findById(conversationIdInput.id);
   }
 
-  async findConversations(userId: string): Promise<ConversationEntity[]> {
-    return await this.conversationRepository.find();
+  async findConversations(userId: string, documentIdInput: DocumentGetByIdInput): Promise<ConversationEntity[]> {
+    const document = await this.documentService.getDocument(userId, documentIdInput);
+    const user = await this.userService.findById(userId);
+
+    if (!document || !user) {
+      throw new NotFoundException(EErrorMessage.DocumentNotFound);
+    }
+
+    return await this.conversationRepository.find({
+      document,
+    });
   }
 
   async findById(id: string, select?: Array<keyof ConversationEntity>): Promise<ConversationEntity | undefined> {
@@ -41,14 +50,16 @@ export class ConversationService {
     input: ConversationCreateInput,
   ): Promise<ConversationEntity> {
     const document = await this.documentService.getDocument(userId, documentIdInput);
+    const user = await this.userService.findById(userId);
 
-    if (!document) {
+    if (!document || !user) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
 
     const result = await this.conversationRepository.insert({
       ...input,
       document,
+      user,
     });
     return await this.findById(result.identifiers[0].id);
   }
