@@ -19,7 +19,7 @@ export class DocumentChangeInput implements Partial<DocumentEntity> {
   @MinLength(3, { message: EErrorMessage.DocumentNameMinLength })
   name: string;
 
-  @Field(() => Date, { nullable: true })
+  @Field(() => Date )
   @IsOptional()
   dueDate: Date;
 
