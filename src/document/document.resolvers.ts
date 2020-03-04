@@ -6,12 +6,7 @@ import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 import { PubSub } from 'graphql-subscriptions';
 import { DocumentService } from './document.service';
 import { DocumentEntity } from './document.entity';
-import {
-  DocumentChangeInput,
-  DocumentCreateInput,
-  DocumentGetByIdInput,
-} from './document.inputs';
-import { ProjectGetByIdInput } from '../project/project.inputs';
+import { DocumentChangeInput, DocumentCreateInput } from './document.inputs';
 
 const pubSub = new PubSub();
 
@@ -28,9 +23,9 @@ export class DocumentResolvers {
   @UseGuards(GqlAuthGuard)
   async getDocument(
     @CurrentUser() user: IAuthCurrentUserPayload,
-    @Args('input') input: DocumentGetByIdInput,
+    @Args('documentId') documentId: string,
   ): Promise<DocumentEntity> {
-    return await this.documentService.getDocument(user.id, input); // TODO: Only users that have access to specified documents
+    return await this.documentService.getDocument(user.id, documentId); // TODO: Only users that have access to specified documents
   }
 
   @Query(returns => [DocumentEntity])
@@ -43,10 +38,10 @@ export class DocumentResolvers {
   @UseGuards(GqlAuthGuard)
   async createDocument(
     @CurrentUser() user: IAuthCurrentUserPayload,
-    @Args('projectIdInput') projectIdInput: ProjectGetByIdInput,
+    @Args('projectId') projectId: string,
     @Args('input') input: DocumentCreateInput,
   ): Promise<DocumentEntity> {
-    const createdDocument = await this.documentService.create(user.id, projectIdInput, input);
+    const createdDocument = await this.documentService.create(user.id, projectId, input);
     await pubSub.publish(ETriggers.DocumentCreated, { documentCreated: createdDocument });
     return createdDocument;
   }
@@ -55,10 +50,10 @@ export class DocumentResolvers {
   @UseGuards(GqlAuthGuard)
   async changeDocument(
     @CurrentUser() user: IAuthCurrentUserPayload,
-    @Args('getByIdInput') getByIdInput: DocumentGetByIdInput,
+    @Args('documentId') documentId: string,
     @Args('input') input: DocumentChangeInput,
   ): Promise<DocumentEntity> {
-    const changedDocument = await this.documentService.change(user.id, getByIdInput, input);
+    const changedDocument = await this.documentService.change(user.id, documentId, input);
     await pubSub.publish(ETriggers.DocumentChanged, { documentChanged: changedDocument });
     return changedDocument;
   }

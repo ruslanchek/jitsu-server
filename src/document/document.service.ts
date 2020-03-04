@@ -5,8 +5,7 @@ import { UserService } from '../user/user.service';
 import { DocumentEntity } from './document.entity';
 import { ProjectService } from '../project/project.service';
 import { EErrorMessage } from '../messages';
-import { DocumentChangeInput, DocumentCreateInput, DocumentGetByIdInput } from './document.inputs';
-import { ProjectGetByIdInput } from '../project/project.inputs';
+import { DocumentChangeInput, DocumentCreateInput } from './document.inputs';
 
 @Injectable()
 export class DocumentService {
@@ -17,8 +16,8 @@ export class DocumentService {
     private readonly projectService: ProjectService,
   ) {}
 
-  async getDocument(userId: string, documentIdInput: DocumentGetByIdInput): Promise<DocumentEntity> {
-    return await this.findById(documentIdInput.id);
+  async getDocument(userId: string, documentId: string): Promise<DocumentEntity> {
+    return await this.findById(documentId);
   }
 
   async findDocuments(userId: string): Promise<DocumentEntity[]> {
@@ -38,10 +37,10 @@ export class DocumentService {
 
   async create(
     userId: string,
-    projectIdInput: ProjectGetByIdInput,
+    projectId: string,
     input: DocumentCreateInput,
   ): Promise<DocumentEntity> {
-    const project = await this.projectService.getProject(userId, projectIdInput);
+    const project = await this.projectService.getProject(userId, projectId);
     const user = await this.userService.findById(userId);
 
     if (!project || !user) {
@@ -58,17 +57,17 @@ export class DocumentService {
 
   async change(
     userId: string,
-    getByIdInput: DocumentGetByIdInput,
+    documentId: string,
     input: DocumentChangeInput,
   ): Promise<DocumentEntity> {
-    const document = await this.findById(getByIdInput.id);
+    const document = await this.findById(documentId);
     const user = await this.userService.findById(userId);
 
     if (!document) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
 
-    await this.documentRepository.update({ id: getByIdInput.id, user }, { ...input });
-    return await this.findById(getByIdInput.id);
+    await this.documentRepository.update({ id: documentId, user }, { ...input });
+    return await this.findById(documentId);
   }
 }

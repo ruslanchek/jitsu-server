@@ -9,10 +9,3 @@ export class ProjectCreateInput implements Partial<ProjectEntity> {
   @MinLength(3, { message: EErrorMessage.ProjectNameMinLength })
   name: string;
 }
-
-@InputType()
-export class ProjectGetByIdInput implements Partial<ProjectEntity> {
-  @Field(() => ID)
-  @IsUUID()
-  id: string;
-}

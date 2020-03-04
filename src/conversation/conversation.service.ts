@@ -3,8 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EErrorMessage } from '../messages';
 import { ConversationEntity } from './conversation.entity';
-import { ConversationCreateInput, ConversationGetByIdInput } from './conversation.inputs';
-import { DocumentGetByIdInput } from '../document/document.inputs';
+import { ConversationCreateInput } from './conversation.inputs';
 import { UserService } from '../user/user.service';
 import { DocumentService } from '../document/document.service';
 
@@ -17,12 +16,12 @@ export class ConversationService {
     private readonly documentService: DocumentService,
   ) {}
 
-  async getConversation(userId: string, conversationIdInput: ConversationGetByIdInput): Promise<ConversationEntity> {
-    return await this.findById(conversationIdInput.id);
+  async getConversation(userId: string, conversationId: string): Promise<ConversationEntity> {
+    return await this.findById(conversationId);
   }
 
-  async findConversations(userId: string, documentIdInput: DocumentGetByIdInput): Promise<ConversationEntity[]> {
-    const document = await this.documentService.getDocument(userId, documentIdInput);
+  async findConversations(userId: string, documentId: string): Promise<ConversationEntity[]> {
+    const document = await this.documentService.getDocument(userId, documentId);
     const user = await this.userService.findById(userId);
 
     if (!document || !user) {
@@ -46,10 +45,10 @@ export class ConversationService {
 
   async create(
     userId: string,
-    documentIdInput: DocumentGetByIdInput,
+    documentId: string,
     input: ConversationCreateInput,
   ): Promise<ConversationEntity> {
-    const document = await this.documentService.getDocument(userId, documentIdInput);
+    const document = await this.documentService.getDocument(userId, documentId);
     const user = await this.userService.findById(userId);
 
     if (!document || !user) {

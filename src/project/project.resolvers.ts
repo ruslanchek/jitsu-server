@@ -1,7 +1,7 @@
 import { Args, Resolver, Mutation, Query, Subscription } from '@nestjs/graphql';
 import { ProjectService } from './project.service';
 import { ProjectEntity } from './project.entity';
-import { ProjectCreateInput, ProjectGetByIdInput } from './project.inputs';
+import { ProjectCreateInput } from './project.inputs';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
@@ -22,9 +22,9 @@ export class ProjectResolvers {
   @UseGuards(GqlAuthGuard)
   async getProject(
     @CurrentUser() user: IAuthCurrentUserPayload,
-    @Args('input') input: ProjectGetByIdInput,
+    @Args('projectId') projectId: string,
   ): Promise<ProjectEntity> {
-    return await this.projectService.getProject(user.id, input); // TODO: Only users that have access to specified projects
+    return await this.projectService.getProject(user.id, projectId); // TODO: Only users that have access to specified projects
   }
 
   @Query(returns => [ProjectEntity])

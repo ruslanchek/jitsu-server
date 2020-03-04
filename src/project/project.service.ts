@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectEntity } from './project.entity';
 import { UserService } from '../user/user.service';
-import { ProjectCreateInput, ProjectGetByIdInput } from './project.inputs';
+import { ProjectCreateInput } from './project.inputs';
 
 @Injectable()
 export class ProjectService {
@@ -13,8 +13,8 @@ export class ProjectService {
     private readonly userService: UserService,
   ) {}
 
-  async getProject(userId: string, input: ProjectGetByIdInput): Promise<ProjectEntity> {
-    return await this.findById(input.id);
+  async getProject(userId: string, projectId: string): Promise<ProjectEntity> {
+    return await this.findById(projectId);
   }
 
   async findProjects(userId: string): Promise<ProjectEntity[]> {

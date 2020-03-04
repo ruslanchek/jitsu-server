@@ -15,10 +15,6 @@ type ConversationEntity {
   user: UserEntity!
 }
 
-input ConversationGetByIdInput {
-  id: ID!
-}
-
 """Date custom scalar type"""
 scalar Date
 
@@ -47,10 +43,6 @@ type DocumentEntity {
   conversations: [ConversationEntity!]!
 }
 
-input DocumentGetByIdInput {
-  id: ID!
-}
-
 """DocumentPriority custom scalar type"""
 scalar DocumentPriority
 
@@ -68,9 +60,9 @@ scalar JSON
 type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!
   createProject(input: ProjectCreateInput!): ProjectEntity!
-  createDocument(input: DocumentCreateInput!, projectIdInput: ProjectGetByIdInput!): DocumentEntity!
-  changeDocument(input: DocumentChangeInput!, getByIdInput: DocumentGetByIdInput!): DocumentEntity!
-  createConversation(input: ConversationCreateInput!, documentIdInput: DocumentGetByIdInput!): ConversationEntity!
+  createDocument(input: DocumentCreateInput!, projectId: String!): DocumentEntity!
+  changeDocument(input: DocumentChangeInput!, documentId: String!): DocumentEntity!
+  createConversation(input: ConversationCreateInput!, documentId: String!): ConversationEntity!
 }
 
 input ProjectCreateInput {
@@ -85,19 +77,15 @@ type ProjectEntity {
   documents: [DocumentEntity!]!
 }
 
-input ProjectGetByIdInput {
-  id: ID!
-}
-
 type Query {
   me: UserEntity!
   login(input: UserInputLogin!): UserTokenResponse!
-  getProject(input: ProjectGetByIdInput!): ProjectEntity!
+  getProject(projectId: String!): ProjectEntity!
   getProjects: [ProjectEntity!]!
-  getDocument(input: DocumentGetByIdInput!): DocumentEntity!
+  getDocument(documentId: String!): DocumentEntity!
   getDocuments: [DocumentEntity!]!
-  getConversation(input: ConversationGetByIdInput!): ConversationEntity!
-  getConversations(documentIdInput: DocumentGetByIdInput!): [ConversationEntity!]!
+  getConversation(conversationId: String!): ConversationEntity!
+  getConversations(documentId: String!): [ConversationEntity!]!
 }
 
 type Subscription {

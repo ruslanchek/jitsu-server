@@ -35,11 +35,3 @@ export class DocumentChangeInput implements Partial<DocumentEntity> {
   @IsOptional()
   data: Object;
 }
-
-
-@InputType()
-export class DocumentGetByIdInput implements Partial<DocumentEntity> {
-  @Field(() => ID)
-  @IsUUID()
-  id: string;
-}
