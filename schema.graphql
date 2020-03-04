@@ -10,6 +10,7 @@ input ConversationCreateInput {
 type ConversationEntity {
   id: ID!
   text: String!
+  date: Date!
   document: DocumentEntity!
   user: UserEntity!
 }

@@ -20,7 +20,7 @@ export class UserEntity {
   @Column({
     type: 'timestamp',
     select: false,
-    default: 'now()',
+    default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
   passwordChangedDate: Date;
@@ -28,7 +28,7 @@ export class UserEntity {
   @Column({
     type: 'timestamp',
     select: false,
-    default: 'now()',
+    default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
   passwordResetCodeExpires: Date;
@@ -36,7 +36,7 @@ export class UserEntity {
   @Column({
     type: 'timestamp',
     select: false,
-    default: 'now()',
+    default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
   passwordResetInterval: Date;
@@ -54,7 +54,7 @@ export class UserEntity {
   @Field(type => Date)
   @Column({
     type: 'timestamp',
-    default: 'now()',
+    default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
   registeredDate: Date;

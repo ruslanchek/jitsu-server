@@ -3,7 +3,7 @@ import { Field, ID, ObjectType } from 'type-graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { EDocumentPriority, EDocumentStatus, EDocumentType } from './document.scalars';
 import { UserEntity } from '../user/user.entity';
-import GraphQLJSON  from 'graphql-type-json';
+import GraphQLJSON from 'graphql-type-json';
 import { ConversationEntity } from '../conversation/conversation.entity';
 
 @Entity()
@@ -28,7 +28,7 @@ export class DocumentEntity {
   @Field(type => Date)
   @Column({
     type: 'timestamp',
-    default: 'now()',
+    default: () => 'CURRENT_TIMESTAMP',
     nullable: true,
   })
   dueDate: Date;

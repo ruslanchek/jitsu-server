@@ -14,6 +14,13 @@ export class ConversationEntity {
   @Column()
   text: string;
 
+  @Field(type => Date)
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  date: Date;
+
   @Field(type => DocumentEntity)
   @ManyToOne(
     type => DocumentEntity,
