@@ -13,11 +13,11 @@ export class ProjectService {
     private readonly userService: UserService,
   ) {}
 
-  async getUserProject(userId: string, input: ProjectGetByIdInput): Promise<ProjectEntity> {
+  async getProject(userId: string, input: ProjectGetByIdInput): Promise<ProjectEntity> {
     return await this.findById(input.id);
   }
 
-  async findUserProjects(userId: string): Promise<ProjectEntity[]> {
+  async findProjects(userId: string): Promise<ProjectEntity[]> {
     const user = await this.userService.findById(userId, ['id'], ['projects', 'invitedToProjects']);
     return user.projects;
   }

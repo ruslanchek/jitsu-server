@@ -11,7 +11,7 @@ import { ProjectEntity } from '../project/project.entity';
 import { DocumentPriorityScalar, DocumentStatusScalar, DocumentTypeScalar } from './document.scalars';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DocumentEntity, DocumentEntity, UserEntity, ProjectEntity])],
+  imports: [TypeOrmModule.forFeature([DocumentEntity, UserEntity, ProjectEntity])],
   providers: [
     DocumentService,
     DocumentResolvers,

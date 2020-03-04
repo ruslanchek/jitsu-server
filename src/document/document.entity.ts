@@ -1,16 +1,17 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { EDocumentPriority, EDocumentStatus, EDocumentType } from './document.scalars';
 import { UserEntity } from '../user/user.entity';
 import GraphQLJSON  from 'graphql-type-json';
+import { ConversationEntity } from '../conversation/conversation.entity';
 
 @Entity()
 @ObjectType()
 export class DocumentEntity {
   @Field(type => ID)
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
   @Field(type => String)
   @Column()
@@ -51,4 +52,11 @@ export class DocumentEntity {
   @Field(type => GraphQLJSON)
   @Column({ type: 'json', default: [] })
   data: Object;
+
+  @Field(type => [ConversationEntity])
+  @OneToMany(
+    type => ConversationEntity,
+    conversation => conversation.document,
+  )
+  conversations: ConversationEntity[];
 }

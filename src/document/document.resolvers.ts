@@ -30,7 +30,7 @@ export class DocumentResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('input') input: DocumentGetByIdInput,
   ): Promise<DocumentEntity> {
-    return await this.documentService.getDocument(input.id, user.id); // TODO: Only users that have access to specified documents
+    return await this.documentService.getDocument(user.id, input); // TODO: Only users that have access to specified documents
   }
 
   @Query(returns => [DocumentEntity])

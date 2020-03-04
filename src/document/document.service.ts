@@ -17,8 +17,8 @@ export class DocumentService {
     private readonly projectService: ProjectService,
   ) {}
 
-  async getDocument(id: string, userId: string): Promise<DocumentEntity> {
-    return await this.findById(id);
+  async getDocument(userId: string, documentIdInput: DocumentGetByIdInput): Promise<DocumentEntity> {
+    return await this.findById(documentIdInput.id);
   }
 
   async findDocuments(userId: string): Promise<DocumentEntity[]> {
@@ -41,7 +41,7 @@ export class DocumentService {
     projectIdInput: ProjectGetByIdInput,
     input: DocumentCreateInput,
   ): Promise<DocumentEntity> {
-    const project = await this.projectService.getUserProject(userId, projectIdInput);
+    const project = await this.projectService.getProject(userId, projectIdInput);
 
     if (!project) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
