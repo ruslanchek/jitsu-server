@@ -17,64 +17,48 @@ export class DocumentService {
   ) {}
 
   async getDocument(userId: string, documentId: string): Promise<DocumentEntity> {
-    return await this.findById(documentId);
+    const user = await this.userService.findById(userId);
+    const documents = this.documentRepository.find({
+      where: {
+        id: documentId,
+        user,
+      },
+    });
+    if (documents && documents[0]) {
+      return documents[0];
+    }
+    throw new NotFoundException(EErrorMessage.DocumentNotFound);
   }
 
   async findDocuments(userId: string, projectId: string): Promise<DocumentEntity[]> {
-    const project = await this.projectService.getProject(userId, projectId);
     const user = await this.userService.findById(userId);
+    const project = await this.projectService.getProject(user.id, projectId);
     return await this.documentRepository.find({
       where: {
-        user,
         project,
-      }
-    });
-  }
-
-  async findById(id: string, select?: Array<keyof DocumentEntity>): Promise<DocumentEntity | undefined> {
-    const items = await this.documentRepository.find({
-      where: {
-        id,
+        user,
       },
-      select,
     });
-
-    return items.length > 0 ? items[0] : undefined;
   }
 
-  async create(
-    userId: string,
-    projectId: string,
-    input: DocumentCreateInput,
-  ): Promise<DocumentEntity> {
+  async create(userId: string, projectId: string, input: DocumentCreateInput): Promise<DocumentEntity> {
     const project = await this.projectService.getProject(userId, projectId);
     const user = await this.userService.findById(userId);
-
-    if (!project || !user) {
-      throw new NotFoundException(EErrorMessage.DocumentNotFound);
-    }
-
     const result = await this.documentRepository.insert({
       ...input,
       project,
       user,
     });
-    return await this.findById(result.identifiers[0].id);
+    return await this.getDocument(user.id, result.identifiers[0].id);
   }
 
-  async change(
-    userId: string,
-    documentId: string,
-    input: DocumentChangeInput,
-  ): Promise<DocumentEntity> {
-    const document = await this.findById(documentId);
+  async change(userId: string, documentId: string, input: DocumentChangeInput): Promise<DocumentEntity> {
     const user = await this.userService.findById(userId);
-
+    const document = await this.getDocument(user.id, documentId);
     if (!document) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
-
     await this.documentRepository.update({ id: documentId, user }, { ...input });
-    return await this.findById(documentId);
+    return await this.getDocument(user.id, documentId);
   }
 }

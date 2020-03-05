@@ -17,7 +17,19 @@ export class ConversationService {
   ) {}
 
   async getConversation(userId: string, conversationId: string): Promise<ConversationEntity> {
-    return await this.findById(conversationId);
+    const user = await this.userService.findById(userId);
+    const conversations = await this.conversationRepository.find({
+      where: {
+        id: conversationId,
+        user,
+      },
+    });
+
+    if (conversations && conversations[0]) {
+      return conversations[0];
+    }
+
+    throw new NotFoundException(EErrorMessage.ConversationNotFound);
   }
 
   async findConversations(userId: string, documentId: string): Promise<ConversationEntity[]> {
@@ -33,21 +45,7 @@ export class ConversationService {
     });
   }
 
-  async findById(id: string, select?: Array<keyof ConversationEntity>): Promise<ConversationEntity | undefined> {
-    const items = await this.conversationRepository.find({
-      where: {
-        id,
-      },
-      select,
-    });
-    return items.length > 0 ? items[0] : undefined;
-  }
-
-  async create(
-    userId: string,
-    documentId: string,
-    input: ConversationCreateInput,
-  ): Promise<ConversationEntity> {
+  async create(userId: string, documentId: string, input: ConversationCreateInput): Promise<ConversationEntity> {
     const document = await this.documentService.getDocument(userId, documentId);
     const user = await this.userService.findById(userId);
 
@@ -60,6 +58,6 @@ export class ConversationService {
       document,
       user,
     });
-    return await this.findById(result.identifiers[0].id);
+    return await this.getConversation(user.id, result.identifiers[0].id);
   }
 }

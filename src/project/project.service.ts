@@ -42,23 +42,12 @@ export class ProjectService {
     });
   }
 
-  async findById(id: string, select?: Array<keyof ProjectEntity>): Promise<ProjectEntity | undefined> {
-    const items = await this.projectRepository.find({
-      where: {
-        id,
-      },
-      select,
-    });
-
-    return items.length > 0 ? items[0] : undefined;
-  }
-
   async create(userId: string, input: ProjectCreateInput): Promise<ProjectEntity> {
     const user = await this.userService.findById(userId);
     const result = await this.projectRepository.insert({
       ...input,
       user,
     });
-    return await this.findById(result.identifiers[0].id);
+    return await this.getProject(userId, result.identifiers[0].id);
   }
 }

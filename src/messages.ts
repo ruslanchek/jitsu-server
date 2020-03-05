@@ -16,5 +16,6 @@ export enum EErrorMessage {
   ProjectNameMinLength = 'PROJECT_NAME_MIN_LENGTH',
   DocumentNameMinLength = 'DOCUMENT_NAME_MIN_LENGTH',
   DocumentNotFound = 'DOCUMENT_NOT_FOUND',
+  ConversationNotFound = 'CONVERSATION_NOT_FOUND',
   ConversationTextMinLength = 'CONVERSATION_TEXT_MIN_LENGTH',
 }
