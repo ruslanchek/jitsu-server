@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectEntity } from './project.entity';
 import { UserService } from '../user/user.service';
 import { ProjectCreateInput } from './project.inputs';
+import { EErrorMessage } from '../messages';
 
 @Injectable()
 export class ProjectService {
@@ -14,12 +15,31 @@ export class ProjectService {
   ) {}
 
   async getProject(userId: string, projectId: string): Promise<ProjectEntity> {
-    return await this.findById(projectId);
+    const user = await this.userService.findById(userId);
+    const projects = await this.projectRepository.find({
+      where: {
+        id: projectId,
+        user,
+      },
+    });
+
+    console.log(projects)
+
+    if (projects && projects[0]) {
+      return projects[0];
+    }
+
+    throw new NotFoundException(EErrorMessage.ProjectNotFound);
   }
 
   async findProjects(userId: string): Promise<ProjectEntity[]> {
-    const user = await this.userService.findById(userId, ['id'], ['projects', 'invitedToProjects']);
-    return user.projects;
+    const user = await this.userService.findById(userId);
+    return this.projectRepository.find({
+      join: { alias: 'projects', innerJoin: { user: 'projects.user' } },
+      where: {
+        user,
+      },
+    });
   }
 
   async findById(id: string, select?: Array<keyof ProjectEntity>): Promise<ProjectEntity | undefined> {

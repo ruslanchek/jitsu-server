@@ -21,21 +21,16 @@ export class ConversationEntity {
   })
   date: Date;
 
-  @Field(type => DocumentEntity)
   @ManyToOne(
     type => DocumentEntity,
     document => document.conversations,
-    { lazy: true },
   )
-  @JoinTable()
   document: DocumentEntity;
 
   @Field(type => UserEntity)
   @ManyToOne(
     type => UserEntity,
     user => user.conversations,
-    { lazy: true },
   )
-  @JoinTable()
   user: UserEntity;
 }

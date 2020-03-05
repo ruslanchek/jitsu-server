@@ -18,20 +18,16 @@ export class ProjectEntity {
   @ManyToOne(
     type => UserEntity,
     user => user.projects,
-    { lazy: true },
   )
   user: UserEntity;
 
   @Field(type => [UserEntity])
-  @ManyToMany(type => UserEntity, { lazy: true })
-  @JoinTable()
+  @ManyToMany(type => UserEntity)
   invitedUsers: UserEntity[];
 
-  @Field(type => [DocumentEntity])
   @OneToMany(
     type => DocumentEntity,
     document => document.project,
-    { lazy: true },
   )
   documents: DocumentEntity[];
 }

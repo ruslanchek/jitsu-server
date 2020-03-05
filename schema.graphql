@@ -11,7 +11,6 @@ type ConversationEntity {
   id: ID!
   text: String!
   date: Date!
-  document: DocumentEntity!
   user: UserEntity!
 }
 
@@ -40,7 +39,6 @@ type DocumentEntity {
   status: DocumentStatus!
   user: UserEntity!
   data: JSON!
-  conversations: [ConversationEntity!]!
 }
 
 """DocumentPriority custom scalar type"""
@@ -74,7 +72,6 @@ type ProjectEntity {
   name: String!
   user: UserEntity!
   invitedUsers: [UserEntity!]!
-  documents: [DocumentEntity!]!
 }
 
 type Query {
@@ -83,7 +80,7 @@ type Query {
   getProject(projectId: String!): ProjectEntity!
   getProjects: [ProjectEntity!]!
   getDocument(documentId: String!): DocumentEntity!
-  getDocuments: [DocumentEntity!]!
+  getDocuments(projectId: String!): [DocumentEntity!]!
   getConversation(conversationId: String!): ConversationEntity!
   getConversations(documentId: String!): [ConversationEntity!]!
 }

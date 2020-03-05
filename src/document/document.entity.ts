@@ -53,7 +53,6 @@ export class DocumentEntity {
   @Column({ type: 'json', default: [] })
   data: Object;
 
-  @Field(type => [ConversationEntity])
   @OneToMany(
     type => ConversationEntity,
     conversation => conversation.document,

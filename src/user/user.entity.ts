@@ -75,16 +75,13 @@ export class UserEntity {
   projects: ProjectEntity[];
 
   @Field(type => [ProjectEntity])
-  @ManyToMany(type => ProjectEntity, { lazy: true })
-  @JoinTable()
+  @ManyToMany(type => ProjectEntity)
   invitedToProjects: ProjectEntity[];
 
   @Field(type => [ConversationEntity])
   @OneToMany(
     type => ConversationEntity,
     conversation => conversation.user,
-    { lazy: true },
   )
-  @JoinTable()
   conversations: ConversationEntity[];
 }

@@ -30,8 +30,11 @@ export class DocumentResolvers {
 
   @Query(returns => [DocumentEntity])
   @UseGuards(GqlAuthGuard)
-  async getDocuments(@CurrentUser() user: IAuthCurrentUserPayload): Promise<DocumentEntity[]> {
-    return await this.documentService.findDocuments(user.id); // TODO: Only users that have access to specified documents
+  async getDocuments(
+    @CurrentUser() user: IAuthCurrentUserPayload,
+    @Args('projectId') projectId: string,
+  ): Promise<DocumentEntity[]> {
+    return await this.documentService.findDocuments(user.id, projectId); // TODO: Only users that have access to specified documents
   }
 
   @Mutation(returns => DocumentEntity)
