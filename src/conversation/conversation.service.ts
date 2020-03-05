@@ -19,6 +19,7 @@ export class ConversationService {
   async getConversation(userId: string, conversationId: string): Promise<ConversationEntity> {
     const user = await this.userService.findById(userId);
     const conversations = await this.conversationRepository.find({
+      join: { alias: 'conversation', innerJoinAndSelect: { user: 'conversation.user' } },
       where: {
         id: conversationId,
         user,
@@ -33,16 +34,21 @@ export class ConversationService {
   }
 
   async findConversations(userId: string, documentId: string): Promise<ConversationEntity[]> {
-    const document = await this.documentService.getDocument(userId, documentId);
     const user = await this.userService.findById(userId);
+    const document = await this.documentService.getDocument(user.id, documentId);
 
     if (!document || !user) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
 
-    return await this.conversationRepository.find({
-      document,
+    const result = this.conversationRepository.find({
+      join: { alias: 'conversations', innerJoin: { user: 'conversations.user' } },
+      where: {
+        document,
+      }
     });
+
+    return result;
   }
 
   async create(userId: string, documentId: string, input: ConversationCreateInput): Promise<ConversationEntity> {

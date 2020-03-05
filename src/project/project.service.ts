@@ -23,8 +23,6 @@ export class ProjectService {
       },
     });
 
-    console.log(projects)
-
     if (projects && projects[0]) {
       return projects[0];
     }
