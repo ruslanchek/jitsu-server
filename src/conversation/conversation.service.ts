@@ -41,14 +41,12 @@ export class ConversationService {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
 
-    const result = this.conversationRepository.find({
-      join: { alias: 'conversations', innerJoin: { user: 'conversations.user' } },
+    return this.conversationRepository.find({
+      join: { alias: 'conversation', innerJoinAndSelect: { user: 'conversation.user' } },
       where: {
         document,
       }
     });
-
-    return result;
   }
 
   async create(userId: string, documentId: string, input: ConversationCreateInput): Promise<ConversationEntity> {
