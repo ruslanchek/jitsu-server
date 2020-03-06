@@ -6,12 +6,7 @@ import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 import { DocumentService } from './document.service';
 import { DocumentEntity } from './document.entity';
 import { DocumentChangeInput, DocumentCreateInput } from './document.inputs';
-import { PubSubService } from '../common/services/pubsub.service';
-
-enum ETriggers {
-  DocumentCreated = 'documentCreated',
-  DocumentChanged = 'documentChanged',
-}
+import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 
 @Resolver(of => DocumentEntity)
 export class DocumentResolvers {
@@ -43,7 +38,7 @@ export class DocumentResolvers {
     @Args('input') input: DocumentCreateInput,
   ): Promise<DocumentEntity> {
     const createdDocument = await this.documentService.create(user.id, projectId, input);
-    await this.pubSubService.pubSub.publish(ETriggers.DocumentCreated, { documentCreated: createdDocument });
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentCreated, { documentCreated: createdDocument });
     return createdDocument;
   }
 
@@ -55,17 +50,17 @@ export class DocumentResolvers {
     @Args('input') input: DocumentChangeInput,
   ): Promise<DocumentEntity> {
     const changedDocument = await this.documentService.change(user.id, documentId, input);
-    await this.pubSubService.pubSub.publish(ETriggers.DocumentChanged, { documentChanged: changedDocument });
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentChanged, { documentChanged: changedDocument });
     return changedDocument;
   }
 
   @Subscription(returns => DocumentEntity)
   documentCreated() {
-    return this.pubSubService.pubSub.asyncIterator(ETriggers.DocumentCreated);
+    return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.DocumentCreated);
   }
 
   @Subscription(returns => DocumentEntity)
   documentChanged() {
-    return this.pubSubService.pubSub.asyncIterator(ETriggers.DocumentChanged);
+    return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.DocumentChanged);
   }
 }

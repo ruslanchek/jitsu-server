@@ -17,11 +17,11 @@ import { PubSubService } from '../common/services/pubsub.service';
   providers: [
     PubSubService,
     TimelineService,
-    TimelineResolvers,
-    DateScalar,
     UserService,
     DocumentService,
     ProjectService,
+    TimelineResolvers,
+    DateScalar,
   ],
   exports: [TimelineService],
 })

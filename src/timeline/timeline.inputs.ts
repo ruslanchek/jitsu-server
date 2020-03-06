@@ -1,10 +1,10 @@
-import { InputType, Field } from 'type-graphql';
-import { IsDefined } from 'class-validator';
 import { TimelineEntity } from './timeline.entity';
+import { UserEntity } from '../user/user.entity';
+import { DocumentEntity } from '../document/document.entity';
 
-@InputType()
 export class TimelineCreateInput implements Partial<TimelineEntity> {
-  @Field(() => String)
-  @IsDefined()
   eventName: string;
+  date: Date;
+  user: UserEntity;
+  document: DocumentEntity;
 }

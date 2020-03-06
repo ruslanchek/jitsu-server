@@ -6,6 +6,7 @@ import { TimelineEntity } from './timeline.entity';
 import { EErrorMessage } from '../messages';
 import { TimelineCreateInput } from './timeline.inputs';
 import { DocumentService } from '../document/document.service';
+import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 
 @Injectable()
 export class TimelineService {
@@ -14,6 +15,7 @@ export class TimelineService {
     private readonly timelineRepository: Repository<TimelineEntity>,
     private readonly userService: UserService,
     private readonly documentService: DocumentService,
+    private readonly pubSubService: PubSubService,
   ) {}
 
   async getTimeline(userId: string, documentId: string): Promise<TimelineEntity> {
@@ -49,6 +51,9 @@ export class TimelineService {
       document,
       user,
     });
-    return await this.getTimeline(user.id, result.identifiers[0].id);
+
+    const createdTimeline = await this.getTimeline(user.id, result.identifiers[0].id);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.TimelineCreated, { timelineCreated: createdTimeline });
+    return createdTimeline;
   }
 }

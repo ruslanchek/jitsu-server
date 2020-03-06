@@ -61,7 +61,6 @@ type Mutation {
   createDocument(input: DocumentCreateInput!, projectId: String!): DocumentEntity!
   changeDocument(input: DocumentChangeInput!, documentId: String!): DocumentEntity!
   createConversation(input: ConversationCreateInput!, documentId: String!): ConversationEntity!
-  createTimeline(documentId: String!, input: TimelineCreateInput!): TimelineEntity!
 }
 
 input ProjectCreateInput {
@@ -94,10 +93,6 @@ type Subscription {
   documentChanged: DocumentEntity!
   conversationCreated: ConversationEntity!
   timelineCreated: TimelineEntity!
-}
-
-input TimelineCreateInput {
-  eventName: String!
 }
 
 type TimelineEntity {

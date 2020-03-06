@@ -6,11 +6,7 @@ import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 import { ConversationEntity } from './conversation.entity';
 import { ConversationCreateInput } from './conversation.inputs';
 import { ConversationService } from './conversation.service';
-import { PubSubService } from '../common/services/pubsub.service';
-
-enum ETriggers {
-  ConversationCreated = 'conversationCreated',
-}
+import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 
 @Resolver(of => ConversationEntity)
 export class ConversationResolvers {
@@ -45,12 +41,12 @@ export class ConversationResolvers {
     @Args('input') input: ConversationCreateInput,
   ): Promise<ConversationEntity> {
     const createdConversation = await this.conversationService.create(user.id, documentId, input);
-    await this.pubSubService.pubSub.publish(ETriggers.ConversationCreated, { conversationCreated: createdConversation });
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.ConversationCreated, { conversationCreated: createdConversation });
     return createdConversation;
   }
 
   @Subscription(returns => ConversationEntity)
   conversationCreated() {
-    return this.pubSubService.pubSub.asyncIterator(ETriggers.ConversationCreated); // TODO: Only users that have access to specified documents
+    return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.ConversationCreated); // TODO: Only users that have access to specified documents
   }
 }
