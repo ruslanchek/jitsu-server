@@ -16,9 +16,9 @@ import { PubSubService } from '../common/services/pubsub.service';
   imports: [TypeOrmModule.forFeature([TimelineEntity, UserEntity, DocumentEntity, ProjectEntity])],
   providers: [
     PubSubService,
+    DocumentService,
     TimelineService,
     UserService,
-    DocumentService,
     ProjectService,
     TimelineResolvers,
     DateScalar,

@@ -17,10 +17,10 @@ import { TimelineEntity } from '../timeline/timeline.entity';
   imports: [TypeOrmModule.forFeature([DocumentEntity, UserEntity, ProjectEntity, TimelineEntity])],
   providers: [
     PubSubService,
+    TimelineService,
     DocumentService,
     UserService,
     ProjectService,
-    TimelineService,
     DocumentResolvers,
     DateScalar,
     DocumentTypeScalar,
