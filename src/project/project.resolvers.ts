@@ -24,13 +24,13 @@ export class ProjectResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('projectId') projectId: string,
   ): Promise<ProjectEntity> {
-    return await this.projectService.getProject(user.id, projectId); // TODO: Only users that have access to specified projects
+    return await this.projectService.getProject(user.id, projectId);
   }
 
   @Query(returns => [ProjectEntity])
   @UseGuards(GqlAuthGuard)
   async getProjects(@CurrentUser() user: IAuthCurrentUserPayload): Promise<ProjectEntity[]> {
-    return await this.projectService.findProjects(user.id); // TODO: Only users that have access to specified projects
+    return await this.projectService.findProjects(user.id);
   }
 
   @Mutation(returns => ProjectEntity)
@@ -46,6 +46,6 @@ export class ProjectResolvers {
 
   @Subscription(returns => ProjectEntity)
   projectCreated() {
-    return pubSub.asyncIterator(ETriggers.ProjectCreated); // TODO: Only users that have access to specified projects
+    return pubSub.asyncIterator(ETriggers.ProjectCreated);
   }
 }

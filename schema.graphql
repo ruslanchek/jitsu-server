@@ -61,6 +61,7 @@ type Mutation {
   createDocument(input: DocumentCreateInput!, projectId: String!): DocumentEntity!
   changeDocument(input: DocumentChangeInput!, documentId: String!): DocumentEntity!
   createConversation(input: ConversationCreateInput!, documentId: String!): ConversationEntity!
+  createTimeline(documentId: String!, input: TimelineCreateInput!): TimelineEntity!
 }
 
 input ProjectCreateInput {
@@ -83,6 +84,8 @@ type Query {
   getDocuments(projectId: String!): [DocumentEntity!]!
   getConversation(conversationId: String!): ConversationEntity!
   getConversations(documentId: String!): [ConversationEntity!]!
+  getTimeline(timelineId: String!): TimelineEntity!
+  getTimelines(documentId: String!): [TimelineEntity!]!
 }
 
 type Subscription {
@@ -90,6 +93,17 @@ type Subscription {
   documentCreated: DocumentEntity!
   documentChanged: DocumentEntity!
   conversationCreated: ConversationEntity!
+  timelineCreated: TimelineEntity!
+}
+
+input TimelineCreateInput {
+  eventName: String!
+}
+
+type TimelineEntity {
+  id: ID!
+  date: Date!
+  eventName: String!
 }
 
 type UserEntity {
@@ -98,9 +112,6 @@ type UserEntity {
   nickname: String!
   isEmailConfirmed: Boolean!
   registeredDate: Date!
-  projects: [ProjectEntity!]!
-  invitedToProjects: [ProjectEntity!]!
-  conversations: [ConversationEntity!]!
 }
 
 input UserInputLogin {

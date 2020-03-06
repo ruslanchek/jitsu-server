@@ -12,6 +12,8 @@ import { DocumentModule } from '../document/document.module';
 import { GraphQLJSON } from 'graphql-type-json';
 import { ConversationModule } from '../conversation/conversation.module';
 import { ConversationEntity } from '../conversation/conversation.entity';
+import { TimelineModule } from '../timeline/timeline.module';
+import { TimelineEntity } from '../timeline/timeline.entity';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { ConversationEntity } from '../conversation/conversation.entity';
       username: ENV.PG_USER,
       password: ENV.PG_PASS,
       database: ENV.PG_DB,
-      entities: [UserEntity, ProjectEntity, DocumentEntity, ConversationEntity],
+      entities: [UserEntity, ProjectEntity, DocumentEntity, ConversationEntity, TimelineEntity],
     }),
     GraphQLModule.forRoot({
       debug: false,
@@ -38,6 +40,7 @@ import { ConversationEntity } from '../conversation/conversation.entity';
     ProjectModule,
     DocumentModule,
     ConversationModule,
+    TimelineModule,
   ],
 })
 export class AppModule {}

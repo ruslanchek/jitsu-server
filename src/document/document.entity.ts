@@ -5,6 +5,7 @@ import { EDocumentPriority, EDocumentStatus, EDocumentType } from './document.sc
 import { UserEntity } from '../user/user.entity';
 import GraphQLJSON from 'graphql-type-json';
 import { ConversationEntity } from '../conversation/conversation.entity';
+import { TimelineEntity } from '../timeline/timeline.entity';
 
 @Entity()
 @ObjectType()
@@ -58,4 +59,10 @@ export class DocumentEntity {
     conversation => conversation.document,
   )
   conversations: ConversationEntity[];
+
+  @OneToMany(
+    type => TimelineEntity,
+    timeline => timeline.document,
+  )
+  timelines: TimelineEntity[];
 }
