@@ -7,8 +7,7 @@ import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 import { PubSub } from 'graphql-subscriptions';
-
-const pubSub = new PubSub();
+import { PubSubService } from '../common/services/pubsub.service';
 
 enum ETriggers {
   ProjectCreated = 'projectCreated',
@@ -16,7 +15,7 @@ enum ETriggers {
 
 @Resolver(of => ProjectEntity)
 export class ProjectResolvers {
-  constructor(private readonly projectService: ProjectService) {}
+  constructor(private readonly pubSubService: PubSubService, private readonly projectService: ProjectService) {}
 
   @Query(returns => ProjectEntity)
   @UseGuards(GqlAuthGuard)
@@ -40,12 +39,12 @@ export class ProjectResolvers {
     @Args('input') input: ProjectCreateInput,
   ): Promise<ProjectEntity> {
     const createdProject = await this.projectService.create(user.id, input);
-    await pubSub.publish(ETriggers.ProjectCreated, { projectCreated: createdProject });
+    await this.pubSubService.pubSub.publish(ETriggers.ProjectCreated, { projectCreated: createdProject });
     return createdProject;
   }
 
   @Subscription(returns => ProjectEntity)
   projectCreated() {
-    return pubSub.asyncIterator(ETriggers.ProjectCreated);
+    return this.pubSubService.pubSub.asyncIterator(ETriggers.ProjectCreated);
   }
 }

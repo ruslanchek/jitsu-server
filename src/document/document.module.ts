@@ -9,10 +9,12 @@ import { DocumentResolvers } from './document.resolvers';
 import { ProjectService } from '../project/project.service';
 import { ProjectEntity } from '../project/project.entity';
 import { DocumentPriorityScalar, DocumentStatusScalar, DocumentTypeScalar } from './document.scalars';
+import { PubSubService } from '../common/services/pubsub.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DocumentEntity, UserEntity, ProjectEntity])],
   providers: [
+    PubSubService,
     DocumentService,
     DocumentResolvers,
     DateScalar,

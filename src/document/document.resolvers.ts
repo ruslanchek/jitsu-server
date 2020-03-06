@@ -3,12 +3,10 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
-import { PubSub } from 'graphql-subscriptions';
 import { DocumentService } from './document.service';
 import { DocumentEntity } from './document.entity';
 import { DocumentChangeInput, DocumentCreateInput } from './document.inputs';
-
-const pubSub = new PubSub();
+import { PubSubService } from '../common/services/pubsub.service';
 
 enum ETriggers {
   DocumentCreated = 'documentCreated',
@@ -17,7 +15,7 @@ enum ETriggers {
 
 @Resolver(of => DocumentEntity)
 export class DocumentResolvers {
-  constructor(private readonly documentService: DocumentService) {}
+  constructor(private readonly pubSubService: PubSubService, private readonly documentService: DocumentService) {}
 
   @Query(returns => DocumentEntity)
   @UseGuards(GqlAuthGuard)
@@ -25,7 +23,7 @@ export class DocumentResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('documentId') documentId: string,
   ): Promise<DocumentEntity> {
-    return await this.documentService.getDocument(user.id, documentId); // TODO: Only users that have access to specified documents
+    return await this.documentService.getDocument(user.id, documentId);
   }
 
   @Query(returns => [DocumentEntity])
@@ -34,7 +32,7 @@ export class DocumentResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('projectId') projectId: string,
   ): Promise<DocumentEntity[]> {
-    return await this.documentService.findDocuments(user.id, projectId); // TODO: Only users that have access to specified documents
+    return await this.documentService.findDocuments(user.id, projectId);
   }
 
   @Mutation(returns => DocumentEntity)
@@ -45,7 +43,7 @@ export class DocumentResolvers {
     @Args('input') input: DocumentCreateInput,
   ): Promise<DocumentEntity> {
     const createdDocument = await this.documentService.create(user.id, projectId, input);
-    await pubSub.publish(ETriggers.DocumentCreated, { documentCreated: createdDocument });
+    await this.pubSubService.pubSub.publish(ETriggers.DocumentCreated, { documentCreated: createdDocument });
     return createdDocument;
   }
 
@@ -57,17 +55,17 @@ export class DocumentResolvers {
     @Args('input') input: DocumentChangeInput,
   ): Promise<DocumentEntity> {
     const changedDocument = await this.documentService.change(user.id, documentId, input);
-    await pubSub.publish(ETriggers.DocumentChanged, { documentChanged: changedDocument });
+    await this.pubSubService.pubSub.publish(ETriggers.DocumentChanged, { documentChanged: changedDocument });
     return changedDocument;
   }
 
   @Subscription(returns => DocumentEntity)
   documentCreated() {
-    return pubSub.asyncIterator(ETriggers.DocumentCreated); // TODO: Only users that have access to specified documents
+    return this.pubSubService.pubSub.asyncIterator(ETriggers.DocumentCreated);
   }
 
   @Subscription(returns => DocumentEntity)
   documentChanged() {
-    return pubSub.asyncIterator(ETriggers.DocumentChanged); // TODO: Only users that have access to specified documents
+    return this.pubSubService.pubSub.asyncIterator(ETriggers.DocumentChanged);
   }
 }

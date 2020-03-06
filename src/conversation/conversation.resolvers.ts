@@ -3,12 +3,10 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
-import { PubSub } from 'graphql-subscriptions';
 import { ConversationEntity } from './conversation.entity';
 import { ConversationCreateInput } from './conversation.inputs';
 import { ConversationService } from './conversation.service';
-
-const pubSub = new PubSub();
+import { PubSubService } from '../common/services/pubsub.service';
 
 enum ETriggers {
   ConversationCreated = 'conversationCreated',
@@ -16,7 +14,10 @@ enum ETriggers {
 
 @Resolver(of => ConversationEntity)
 export class ConversationResolvers {
-  constructor(private readonly conversationService: ConversationService) {}
+  constructor(
+    private readonly pubSubService: PubSubService,
+    private readonly conversationService: ConversationService,
+  ) {}
 
   @Query(returns => ConversationEntity)
   @UseGuards(GqlAuthGuard)
@@ -44,12 +45,12 @@ export class ConversationResolvers {
     @Args('input') input: ConversationCreateInput,
   ): Promise<ConversationEntity> {
     const createdConversation = await this.conversationService.create(user.id, documentId, input);
-    await pubSub.publish(ETriggers.ConversationCreated, { conversationCreated: createdConversation });
+    await this.pubSubService.pubSub.publish(ETriggers.ConversationCreated, { conversationCreated: createdConversation });
     return createdConversation;
   }
 
   @Subscription(returns => ConversationEntity)
   conversationCreated() {
-    return pubSub.asyncIterator(ETriggers.ConversationCreated); // TODO: Only users that have access to specified documents
+    return this.pubSubService.pubSub.asyncIterator(ETriggers.ConversationCreated); // TODO: Only users that have access to specified documents
   }
 }

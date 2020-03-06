@@ -10,10 +10,19 @@ import { UserEntity } from '../user/user.entity';
 import { DocumentService } from '../document/document.service';
 import { ProjectEntity } from '../project/project.entity';
 import { ProjectService } from '../project/project.service';
+import { PubSubService } from '../common/services/pubsub.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TimelineEntity, UserEntity, DocumentEntity, ProjectEntity])],
-  providers: [TimelineService, TimelineResolvers, DateScalar, UserService, DocumentService, ProjectService],
+  providers: [
+    PubSubService,
+    TimelineService,
+    TimelineResolvers,
+    DateScalar,
+    UserService,
+    DocumentService,
+    ProjectService,
+  ],
   exports: [TimelineService],
 })
 export class TimelineModule {}

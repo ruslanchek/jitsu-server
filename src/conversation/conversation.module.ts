@@ -10,10 +10,12 @@ import { DocumentService } from '../document/document.service';
 import { ProjectService } from '../project/project.service';
 import { ProjectEntity } from '../project/project.entity';
 import { ConversationResolvers } from './conversation.resolvers';
+import { PubSubService } from '../common/services/pubsub.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ConversationEntity, UserEntity, DocumentEntity, ProjectEntity])],
   providers: [
+    PubSubService,
     ConversationService,
     ConversationResolvers,
     UserService,

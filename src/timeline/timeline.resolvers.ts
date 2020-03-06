@@ -6,9 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
-import { PubSub } from 'graphql-subscriptions';
-
-const pubSub = new PubSub();
+import { PubSubService } from '../common/services/pubsub.service';
 
 enum ETriggers {
   TimelineCreated = 'timelineCreated',
@@ -16,7 +14,7 @@ enum ETriggers {
 
 @Resolver(of => TimelineEntity)
 export class TimelineResolvers {
-  constructor(private readonly timelineService: TimelineService) {}
+  constructor(private readonly pubSubService: PubSubService, private readonly timelineService: TimelineService) {}
 
   @Query(returns => TimelineEntity)
   @UseGuards(GqlAuthGuard)
@@ -44,12 +42,12 @@ export class TimelineResolvers {
     @Args('documentId') documentId: string,
   ): Promise<TimelineEntity> {
     const createdTimeline = await this.timelineService.create(user.id, documentId, input);
-    await pubSub.publish(ETriggers.TimelineCreated, { timelineCreated: createdTimeline });
+    await this.pubSubService.pubSub.publish(ETriggers.TimelineCreated, { timelineCreated: createdTimeline });
     return createdTimeline;
   }
 
   @Subscription(returns => TimelineEntity)
   timelineCreated() {
-    return pubSub.asyncIterator(ETriggers.TimelineCreated);
+    return this.pubSubService.pubSub.asyncIterator(ETriggers.TimelineCreated);
   }
 }
