@@ -9,7 +9,9 @@ export enum EPubSubTriggers {
   TimelineCreated = 'timelineCreated',
 }
 
+const pubSub = new PubSub();
+
 @Injectable()
 export class PubSubService {
-  public readonly pubSub = new PubSub();
+  public readonly pubSub = pubSub;
 }
