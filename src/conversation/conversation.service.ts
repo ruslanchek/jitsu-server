@@ -6,6 +6,7 @@ import { ConversationEntity } from './conversation.entity';
 import { ConversationCreateInput } from './conversation.inputs';
 import { UserService } from '../user/user.service';
 import { DocumentService } from '../document/document.service';
+import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 
 @Injectable()
 export class ConversationService {
@@ -14,6 +15,7 @@ export class ConversationService {
     private readonly conversationRepository: Repository<ConversationEntity>,
     private readonly userService: UserService,
     private readonly documentService: DocumentService,
+    private readonly pubSubService: PubSubService,
   ) {}
 
   async getConversation(userId: string, conversationId: string): Promise<ConversationEntity> {
@@ -45,7 +47,7 @@ export class ConversationService {
       join: { alias: 'conversation', innerJoinAndSelect: { user: 'conversation.user' } },
       where: {
         document,
-      }
+      },
     });
   }
 
@@ -62,6 +64,10 @@ export class ConversationService {
       document,
       user,
     });
-    return await this.getConversation(user.id, result.identifiers[0].id);
+    const createdConversation = await this.getConversation(user.id, result.identifiers[0].id);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.ConversationCreated, {
+      conversationCreated: createdConversation,
+    });
+    return createdConversation;
   }
 }

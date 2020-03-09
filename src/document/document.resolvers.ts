@@ -43,12 +43,10 @@ export class DocumentResolvers {
     @Args('input') input: DocumentCreateInput,
   ): Promise<DocumentEntity> {
     const createdDocument = await this.documentService.create(user.id, projectId, input);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentCreated, { documentCreated: createdDocument });
-    const createdTimeline = await this.timelineService.create(user.id, createdDocument.id, {
+    await this.timelineService.create(user.id, createdDocument.id, {
       eventName: ETimelineEventName.DocumentCreated,
       date: new Date(),
     });
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.TimelineCreated, { timelineCreated: createdTimeline });
     return createdDocument;
   }
 
@@ -59,9 +57,7 @@ export class DocumentResolvers {
     @Args('documentId') documentId: string,
     @Args('input') input: DocumentChangeInput,
   ): Promise<DocumentEntity> {
-    const changedDocument = await this.documentService.change(user.id, documentId, input);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentChanged, { documentChanged: changedDocument });
-    return changedDocument;
+    return await this.documentService.change(user.id, documentId, input);
   }
 
   @Subscription(returns => DocumentEntity)

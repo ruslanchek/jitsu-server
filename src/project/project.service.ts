@@ -5,6 +5,7 @@ import { ProjectEntity } from './project.entity';
 import { UserService } from '../user/user.service';
 import { ProjectCreateInput } from './project.inputs';
 import { EErrorMessage } from '../messages';
+import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 
 @Injectable()
 export class ProjectService {
@@ -12,6 +13,7 @@ export class ProjectService {
     @InjectRepository(ProjectEntity)
     private readonly projectRepository: Repository<ProjectEntity>,
     private readonly userService: UserService,
+    private readonly pubSubService: PubSubService,
   ) {}
 
   async getProject(userId: string, projectId: string): Promise<ProjectEntity> {
@@ -46,6 +48,8 @@ export class ProjectService {
       ...input,
       user,
     });
-    return await this.getProject(userId, result.identifiers[0].id);
+    const createdProject = await this.getProject(userId, result.identifiers[0].id);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectCreated, { projectCreated: createdProject });
+    return createdProject;
   }
 }

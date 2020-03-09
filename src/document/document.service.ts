@@ -6,6 +6,7 @@ import { DocumentEntity } from './document.entity';
 import { ProjectService } from '../project/project.service';
 import { EErrorMessage } from '../messages';
 import { DocumentChangeInput, DocumentCreateInput } from './document.inputs';
+import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 
 @Injectable()
 export class DocumentService {
@@ -14,6 +15,7 @@ export class DocumentService {
     private readonly documentRepository: Repository<DocumentEntity>,
     private readonly userService: UserService,
     private readonly projectService: ProjectService,
+    private readonly pubSubService: PubSubService,
   ) {}
 
   async getDocument(userId: string, documentId: string): Promise<DocumentEntity> {
@@ -49,7 +51,9 @@ export class DocumentService {
       project,
       user,
     });
-    return await this.getDocument(user.id, result.identifiers[0].id);
+    const createdDocument = await this.getDocument(user.id, result.identifiers[0].id);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentCreated, { documentCreated: createdDocument });
+    return createdDocument;
   }
 
   async change(userId: string, documentId: string, input: DocumentChangeInput): Promise<DocumentEntity> {
@@ -59,6 +63,8 @@ export class DocumentService {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
     await this.documentRepository.update({ id: documentId, user }, { ...input });
-    return await this.getDocument(user.id, documentId);
+    const changedDocument = await this.getDocument(user.id, documentId);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentChanged, { documentChanged: changedDocument });
+    return changedDocument;
   }
 }

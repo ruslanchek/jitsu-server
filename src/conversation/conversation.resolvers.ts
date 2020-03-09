@@ -21,7 +21,7 @@ export class ConversationResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('conversationId') conversationId: string,
   ): Promise<ConversationEntity> {
-    return await this.conversationService.getConversation(user.id, conversationId); // TODO: Only users that have access to specified documents
+    return await this.conversationService.getConversation(user.id, conversationId);
   }
 
   @Query(returns => [ConversationEntity])
@@ -30,7 +30,7 @@ export class ConversationResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('documentId') documentId: string,
   ): Promise<ConversationEntity[]> {
-    return await this.conversationService.findConversations(user.id, documentId); // TODO: Only users that have access to specified documents
+    return await this.conversationService.findConversations(user.id, documentId);
   }
 
   @Mutation(returns => ConversationEntity)
@@ -40,13 +40,11 @@ export class ConversationResolvers {
     @Args('documentId') documentId: string,
     @Args('input') input: ConversationCreateInput,
   ): Promise<ConversationEntity> {
-    const createdConversation = await this.conversationService.create(user.id, documentId, input);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.ConversationCreated, { conversationCreated: createdConversation });
-    return createdConversation;
+    return await this.conversationService.create(user.id, documentId, input);
   }
 
   @Subscription(returns => ConversationEntity)
   conversationCreated() {
-    return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.ConversationCreated); // TODO: Only users that have access to specified documents
+    return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.ConversationCreated);
   }
 }

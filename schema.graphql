@@ -19,7 +19,7 @@ scalar Date
 
 input DocumentChangeInput {
   name: String
-  dueDate: Date!
+  dueDate: Date
   priority: DocumentPriority
   status: DocumentStatus
   data: JSON

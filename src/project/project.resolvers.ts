@@ -34,9 +34,7 @@ export class ProjectResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('input') input: ProjectCreateInput,
   ): Promise<ProjectEntity> {
-    const createdProject = await this.projectService.create(user.id, input);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectCreated, { projectCreated: createdProject });
-    return createdProject;
+    return await this.projectService.create(user.id, input);
   }
 
   @Subscription(returns => ProjectEntity)
