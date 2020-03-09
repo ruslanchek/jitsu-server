@@ -7,10 +7,15 @@ import { DocumentService } from './document.service';
 import { DocumentEntity } from './document.entity';
 import { DocumentChangeInput, DocumentCreateInput } from './document.inputs';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
+import { TimelineService } from '../timeline/timeline.service';
 
 @Resolver(of => DocumentEntity)
 export class DocumentResolvers {
-  constructor(private readonly pubSubService: PubSubService, private readonly documentService: DocumentService) {}
+  constructor(
+    private readonly pubSubService: PubSubService,
+    private readonly documentService: DocumentService,
+    private readonly timelineService: TimelineService,
+  ) {}
 
   @Query(returns => DocumentEntity)
   @UseGuards(GqlAuthGuard)
@@ -39,6 +44,10 @@ export class DocumentResolvers {
   ): Promise<DocumentEntity> {
     const createdDocument = await this.documentService.create(user.id, projectId, input);
     await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentCreated, { documentCreated: createdDocument });
+    await this.timelineService.create(user.id, createdDocument.id, {
+      eventName: '',
+      date: new Date(),
+    });
     return createdDocument;
   }
 

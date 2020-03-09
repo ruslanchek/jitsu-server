@@ -6,7 +6,6 @@ import { DocumentEntity } from './document.entity';
 import { ProjectService } from '../project/project.service';
 import { EErrorMessage } from '../messages';
 import { DocumentChangeInput, DocumentCreateInput } from './document.inputs';
-import { TimelineService } from '../timeline/timeline.service';
 
 @Injectable()
 export class DocumentService {
@@ -15,7 +14,6 @@ export class DocumentService {
     private readonly documentRepository: Repository<DocumentEntity>,
     private readonly userService: UserService,
     private readonly projectService: ProjectService,
-    private readonly timelineService: TimelineService,
   ) {}
 
   async getDocument(userId: string, documentId: string): Promise<DocumentEntity> {
@@ -51,14 +49,7 @@ export class DocumentService {
       project,
       user,
     });
-    const document = await this.getDocument(user.id, result.identifiers[0].id);
-    await this.timelineService.create(user.id, document.id, {
-      eventName: '',
-      date: new Date(),
-      user,
-      document,
-    });
-    return document;
+    return await this.getDocument(user.id, result.identifiers[0].id);
   }
 
   async change(userId: string, documentId: string, input: DocumentChangeInput): Promise<DocumentEntity> {
