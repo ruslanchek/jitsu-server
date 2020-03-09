@@ -7,7 +7,7 @@ import { DocumentService } from './document.service';
 import { DocumentEntity } from './document.entity';
 import { DocumentChangeInput, DocumentCreateInput } from './document.inputs';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
-import { TimelineService } from '../timeline/timeline.service';
+import { ETimelineEventName, TimelineService } from '../timeline/timeline.service';
 
 @Resolver(of => DocumentEntity)
 export class DocumentResolvers {
@@ -44,10 +44,11 @@ export class DocumentResolvers {
   ): Promise<DocumentEntity> {
     const createdDocument = await this.documentService.create(user.id, projectId, input);
     await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentCreated, { documentCreated: createdDocument });
-    await this.timelineService.create(user.id, createdDocument.id, {
-      eventName: '',
+    const createdTimeline = await this.timelineService.create(user.id, createdDocument.id, {
+      eventName: ETimelineEventName.DocumentCreated,
       date: new Date(),
     });
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.TimelineCreated, { timelineCreated: createdTimeline });
     return createdDocument;
   }
 

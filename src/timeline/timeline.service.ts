@@ -8,6 +8,10 @@ import { TimelineCreateInput } from './timeline.inputs';
 import { DocumentService } from '../document/document.service';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 
+export enum ETimelineEventName {
+  DocumentCreated = 'documentCreated',
+}
+
 @Injectable()
 export class TimelineService {
   constructor(
@@ -51,8 +55,6 @@ export class TimelineService {
       document,
       user,
     });
-    const createdTimeline = await this.getTimeline(user.id, result.identifiers[0].id);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.TimelineCreated, { timelineCreated: createdTimeline });
-    return createdTimeline;
+    return  await this.getTimeline(user.id, result.identifiers[0].id);
   }
 }
