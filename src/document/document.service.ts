@@ -20,14 +20,14 @@ export class DocumentService {
 
   async getDocument(userId: string, documentId: string): Promise<DocumentEntity> {
     const user = await this.userService.findById(userId);
-    const documents = await this.documentRepository.find({
+    const document = await this.documentRepository.findOne({
       where: {
         id: documentId,
         user,
       },
     });
-    if (documents && documents[0]) {
-      return documents[0];
+    if (document) {
+      return document;
     }
     throw new NotFoundException(EErrorMessage.DocumentNotFound);
   }

@@ -6,7 +6,6 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
-import { PubSub } from 'graphql-subscriptions';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 
 @Resolver(of => ProjectEntity)

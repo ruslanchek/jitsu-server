@@ -24,14 +24,14 @@ export class TimelineService {
 
   async getTimeline(userId: string, documentId: string): Promise<TimelineEntity> {
     const user = await this.userService.findById(userId);
-    const documents = await this.timelineRepository.find({
+    const timeline = await this.timelineRepository.findOne({
       where: {
         id: documentId,
         user,
       },
     });
-    if (documents && documents[0]) {
-      return documents[0];
+    if (timeline) {
+      return timeline;
     }
     throw new NotFoundException(EErrorMessage.DocumentNotFound);
   }

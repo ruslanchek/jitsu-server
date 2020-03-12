@@ -20,7 +20,7 @@ export class ConversationService {
 
   async getConversation(userId: string, conversationId: string): Promise<ConversationEntity> {
     const user = await this.userService.findById(userId);
-    const conversations = await this.conversationRepository.find({
+    const conversation = await this.conversationRepository.findOne({
       join: { alias: 'conversation', innerJoinAndSelect: { user: 'conversation.user' } },
       where: {
         id: conversationId,
@@ -28,8 +28,8 @@ export class ConversationService {
       },
     });
 
-    if (conversations && conversations[0]) {
-      return conversations[0];
+    if (conversation) {
+      return conversation;
     }
 
     throw new NotFoundException(EErrorMessage.ConversationNotFound);

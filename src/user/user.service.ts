@@ -71,7 +71,7 @@ export class UserService {
     select?: Array<keyof UserEntity>,
     relations?: Array<keyof UserEntity>,
   ): Promise<UserEntity | undefined> {
-    const items = await this.userRepository.find({
+    const user = await this.userRepository.findOne({
       where: {
         id,
       },
@@ -79,7 +79,7 @@ export class UserService {
       select,
     });
 
-    return items.length > 0 ? items[0] : undefined;
+    return user;
   }
 
   async findByWhere(where: Partial<UserEntity>, fields?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {

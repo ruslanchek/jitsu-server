@@ -12,9 +12,10 @@ import { DocumentPriorityScalar, DocumentStatusScalar, DocumentTypeScalar } from
 import { PubSubService } from '../common/services/pubsub.service';
 import { TimelineService } from '../timeline/timeline.service';
 import { TimelineEntity } from '../timeline/timeline.entity';
+import { ProjectInviteEntity } from '../project/projectInvite.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DocumentEntity, UserEntity, ProjectEntity, TimelineEntity])],
+  imports: [TypeOrmModule.forFeature([DocumentEntity, UserEntity, ProjectEntity, ProjectInviteEntity, TimelineEntity])],
   providers: [
     PubSubService,
     TimelineService,

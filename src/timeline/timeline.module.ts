@@ -11,9 +11,10 @@ import { DocumentService } from '../document/document.service';
 import { ProjectEntity } from '../project/project.entity';
 import { ProjectService } from '../project/project.service';
 import { PubSubService } from '../common/services/pubsub.service';
+import { ProjectInviteEntity } from '../project/projectInvite.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TimelineEntity, UserEntity, DocumentEntity, ProjectEntity])],
+  imports: [TypeOrmModule.forFeature([TimelineEntity, UserEntity, DocumentEntity, ProjectEntity, ProjectInviteEntity])],
   providers: [
     PubSubService,
     DocumentService,

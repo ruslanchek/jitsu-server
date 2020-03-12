@@ -6,27 +6,30 @@ import { UserService } from '../user/user.service';
 import { ProjectCreateInput } from './project.inputs';
 import { EErrorMessage } from '../messages';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
+import { ProjectInviteEntity } from './projectInvite.entity';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectRepository(ProjectEntity)
     private readonly projectRepository: Repository<ProjectEntity>,
+    @InjectRepository(ProjectInviteEntity)
+    private readonly projectInviteRepository: Repository<ProjectInviteEntity>,
     private readonly userService: UserService,
     private readonly pubSubService: PubSubService,
   ) {}
 
   async getProject(userId: string, projectId: string): Promise<ProjectEntity> {
     const user = await this.userService.findById(userId);
-    const projects = await this.projectRepository.find({
+    const project = await this.projectRepository.findOne({
       where: {
         id: projectId,
         user,
       },
     });
 
-    if (projects && projects[0]) {
-      return projects[0];
+    if (project) {
+      return project;
     }
 
     throw new NotFoundException(EErrorMessage.ProjectNotFound);
@@ -51,5 +54,24 @@ export class ProjectService {
     const createdProject = await this.getProject(userId, result.identifiers[0].id);
     await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectCreated, { projectCreated: createdProject });
     return createdProject;
+  }
+
+  async inviteUser(userId: string, invitedUserId: string, projectId: string): Promise<ProjectEntity> {
+    const user = await this.userService.findById(userId);
+    const invitedUser = await this.userService.findById(invitedUserId);
+    const project = await this.projectRepository.findOne({
+      join: { alias: 'project', innerJoin: { invitedUsers: 'project.invitedUsers' } },
+      where: {
+        id: projectId,
+        user,
+      },
+    });
+
+    await this.projectRepository.update(project.id, {
+      ...project,
+      invitedUsers: project.invitedUsers.concat([invitedUser]),
+    });
+
+    return await this.getProject(userId, projectId);
   }
 }
