@@ -14,7 +14,7 @@ export class UserResolvers {
 
   @Query(returns => UserEntity)
   @UseGuards(GqlAuthGuard)
-  async me(@CurrentUser() user: IAuthCurrentUserPayload): Promise<UserEntity> {
+  async getMe(@CurrentUser() user: IAuthCurrentUserPayload): Promise<UserEntity> {
     return await this.userService.findById(user.id);
   }
 

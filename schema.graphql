@@ -75,7 +75,7 @@ type ProjectEntity {
 }
 
 type Query {
-  me: UserEntity!
+  getMe: UserEntity!
   login(input: UserInputLogin!): UserTokenResponse!
   getProject(projectId: String!): ProjectEntity!
   getProjects: [ProjectEntity!]!
