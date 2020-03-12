@@ -24,7 +24,7 @@ export class UserService {
 
   private generateNickname() {
     return uniqueNamesGenerator({
-      dictionaries: [adjectives, animals, names, colors, countries, starWars],
+      dictionaries: [adjectives, colors, countries],
       length: 2,
       separator: '-',
     });
