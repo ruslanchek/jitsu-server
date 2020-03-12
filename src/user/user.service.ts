@@ -13,7 +13,7 @@ import jwt from 'jsonwebtoken';
 import { EErrorMessage } from '../messages';
 import { ENV } from '../env';
 import { UserTokenResponse } from './user.responses';
-import { uniqueNamesGenerator, adjectives, animals, names, colors, countries, starWars } from 'unique-names-generator';
+import { uniqueNamesGenerator, adjectives, colors, countries } from 'unique-names-generator';
 
 @Injectable()
 export class UserService {
