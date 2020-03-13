@@ -27,7 +27,15 @@ import { InviteModule } from '../invite/invite.module';
       username: ENV.PG_USER,
       password: ENV.PG_PASS,
       database: ENV.PG_DB,
-      entities: [UserEntity, ProjectEntity, InviteEntity, DocumentEntity, ConversationEntity, TimelineEntity],
+      entities: [
+        UserEntity,
+        ProjectEntity,
+        InviteEntity,
+        DocumentEntity,
+        ConversationEntity,
+        TimelineEntity,
+        InviteEntity,
+      ],
     }),
     GraphQLModule.forRoot({
       debug: false,
