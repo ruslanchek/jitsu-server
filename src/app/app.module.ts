@@ -15,6 +15,7 @@ import { ConversationEntity } from '../conversation/conversation.entity';
 import { TimelineModule } from '../timeline/timeline.module';
 import { TimelineEntity } from '../timeline/timeline.entity';
 import { InviteEntity } from '../invite/invite.entity';
+import { InviteModule } from '../invite/invite.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { InviteEntity } from '../invite/invite.entity';
     DocumentModule,
     ConversationModule,
     TimelineModule,
+    InviteModule,
   ],
 })
 export class AppModule {}
