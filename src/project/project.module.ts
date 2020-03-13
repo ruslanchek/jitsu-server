@@ -7,10 +7,10 @@ import { DateScalar } from '../common/scalars/date.scalar';
 import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/user.entity';
 import { PubSubService } from '../common/services/pubsub.service';
-import { ProjectInviteEntity } from './projectInvite.entity';
+import { InviteEntity } from '../invite/invite.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProjectEntity, ProjectInviteEntity, UserEntity])],
+  imports: [TypeOrmModule.forFeature([ProjectEntity, InviteEntity, UserEntity])],
   providers: [PubSubService, ProjectService, ProjectResolvers, DateScalar, UserService],
   exports: [ProjectService],
 })

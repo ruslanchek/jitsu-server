@@ -33,7 +33,7 @@ export class TimelineService {
     if (timeline) {
       return timeline;
     }
-    throw new NotFoundException(EErrorMessage.DocumentNotFound);
+    throw new NotFoundException(EErrorMessage.TimelineNotFound);
   }
 
   async findTimelines(userId: string, documentId: string): Promise<TimelineEntity[]> {

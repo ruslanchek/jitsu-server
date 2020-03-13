@@ -11,7 +11,11 @@ export class TimelineEntity {
   id!: string;
 
   @Field(type => Date)
-  @Column()
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: true,
+  })
   date: Date;
 
   @Field(type => String)

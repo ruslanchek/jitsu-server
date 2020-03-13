@@ -14,7 +14,7 @@ import { ConversationModule } from '../conversation/conversation.module';
 import { ConversationEntity } from '../conversation/conversation.entity';
 import { TimelineModule } from '../timeline/timeline.module';
 import { TimelineEntity } from '../timeline/timeline.entity';
-import { ProjectInviteEntity } from '../project/projectInvite.entity';
+import { InviteEntity } from '../invite/invite.entity';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { ProjectInviteEntity } from '../project/projectInvite.entity';
       username: ENV.PG_USER,
       password: ENV.PG_PASS,
       database: ENV.PG_DB,
-      entities: [UserEntity, ProjectEntity, ProjectInviteEntity, DocumentEntity, ConversationEntity, TimelineEntity],
+      entities: [UserEntity, ProjectEntity, InviteEntity, DocumentEntity, ConversationEntity, TimelineEntity],
     }),
     GraphQLModule.forRoot({
       debug: false,

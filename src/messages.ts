@@ -18,4 +18,5 @@ export enum EErrorMessage {
   DocumentNotFound = 'DOCUMENT_NOT_FOUND',
   ConversationNotFound = 'CONVERSATION_NOT_FOUND',
   ConversationTextMinLength = 'CONVERSATION_TEXT_MIN_LENGTH',
+  TimelineNotFound = 'TIMELINE_NOT_FOUND',
 }

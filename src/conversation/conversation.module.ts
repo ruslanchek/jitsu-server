@@ -11,11 +11,11 @@ import { ProjectService } from '../project/project.service';
 import { ProjectEntity } from '../project/project.entity';
 import { ConversationResolvers } from './conversation.resolvers';
 import { PubSubService } from '../common/services/pubsub.service';
-import { ProjectInviteEntity } from '../project/projectInvite.entity';
+import { InviteEntity } from '../invite/invite.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ConversationEntity, UserEntity, DocumentEntity, ProjectEntity, ProjectInviteEntity]),
+    TypeOrmModule.forFeature([ConversationEntity, UserEntity, DocumentEntity, ProjectEntity, InviteEntity]),
   ],
   providers: [
     PubSubService,

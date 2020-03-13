@@ -6,15 +6,15 @@ import { UserService } from '../user/user.service';
 import { ProjectCreateInput } from './project.inputs';
 import { EErrorMessage } from '../messages';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
-import { ProjectInviteEntity } from './projectInvite.entity';
+import { InviteEntity } from '../invite/invite.entity';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectRepository(ProjectEntity)
     private readonly projectRepository: Repository<ProjectEntity>,
-    @InjectRepository(ProjectInviteEntity)
-    private readonly projectInviteRepository: Repository<ProjectInviteEntity>,
+    @InjectRepository(InviteEntity)
+    private readonly projectInviteRepository: Repository<InviteEntity>,
     private readonly userService: UserService,
     private readonly pubSubService: PubSubService,
   ) {}
