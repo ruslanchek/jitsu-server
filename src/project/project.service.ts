@@ -55,23 +55,4 @@ export class ProjectService {
     await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectCreated, { projectCreated: createdProject });
     return createdProject;
   }
-
-  async inviteUser(userId: string, invitedUserId: string, projectId: string): Promise<ProjectEntity> {
-    const user = await this.userService.findById(userId);
-    const invitedUser = await this.userService.findById(invitedUserId);
-    const project = await this.projectRepository.findOne({
-      join: { alias: 'project', innerJoin: { invitedUsers: 'project.invitedUsers' } },
-      where: {
-        id: projectId,
-        user,
-      },
-    });
-
-    await this.projectRepository.update(project.id, {
-      ...project,
-      invitedUsers: project.invitedUsers.concat([invitedUser]),
-    });
-
-    return await this.getProject(userId, projectId);
-  }
 }

@@ -71,7 +71,10 @@ type ProjectEntity {
   id: ID!
   name: String!
   user: UserEntity!
-  invitedUsers: [UserEntity!]!
+}
+
+type ProjectInviteEntity {
+  id: ID!
 }
 
 type Query {

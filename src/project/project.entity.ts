@@ -21,10 +21,6 @@ export class ProjectEntity {
   )
   user: UserEntity;
 
-  @Field(type => [UserEntity])
-  @ManyToMany(type => UserEntity)
-  invitedUsers: UserEntity[];
-
   @OneToMany(
     type => DocumentEntity,
     document => document.project,
