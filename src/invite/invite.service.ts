@@ -7,7 +7,6 @@ import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.servic
 import { Repository } from 'typeorm';
 import { InviteCreateInput } from './invite.inputs';
 import { EErrorMessage } from '../messages';
-import { DocumentEntity } from '../document/document.entity';
 
 @Injectable()
 export class InviteService {

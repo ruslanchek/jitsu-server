@@ -1,5 +1,6 @@
 export enum EErrorMessage {
   IsEmail = 'NOT_AN_EMAIL',
+  IsUrl = 'NOT_AN_URL',
   EmptyPassword = 'EMPTY_PASSWORD',
   UserNotFound = 'USER_NOT_FOUND',
   UserAlreadyExists = 'USER_EXISTS',

@@ -12,6 +12,10 @@ export class ProjectEntity {
 
   @Field(type => String)
   @Column()
+  avatar: string;
+
+  @Field(type => String)
+  @Column()
   name: string;
 
   @Field(type => UserEntity)
