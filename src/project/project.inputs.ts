@@ -15,15 +15,11 @@ export class ProjectChangeInput implements Partial<ProjectEntity> {
   @Field(() => String)
   @MinLength(3, { message: EErrorMessage.ProjectNameMinLength })
   name: string;
+}
 
+@InputType()
+export class ProjectChangeAvatarInput implements Partial<ProjectEntity> {
   @Field(() => String)
-  @IsUrl(
-    {
-      require_protocol: true,
-      require_host: true,
-      require_valid_protocol: true,
-    },
-    { message: EErrorMessage.IsUrl },
-  )
   avatar: string;
 }
+

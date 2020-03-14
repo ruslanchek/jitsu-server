@@ -62,7 +62,7 @@ export class DocumentService {
     if (!document) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
-    await this.documentRepository.update({ id: documentId, user }, { ...input });
+    await this.documentRepository.update({ id: documentId, user }, input);
     const changedDocument = await this.getDocument(user.id, documentId);
     await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentChanged, { documentChanged: changedDocument });
     return changedDocument;

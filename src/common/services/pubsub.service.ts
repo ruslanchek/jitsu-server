@@ -6,6 +6,7 @@ export enum EPubSubTriggers {
   DocumentCreated = 'documentCreated',
   DocumentChanged = 'documentChanged',
   ProjectCreated = 'projectCreated',
+  ProjectChanged = 'projectChanged',
   TimelineCreated = 'timelineCreated',
   InviteCreated = 'inviteCreated',
 }

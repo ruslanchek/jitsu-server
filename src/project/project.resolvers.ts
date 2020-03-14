@@ -1,7 +1,7 @@
 import { Args, Resolver, Mutation, Query, Subscription } from '@nestjs/graphql';
 import { ProjectService } from './project.service';
 import { ProjectEntity } from './project.entity';
-import { ProjectCreateInput } from './project.inputs';
+import { ProjectChangeInput, ProjectCreateInput } from './project.inputs';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
@@ -36,8 +36,23 @@ export class ProjectResolvers {
     return await this.projectService.create(user.id, input);
   }
 
+  @Mutation(returns => ProjectEntity)
+  @UseGuards(GqlAuthGuard)
+  async changeProject(
+    @CurrentUser() user: IAuthCurrentUserPayload,
+    @Args('projectId') projectId: string,
+    @Args('input') input: ProjectChangeInput,
+  ): Promise<ProjectEntity> {
+    return await this.projectService.change(user.id, projectId, input);
+  }
+
   @Subscription(returns => ProjectEntity)
   projectCreated() {
     return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.ProjectCreated);
+  }
+
+  @Subscription(returns => ProjectEntity)
+  projectChanged() {
+    return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.ProjectChanged);
   }
 }

@@ -3,10 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectEntity } from './project.entity';
 import { UserService } from '../user/user.service';
-import { ProjectCreateInput } from './project.inputs';
+import { ProjectChangeInput, ProjectCreateInput } from './project.inputs';
 import { EErrorMessage } from '../messages';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 import { InviteEntity } from '../invite/invite.entity';
+import { DocumentChangeInput } from '../document/document.inputs';
+import { DocumentEntity } from '../document/document.entity';
 
 @Injectable()
 export class ProjectService {
@@ -54,5 +56,17 @@ export class ProjectService {
     const createdProject = await this.getProject(userId, result.identifiers[0].id);
     await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectCreated, { projectCreated: createdProject });
     return createdProject;
+  }
+
+  async change(userId: string, projectId: string, input: ProjectChangeInput): Promise<ProjectEntity> {
+    const user = await this.userService.findById(userId);
+    const project = await this.getProject(user.id, projectId);
+    if (!project) {
+      throw new NotFoundException(EErrorMessage.ProjectNotFound);
+    }
+    await this.projectRepository.update({ id: projectId, user }, input);
+    const changedProject = await this.getProject(user.id, projectId);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectChanged, { projectChanged: changedProject });
+    return changedProject;
   }
 }
