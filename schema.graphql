@@ -50,6 +50,20 @@ scalar DocumentStatus
 """DocumentType custom scalar type"""
 scalar DocumentType
 
+input InviteCreateInput {
+  invitedUserEmail: String!
+}
+
+type InviteEntity {
+  id: ID!
+  active: Boolean!
+  date: Date!
+  invitedByUser: UserEntity!
+  invitedUser: UserEntity!
+  project: ProjectEntity!
+  invitedUserEmail: String!
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -61,6 +75,7 @@ type Mutation {
   createDocument(input: DocumentCreateInput!, projectId: String!): DocumentEntity!
   changeDocument(input: DocumentChangeInput!, documentId: String!): DocumentEntity!
   createConversation(input: ConversationCreateInput!, documentId: String!): ConversationEntity!
+  createInvite(input: InviteCreateInput!, projectId: String!): InviteEntity!
 }
 
 input ProjectCreateInput {
@@ -71,10 +86,6 @@ type ProjectEntity {
   id: ID!
   name: String!
   user: UserEntity!
-}
-
-type ProjectInviteEntity {
-  id: ID!
 }
 
 type Query {

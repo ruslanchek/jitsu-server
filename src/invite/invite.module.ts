@@ -11,10 +11,21 @@ import { TimelineEntity } from '../timeline/timeline.entity';
 import { InviteService } from './invite.service';
 import { InviteEntity } from './invite.entity';
 import { InviteResolvers } from './invite.resolvers';
+import { DocumentService } from '../document/document.service';
+import { DocumentEntity } from '../document/document.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([InviteEntity, UserEntity, ProjectEntity, TimelineEntity])],
-  providers: [PubSubService, TimelineService, InviteService, UserService, ProjectService, InviteResolvers, DateScalar],
+  imports: [TypeOrmModule.forFeature([InviteEntity, UserEntity, ProjectEntity, TimelineEntity, DocumentEntity])],
+  providers: [
+    PubSubService,
+    TimelineService,
+    InviteService,
+    DocumentService,
+    UserService,
+    ProjectService,
+    InviteResolvers,
+    DateScalar,
+  ],
   exports: [InviteService],
 })
 export class InviteModule {}

@@ -19,4 +19,6 @@ export enum EErrorMessage {
   ConversationNotFound = 'CONVERSATION_NOT_FOUND',
   ConversationTextMinLength = 'CONVERSATION_TEXT_MIN_LENGTH',
   TimelineNotFound = 'TIMELINE_NOT_FOUND',
+  UserAlreadyInvited = 'USER_ALREADY_INVITED',
+  InviteNotFound = 'INVITE_NOT_FOUND',
 }

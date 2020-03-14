@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
+import { ProjectEntity } from '../project/project.entity';
 
 @Entity()
 @ObjectType()
@@ -23,7 +24,15 @@ export class InviteEntity {
 
   @Field(type => UserEntity)
   @OneToOne(type => UserEntity)
-  invitedBy: UserEntity;
+  invitedByUser: UserEntity;
+
+  @Field(type => UserEntity)
+  @OneToOne(type => UserEntity)
+  invitedUser: UserEntity;
+
+  @Field(type => ProjectEntity)
+  @OneToOne(type => ProjectEntity)
+  project: ProjectEntity;
 
   @Field(type => String)
   @Column({ type: 'text', unique: true })

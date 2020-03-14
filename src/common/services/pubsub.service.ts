@@ -7,6 +7,7 @@ export enum EPubSubTriggers {
   DocumentChanged = 'documentChanged',
   ProjectCreated = 'projectCreated',
   TimelineCreated = 'timelineCreated',
+  InviteCreated = 'inviteCreated',
 }
 
 const pubSub = new PubSub();
