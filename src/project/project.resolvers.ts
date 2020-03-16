@@ -1,13 +1,13 @@
 import { Args, Resolver, Mutation, Query, Subscription } from '@nestjs/graphql';
 import { ProjectService } from './project.service';
 import { ProjectEntity } from './project.entity';
-import { ProjectChangeInput, ProjectCreateInput, ProjectFileInput } from './project.inputs';
+import { ProjectChangeInput, ProjectCreateInput } from './project.inputs';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
-import { UploadScalar } from '../common/scalars/upload.scalar';
+import { UploadScalar, File } from '../common/scalars/upload.scalar';
 
 @Resolver(of => ProjectEntity)
 export class ProjectResolvers {
@@ -50,9 +50,9 @@ export class ProjectResolvers {
   @Mutation(returns => String)
   async addImage(
     @CurrentUser() user: IAuthCurrentUserPayload,
-    @Args('input') input: ProjectFileInput,
+    @Args({ name: 'input', type: () => UploadScalar }) input: File,
   ): Promise<string> {
-    // console.log(input);
+    console.log(input);
     return '';
   }
 

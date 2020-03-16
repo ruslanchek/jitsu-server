@@ -1,5 +1,13 @@
 import { Scalar, CustomScalar } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload';
+import { ReadStream } from 'fs';
+
+export interface File {
+  filename: string;
+  mimetype: string;
+  encoding: string;
+  createReadStream: () => ReadStream;
+}
 
 @Scalar('Upload')
 export class UploadScalar implements CustomScalar<object, string> {
