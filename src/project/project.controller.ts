@@ -13,6 +13,7 @@ export class ProjectController {
   @UseInterceptors(FileInterceptor('file'))
   @UseGuards(AuthGuard('jwt'))
   async uploadAvatar(@UploadedFile() file: IFile, @CurrentUser() user, @Param('projectId') projectId: string) {
+    console.log(file)
     return await this.projectService.uploadAvatar(user.id, projectId, file);
   }
 }
