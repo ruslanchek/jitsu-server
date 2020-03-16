@@ -1,5 +1,5 @@
-import { InputType, Field } from 'type-graphql';
-import { MinLength, IsUrl } from 'class-validator';
+import { InputType, Field } from '@nestjs/graphql';
+import { MinLength } from 'class-validator';
 import { ProjectEntity } from './project.entity';
 import { EErrorMessage } from '../messages';
 

@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 import { ProjectEntity } from '../project/project.entity';

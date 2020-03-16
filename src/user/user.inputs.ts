@@ -1,4 +1,4 @@
-import { InputType, Field } from 'type-graphql';
+import { InputType, Field } from '@nestjs/graphql';
 import { IsEmail, MinLength, MaxLength } from 'class-validator';
 import { UserEntity } from './user.entity';
 import { EErrorMessage } from '../messages';

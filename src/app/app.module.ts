@@ -43,7 +43,9 @@ import { InviteModule } from '../invite/invite.module';
       installSubscriptionHandlers: true,
       resolvers: { JSON: GraphQLJSON },
       autoSchemaFile: 'schema.graphql',
-      context: ({ req, connection }) => (connection ? { req: { headers: connection.context } } : { req }),
+      context: ({ req }) => {
+        return req;
+      },
     }),
     AuthModule,
     UserModule,

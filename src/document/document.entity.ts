@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { EDocumentPriority, EDocumentStatus, EDocumentType } from './document.scalars';
 import { UserEntity } from '../user/user.entity';

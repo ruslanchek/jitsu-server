@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { ConversationEntity } from '../conversation/conversation.entity';
 import { TimelineEntity } from '../timeline/timeline.entity';

@@ -1,9 +1,9 @@
-import { InputType, Field, ID } from 'type-graphql';
-import { MinLength, IsUUID, IsOptional } from 'class-validator';
+import { InputType, Field } from '@nestjs/graphql';
+import { MinLength, IsOptional } from 'class-validator';
 import { EErrorMessage } from '../messages';
 import { DocumentEntity } from './document.entity';
 import { EDocumentPriority, EDocumentStatus } from './document.scalars';
-import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
+import GraphQLJSON from 'graphql-type-json';
 
 @InputType()
 export class DocumentCreateInput implements Partial<DocumentEntity> {

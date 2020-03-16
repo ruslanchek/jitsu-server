@@ -1,4 +1,4 @@
-import { InputType, Field } from 'type-graphql';
+import { InputType, Field } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
 import { EErrorMessage } from '../messages';
 import { InviteEntity } from './invite.entity';

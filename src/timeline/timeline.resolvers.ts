@@ -1,7 +1,7 @@
-import { Args, Resolver, Mutation, Query, Subscription } from '@nestjs/graphql';
+import { Args, Resolver, Query, Subscription } from '@nestjs/graphql';
 import { TimelineService } from './timeline.service';
 import { TimelineEntity } from './timeline.entity';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards,  } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
