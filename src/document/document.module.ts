@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DateScalar } from '../common/scalars/date.scalar';
 import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/user.entity';
 import { DocumentEntity } from './document.entity';
@@ -23,7 +22,6 @@ import { InviteEntity } from '../invite/invite.entity';
     UserService,
     ProjectService,
     DocumentResolvers,
-    DateScalar,
     DocumentTypeScalar,
     DocumentPriorityScalar,
     DocumentStatusScalar,

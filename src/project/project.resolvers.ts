@@ -7,7 +7,7 @@ import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
-import { GraphQLUpload } from 'apollo-server-core';
+import { UploadScalar } from '../common/scalars/upload.scalar';
 
 @Resolver(of => ProjectEntity)
 export class ProjectResolvers {
@@ -50,10 +50,10 @@ export class ProjectResolvers {
   @Mutation(returns => String)
   async addImage(
     @CurrentUser() user: IAuthCurrentUserPayload,
-    @Args({ name: 'image', type: () => GraphQLUpload }) image,
-  ) {
-    console.log(image);
-    return image;
+    @Args({ name: 'file', type: () => UploadScalar }) file: any,
+  ): Promise<string> {
+    console.log(file);
+    return '';
   }
 
   @Subscription(returns => ProjectEntity)

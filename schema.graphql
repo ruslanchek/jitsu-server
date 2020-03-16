@@ -72,7 +72,7 @@ type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!
   createProject(input: ProjectCreateInput!): ProjectEntity!
   changeProject(input: ProjectChangeInput!, projectId: String!): ProjectEntity!
-  addImage(image: Upload!): String!
+  addImage(file: Upload!): String!
   createDocument(input: DocumentCreateInput!, projectId: String!): DocumentEntity!
   changeDocument(input: DocumentChangeInput!, documentId: String!): DocumentEntity!
   createConversation(input: ConversationCreateInput!, documentId: String!): ConversationEntity!
@@ -122,7 +122,7 @@ type TimelineEntity {
   eventName: String!
 }
 
-"""The `Upload` scalar type represents a file upload."""
+"""Upload custom scalar type"""
 scalar Upload
 
 type UserEntity {

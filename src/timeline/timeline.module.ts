@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DateScalar } from '../common/scalars/date.scalar';
 import { TimelineEntity } from './timeline.entity';
 import { TimelineService } from './timeline.service';
 import { TimelineResolvers } from './timeline.resolvers';
@@ -22,7 +21,6 @@ import { InviteEntity } from '../invite/invite.entity';
     UserService,
     ProjectService,
     TimelineResolvers,
-    DateScalar,
   ],
   exports: [TimelineService],
 })
