@@ -34,6 +34,7 @@
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
     "dotenv": "^8.2.0",
+    "file-extension": "^4.0.5",
     "graphql": "^14.6.0",
     "graphql-subscriptions": "^1.1.0",
     "graphql-tools": "^4.0.6",
@@ -48,9 +49,11 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.4",
+    "sharp": "^0.25.1",
     "type-graphql": "^0.17.6",
     "typeorm": "^0.2.22",
-    "unique-names-generator": "^4.2.0"
+    "unique-names-generator": "^4.2.0",
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",

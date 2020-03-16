@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import S3 from 'aws-sdk/clients/s3';
 import { File } from '../common/scalars/upload.scalar';
+import sharp from 'sharp';
+import fileExtension from 'file-extension';
+import { v1 as uuidv1 } from 'uuid';
 
 @Injectable()
 export class UploadService {
@@ -16,11 +19,16 @@ export class UploadService {
 
   async uploadFile(file: File): Promise<void> {
     const s3 = this.getS3();
-    const result = s3.putObject(
+    const extension = fileExtension(file.filename);
+    const filename = `dir/${uuidv1()}.${extension}`;
+    console.log(filename)
+    await s3.upload(
       {
         Bucket: 'jitsu',
-        Key: 'testobject1/ssss',
-        Body: 'Hello from MinIO!!',
+        Key: filename,
+        Body: file.createReadStream(),
+        ContentEncoding: file.encoding,
+        ContentType: file.mimetype,
       },
       (err, data) => {
         console.log(err, data);
