@@ -2,6 +2,7 @@ import { InputType, Field } from '@nestjs/graphql';
 import { MinLength } from 'class-validator';
 import { ProjectEntity } from './project.entity';
 import { EErrorMessage } from '../messages';
+import { UploadScalar } from '../common/scalars/upload.scalar';
 
 @InputType()
 export class ProjectCreateInput implements Partial<ProjectEntity> {
@@ -18,8 +19,8 @@ export class ProjectChangeInput implements Partial<ProjectEntity> {
 }
 
 @InputType()
-export class ProjectChangeAvatarInput implements Partial<ProjectEntity> {
-  @Field(() => String)
-  avatar: string;
+export class ProjectFileInput {
+  @Field(() => UploadScalar)
+  file: any;
 }
 

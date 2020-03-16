@@ -72,7 +72,7 @@ type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!
   createProject(input: ProjectCreateInput!): ProjectEntity!
   changeProject(input: ProjectChangeInput!, projectId: String!): ProjectEntity!
-  addImage(file: Upload!): String!
+  addImage(input: ProjectFileInput!): String!
   createDocument(input: DocumentCreateInput!, projectId: String!): DocumentEntity!
   changeDocument(input: DocumentChangeInput!, documentId: String!): DocumentEntity!
   createConversation(input: ConversationCreateInput!, documentId: String!): ConversationEntity!
@@ -92,6 +92,10 @@ type ProjectEntity {
   avatar: String!
   name: String!
   user: UserEntity!
+}
+
+input ProjectFileInput {
+  file: Upload!
 }
 
 type Query {
