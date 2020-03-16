@@ -20,8 +20,7 @@ export class UploadService {
   async uploadFile(file: File): Promise<void> {
     const s3 = this.getS3();
     const extension = fileExtension(file.filename);
-    const filename = `dir/${uuidv1()}.${extension}`;
-    console.log(filename)
+    const filename = `uploads/${uuidv1()}.${extension}`;
     await s3.upload(
       {
         Bucket: 'jitsu',
