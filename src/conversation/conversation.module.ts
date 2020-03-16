@@ -11,10 +11,19 @@ import { ProjectEntity } from '../project/project.entity';
 import { ConversationResolvers } from './conversation.resolvers';
 import { PubSubService } from '../common/services/pubsub.service';
 import { InviteEntity } from '../invite/invite.entity';
+import { UploadService } from '../upload/upload.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ConversationEntity, UserEntity, DocumentEntity, ProjectEntity, InviteEntity])],
-  providers: [PubSubService, ConversationService, ConversationResolvers, UserService, DocumentService, ProjectService],
+  providers: [
+    PubSubService,
+    ConversationService,
+    ConversationResolvers,
+    UserService,
+    DocumentService,
+    ProjectService,
+    UploadService,
+  ],
   exports: [ConversationService],
 })
 export class ConversationModule {}

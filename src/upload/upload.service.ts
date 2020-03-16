@@ -1,9 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import S3 from 'aws-sdk/clients/s3';
-import { File } from '../common/scalars/upload.scalar';
+import S3, { ManagedUpload } from 'aws-sdk/clients/s3';
 import sharp from 'sharp';
 import fileExtension from 'file-extension';
 import { v1 as uuidv1 } from 'uuid';
+
+export interface IFile {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  buffer: Buffer;
+  size: number;
+}
+
+export enum EUploadDirectory {
+  ProjectAvatar = 'uploads/projects/avatars/',
+}
 
 @Injectable()
 export class UploadService {
@@ -17,21 +29,28 @@ export class UploadService {
     });
   }
 
-  async uploadFile(file: File): Promise<void> {
+  async uploadFile(file: IFile, uploadDir: EUploadDirectory): Promise<ManagedUpload.SendData> {
     const s3 = this.getS3();
-    const extension = fileExtension(file.filename);
-    const filename = `uploads/${uuidv1()}.${extension}`;
-    await s3.upload(
-      {
-        Bucket: 'jitsu',
-        Key: filename,
-        Body: file.createReadStream(),
-        ContentEncoding: file.encoding,
-        ContentType: file.mimetype,
-      },
-      (err, data) => {
-        console.log(err, data);
-      },
-    );
+    const extension = fileExtension(file.originalname);
+    const filename = `${uploadDir}${uuidv1()}.${extension}`;
+
+    return new Promise((resolve, reject) => {
+      s3.upload(
+        {
+          Bucket: 'jitsu',
+          Key: filename,
+          Body: file.buffer,
+          ContentEncoding: file.encoding,
+          ContentType: file.mimetype,
+        },
+        (err, data) => {
+          if (err) {
+            reject(err);
+          }
+
+          resolve(data);
+        },
+      );
+    });
   }
 }

@@ -72,7 +72,6 @@ type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!
   createProject(input: ProjectCreateInput!): ProjectEntity!
   changeProject(input: ProjectChangeInput!, projectId: String!): ProjectEntity!
-  addImage(input: Upload!): String!
   createDocument(input: DocumentCreateInput!, projectId: String!): DocumentEntity!
   changeDocument(input: DocumentChangeInput!, documentId: String!): DocumentEntity!
   createConversation(input: ConversationCreateInput!, documentId: String!): ConversationEntity!
@@ -89,7 +88,7 @@ input ProjectCreateInput {
 
 type ProjectEntity {
   id: ID!
-  avatar: String!
+  avatar: String
   name: String!
   user: UserEntity!
 }
@@ -121,9 +120,6 @@ type TimelineEntity {
   date: Date!
   eventName: String!
 }
-
-"""Upload custom scalar type"""
-scalar Upload
 
 type UserEntity {
   id: ID!

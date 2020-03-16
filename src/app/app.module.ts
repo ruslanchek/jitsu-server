@@ -16,7 +16,6 @@ import { TimelineModule } from '../timeline/timeline.module';
 import { TimelineEntity } from '../timeline/timeline.entity';
 import { InviteEntity } from '../invite/invite.entity';
 import { InviteModule } from '../invite/invite.module';
-import { UploadScalar } from '../common/scalars/upload.scalar';
 import { DateScalar } from '../common/scalars/date.scalar';
 import { UploadModule } from '../upload/upload.module';
 
@@ -58,6 +57,6 @@ import { UploadModule } from '../upload/upload.module';
     InviteModule,
     UploadModule,
   ],
-  providers: [UploadScalar, DateScalar],
+  providers: [DateScalar],
 })
 export class AppModule {}

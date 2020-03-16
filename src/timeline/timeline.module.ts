@@ -11,6 +11,7 @@ import { ProjectEntity } from '../project/project.entity';
 import { ProjectService } from '../project/project.service';
 import { PubSubService } from '../common/services/pubsub.service';
 import { InviteEntity } from '../invite/invite.entity';
+import { UploadService } from '../upload/upload.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TimelineEntity, UserEntity, DocumentEntity, ProjectEntity, InviteEntity])],
@@ -21,6 +22,7 @@ import { InviteEntity } from '../invite/invite.entity';
     UserService,
     ProjectService,
     TimelineResolvers,
+    UploadService,
   ],
   exports: [TimelineService],
 })

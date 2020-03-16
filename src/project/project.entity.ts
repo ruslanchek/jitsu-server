@@ -10,7 +10,7 @@ export class ProjectEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Field(type => String)
+  @Field(type => String, { nullable: true })
   @Column({ nullable: true })
   avatar: string;
 

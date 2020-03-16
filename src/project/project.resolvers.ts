@@ -7,16 +7,10 @@ import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
-import { UploadScalar, File } from '../common/scalars/upload.scalar';
-import { UploadService } from '../upload/upload.service';
 
 @Resolver(of => ProjectEntity)
 export class ProjectResolvers {
-  constructor(
-    private readonly pubSubService: PubSubService,
-    private readonly projectService: ProjectService,
-    private readonly uploadService: UploadService,
-  ) {}
+  constructor(private readonly pubSubService: PubSubService, private readonly projectService: ProjectService) {}
 
   @Query(returns => ProjectEntity)
   @UseGuards(GqlAuthGuard)
@@ -50,15 +44,6 @@ export class ProjectResolvers {
     @Args('input') input: ProjectChangeInput,
   ): Promise<ProjectEntity> {
     return await this.projectService.change(user.id, projectId, input);
-  }
-
-  @Mutation(returns => String)
-  async addImage(
-    @CurrentUser() user: IAuthCurrentUserPayload,
-    @Args({ name: 'input', type: () => UploadScalar }) input: File,
-  ): Promise<string> {
-    await this.uploadService.uploadFile(input);
-    return '';
   }
 
   @Subscription(returns => ProjectEntity)

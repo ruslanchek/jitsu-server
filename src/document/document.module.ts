@@ -12,6 +12,7 @@ import { PubSubService } from '../common/services/pubsub.service';
 import { TimelineService } from '../timeline/timeline.service';
 import { TimelineEntity } from '../timeline/timeline.entity';
 import { InviteEntity } from '../invite/invite.entity';
+import { UploadService } from '../upload/upload.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DocumentEntity, UserEntity, ProjectEntity, InviteEntity, TimelineEntity])],
@@ -25,6 +26,7 @@ import { InviteEntity } from '../invite/invite.entity';
     DocumentTypeScalar,
     DocumentPriorityScalar,
     DocumentStatusScalar,
+    UploadService,
   ],
   exports: [DocumentService],
 })
