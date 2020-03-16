@@ -46,9 +46,7 @@ import { DateScalar } from '../common/scalars/date.scalar';
       resolvers: { JSON: GraphQLJSON },
       autoSchemaFile: 'schema.graphql',
       uploads: true,
-      context: ({ req }) => {
-        return req;
-      },
+      context: ({ req }) => req,
     }),
     AuthModule,
     UserModule,
