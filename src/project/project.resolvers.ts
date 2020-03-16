@@ -8,10 +8,15 @@ import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { IAuthCurrentUserPayload } from '../auth/jwt.strategy';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 import { UploadScalar, File } from '../common/scalars/upload.scalar';
+import { UploadService } from '../upload/upload.service';
 
 @Resolver(of => ProjectEntity)
 export class ProjectResolvers {
-  constructor(private readonly pubSubService: PubSubService, private readonly projectService: ProjectService) {}
+  constructor(
+    private readonly pubSubService: PubSubService,
+    private readonly projectService: ProjectService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Query(returns => ProjectEntity)
   @UseGuards(GqlAuthGuard)
@@ -52,7 +57,7 @@ export class ProjectResolvers {
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args({ name: 'input', type: () => UploadScalar }) input: File,
   ): Promise<string> {
-    console.log(input);
+    await this.uploadService.uploadFile(input);
     return '';
   }
 

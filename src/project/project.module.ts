@@ -7,10 +7,11 @@ import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/user.entity';
 import { PubSubService } from '../common/services/pubsub.service';
 import { InviteEntity } from '../invite/invite.entity';
+import { UploadService } from '../upload/upload.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ProjectEntity, InviteEntity, UserEntity])],
-  providers: [PubSubService, ProjectService, ProjectResolvers, UserService],
+  providers: [PubSubService, ProjectService, ProjectResolvers, UserService, UploadService],
   exports: [ProjectService],
 })
 export class ProjectModule {}
