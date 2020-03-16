@@ -11,7 +11,7 @@ export class ProjectEntity {
   id!: string;
 
   @Field(type => String)
-  @Column()
+  @Column({ nullable: true })
   avatar: string;
 
   @Field(type => String)

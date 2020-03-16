@@ -72,10 +72,20 @@ scalar JSON
 type Mutation {
   register(input: UserInputRegister!): UserTokenResponse!
   createProject(input: ProjectCreateInput!): ProjectEntity!
+  changeProject(input: ProjectChangeInput!, projectId: String!): ProjectEntity!
+  addImage(image: Upload!): String!
   createDocument(input: DocumentCreateInput!, projectId: String!): DocumentEntity!
   changeDocument(input: DocumentChangeInput!, documentId: String!): DocumentEntity!
   createConversation(input: ConversationCreateInput!, documentId: String!): ConversationEntity!
   createInvite(input: InviteCreateInput!, projectId: String!): InviteEntity!
+}
+
+input ProjectChangeAvatarInput {
+  avatar: String!
+}
+
+input ProjectChangeInput {
+  name: String!
 }
 
 input ProjectCreateInput {
@@ -84,6 +94,7 @@ input ProjectCreateInput {
 
 type ProjectEntity {
   id: ID!
+  avatar: String!
   name: String!
   user: UserEntity!
 }
@@ -103,6 +114,7 @@ type Query {
 
 type Subscription {
   projectCreated: ProjectEntity!
+  projectChanged: ProjectEntity!
   documentCreated: DocumentEntity!
   documentChanged: DocumentEntity!
   conversationCreated: ConversationEntity!
@@ -114,6 +126,9 @@ type TimelineEntity {
   date: Date!
   eventName: String!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type UserEntity {
   id: ID!
