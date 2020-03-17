@@ -21,19 +21,16 @@ export enum EUploadDirectory {
 export class UploadService {
   private getS3() {
     return new S3({
-      accessKeyId: 'minioadmin',
-      secretAccessKey: 'minioadmin',
-      endpoint: 'http://127.0.0.1:9000',
-      s3ForcePathStyle: true,
-      signatureVersion: 'v4',
+      accessKeyId: '5QBMGAK5DZHDIBVU3WRK',
+      secretAccessKey: '/84ibtGAuOhzPNXln+JxJLZxe6TvwGbPjnAEhpl0gmQ',
+      endpoint: 'https://fra1.digitaloceanspaces.com',
     });
   }
 
-  async uploadFile(file: IFile, uploadDir: EUploadDirectory): Promise<ManagedUpload.SendData> {
+  async uploadFile(file: IFile, uploadDir: EUploadDirectory, customFileName?: string): Promise<ManagedUpload.SendData> {
     const s3 = this.getS3();
     const extension = fileExtension(file.originalname);
-    const filename = `${uploadDir}${uuidv1()}.${extension}`;
-
+    const filename = `${uploadDir}${customFileName ? customFileName : uuidv1()}.${extension}`;
     return new Promise((resolve, reject) => {
       s3.upload(
         {
@@ -42,6 +39,7 @@ export class UploadService {
           Body: file.buffer,
           ContentEncoding: file.encoding,
           ContentType: file.mimetype,
+          ACL: 'public-read',
         },
         (err, data) => {
           if (err) {

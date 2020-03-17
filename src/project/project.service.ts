@@ -77,7 +77,7 @@ export class ProjectService {
       throw new NotFoundException(EErrorMessage.ProjectNotFound);
     }
 
-    const result = await this.uploadService.uploadFile(file, EUploadDirectory.ProjectAvatar);
+    const result = await this.uploadService.uploadFile(file, EUploadDirectory.ProjectAvatar, project.id);
 
     if (result.Location) {
       await this.projectRepository.update(
