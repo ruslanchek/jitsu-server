@@ -21,7 +21,7 @@ export interface IFile {
 export interface IUploadOptions {
   uploadDir: EUploadDirectory;
   customFileName?: string;
-  size?: {
+  size: {
     width: number;
     height: number;
   };
@@ -63,15 +63,14 @@ export class UploadService {
     });
   }
 
-  async uploadImage(file: IFile, options: IUploadOptions): Promise<IUploadResult[]> {
-    const { uploadDir, customFileName } = options;
+  async uploadImage(file: Buffer, options: IUploadOptions): Promise<IUploadResult[]> {
+    const { uploadDir, customFileName, size } = options;
     const filename = `${uploadDir}${customFileName ? customFileName : uuidv1()}`;
-    const sharped = await sharp(file.buffer);
+    const sharped = await sharp(file).resize(size.width, size.height);
     const jpeg = await sharped.jpeg({
       quality: 95,
     });
     const webp = await sharped.webp();
-
     return [
       {
         format: 'jpeg',

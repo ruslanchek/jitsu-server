@@ -18,6 +18,7 @@ import { InviteEntity } from '../invite/invite.entity';
 import { InviteModule } from '../invite/invite.module';
 import { DateScalar } from '../common/scalars/date.scalar';
 import { UploadModule } from '../upload/upload.module';
+import { AvatarModule } from '../avatar/avatar.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { UploadModule } from '../upload/upload.module';
     TimelineModule,
     InviteModule,
     UploadModule,
+    AvatarModule,
   ],
   providers: [DateScalar],
 })
