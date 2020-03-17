@@ -55,8 +55,8 @@ export class TimelineService {
       document,
       user,
     });
-    const createdTimeline = await this.getTimeline(user.id, result.identifiers[0].id);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.TimelineCreated, { timelineCreated: createdTimeline });
-    return createdTimeline;
+    const timelineCreated = await this.getTimeline(user.id, result.identifiers[0].id);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.TimelineCreated, { timelineCreated });
+    return timelineCreated;
   }
 }

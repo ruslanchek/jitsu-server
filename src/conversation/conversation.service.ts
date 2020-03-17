@@ -64,10 +64,10 @@ export class ConversationService {
       document,
       user,
     });
-    const createdConversation = await this.getConversation(user.id, result.identifiers[0].id);
+    const conversationCreated = await this.getConversation(user.id, result.identifiers[0].id);
     await this.pubSubService.pubSub.publish(EPubSubTriggers.ConversationCreated, {
-      conversationCreated: createdConversation,
+      conversationCreated,
     });
-    return createdConversation;
+    return conversationCreated;
   }
 }

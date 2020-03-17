@@ -51,9 +51,9 @@ export class DocumentService {
       project,
       user,
     });
-    const createdDocument = await this.getDocument(user.id, result.identifiers[0].id);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentCreated, { documentCreated: createdDocument });
-    return createdDocument;
+    const documentCreated = await this.getDocument(user.id, result.identifiers[0].id);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentCreated, { documentCreated });
+    return documentCreated;
   }
 
   async change(userId: string, documentId: string, input: DocumentChangeInput): Promise<DocumentEntity> {
@@ -63,8 +63,8 @@ export class DocumentService {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
     await this.documentRepository.update({ id: documentId, user }, input);
-    const changedDocument = await this.getDocument(user.id, documentId);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentChanged, { documentChanged: changedDocument });
-    return changedDocument;
+    const documentChanged = await this.getDocument(user.id, documentId);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.DocumentChanged, { documentChanged });
+    return documentChanged;
   }
 }

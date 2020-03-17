@@ -53,9 +53,9 @@ export class ProjectService {
       ...input,
       user,
     });
-    const createdProject = await this.getProject(userId, result.identifiers[0].id);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectCreated, { projectCreated: createdProject });
-    return createdProject;
+    const projectCreated = await this.getProject(userId, result.identifiers[0].id);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectCreated, { projectCreated });
+    return projectCreated;
   }
 
   async change(userId: string, projectId: string, input: ProjectChangeInput): Promise<ProjectEntity> {
@@ -65,9 +65,9 @@ export class ProjectService {
       throw new NotFoundException(EErrorMessage.ProjectNotFound);
     }
     await this.projectRepository.update({ id: projectId, user }, input);
-    const changedProject = await this.getProject(user.id, projectId);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectChanged, { projectChanged: changedProject });
-    return changedProject;
+    const projectChanged = await this.getProject(user.id, projectId);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.ProjectChanged, { projectChanged });
+    return projectChanged;
   }
 
   async uploadAvatar(userId: string, projectId: string, file: IFile): Promise<string> {

@@ -52,8 +52,8 @@ export class InviteService {
       invitedUserEmail: input.invitedUserEmail,
     });
 
-    const createdInvite = await this.getInvite(user.id, result.identifiers[0].id);
-    await this.pubSubService.pubSub.publish(EPubSubTriggers.InviteCreated, { invite: createdInvite });
-    return createdInvite;
+    const inviteCreated = await this.getInvite(user.id, result.identifiers[0].id);
+    await this.pubSubService.pubSub.publish(EPubSubTriggers.InviteCreated, { inviteCreated });
+    return inviteCreated;
   }
 }
