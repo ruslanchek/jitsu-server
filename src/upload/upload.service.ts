@@ -79,7 +79,7 @@ export class UploadService {
       },
       {
         format: 'webp',
-        url: (await this.upload(await webp.toBuffer(), `${filename}.jpeg`, 'image/webp')).Location,
+        url: (await this.upload(await webp.toBuffer(), `${filename}.webp`, 'image/webp')).Location,
       },
     ];
   }
