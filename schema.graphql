@@ -88,7 +88,7 @@ input ProjectCreateInput {
 
 type ProjectEntity {
   id: ID!
-  avatar: String
+  avatar: JSON!
   name: String!
   user: UserEntity!
 }

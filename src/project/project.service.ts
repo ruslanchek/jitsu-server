@@ -7,7 +7,7 @@ import { ProjectChangeInput, ProjectCreateInput } from './project.inputs';
 import { EErrorMessage } from '../messages';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 import { InviteEntity } from '../invite/invite.entity';
-import { EUploadDirectory, IFile, UploadService } from '../upload/upload.service';
+import { EUploadDirectory, IFile, IUploadResult, UploadService } from '../upload/upload.service';
 
 @Injectable()
 export class ProjectService {
@@ -70,27 +70,27 @@ export class ProjectService {
     return projectChanged;
   }
 
-  async uploadAvatar(userId: string, projectId: string, file: IFile): Promise<string> {
+  async uploadAvatar(userId: string, projectId: string, file: IFile): Promise<IUploadResult[]> {
     const user = await this.userService.findById(userId);
     const project = await this.getProject(user.id, projectId);
     if (!project) {
       throw new NotFoundException(EErrorMessage.ProjectNotFound);
     }
 
-    const result = await this.uploadService.uploadFile(file, {
+    const result = await this.uploadService.uploadImage(file, {
       uploadDir: EUploadDirectory.ProjectAvatar,
       customFileName: project.id,
     });
 
-    if (result.Location) {
+    if (result) {
       await this.projectRepository.update(
         { id: projectId, user },
         {
-          avatar: result.Location,
+          avatar: result,
         },
       );
 
-      return result.Location;
+      return result;
     } else {
       throw new InternalServerErrorException();
     }
