@@ -3,6 +3,7 @@ import S3, { ManagedUpload } from 'aws-sdk/clients/s3';
 import sharp from 'sharp';
 import fileExtension from 'file-extension';
 import { v1 as uuidv1 } from 'uuid';
+import { ENV } from '../env';
 
 export interface IFile {
   fieldname: string;
@@ -13,6 +14,11 @@ export interface IFile {
   size: number;
 }
 
+export interface IUploadOptions {
+  uploadDir: EUploadDirectory;
+  customFileName?: string;
+}
+
 export enum EUploadDirectory {
   ProjectAvatar = 'uploads/projects/avatars/',
 }
@@ -21,20 +27,21 @@ export enum EUploadDirectory {
 export class UploadService {
   private getS3() {
     return new S3({
-      accessKeyId: '5QBMGAK5DZHDIBVU3WRK',
-      secretAccessKey: '/84ibtGAuOhzPNXln+JxJLZxe6TvwGbPjnAEhpl0gmQ',
-      endpoint: 'https://fra1.digitaloceanspaces.com',
+      accessKeyId: ENV.S3_KEY,
+      secretAccessKey: ENV.JWT_SECRET,
+      endpoint: ENV.S3_ENDPOINT,
     });
   }
 
-  async uploadFile(file: IFile, uploadDir: EUploadDirectory, customFileName?: string): Promise<ManagedUpload.SendData> {
+  async uploadFile(file: IFile, options: IUploadOptions): Promise<ManagedUpload.SendData> {
     const s3 = this.getS3();
+    const { uploadDir, customFileName } = options;
     const extension = fileExtension(file.originalname);
     const filename = `${uploadDir}${customFileName ? customFileName : uuidv1()}.${extension}`;
     return new Promise((resolve, reject) => {
       s3.upload(
         {
-          Bucket: 'jitsu',
+          Bucket: ENV.S3_BUCKET,
           Key: filename,
           Body: file.buffer,
           ContentEncoding: file.encoding,

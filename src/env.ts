@@ -9,4 +9,9 @@ export const ENV = {
   PG_USER: process.env.PG_USER,
   PG_PASS: process.env.PG_PASS,
   PG_DB: process.env.PG_DB,
+
+  S3_ENDPOINT: process.env.S3_ENDPOINT,
+  S3_KEY: process.env.S3_KEY,
+  S3_SECRET: process.env.S3_SECRET,
+  S3_BUCKET: process.env.S3_BUCKET,
 };
