@@ -14,7 +14,7 @@ export class AvatarService {
         color: 0.62,
         grayscale: 0.92,
       },
-      backColor: '#2a4766ff',
+      backColor: '#182C49',
       padding: 0.08,
     });
   }
