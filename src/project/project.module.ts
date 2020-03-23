@@ -10,10 +10,11 @@ import { InviteEntity } from '../invite/invite.entity';
 import { UploadService } from '../upload/upload.service';
 import { ProjectController } from './project.controller';
 import { AvatarService } from '../avatar/avatar.service';
+import { EmailService } from '../email/email.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ProjectEntity, InviteEntity, UserEntity])],
-  providers: [PubSubService, ProjectService, ProjectResolvers, UserService, UploadService, AvatarService],
+  providers: [PubSubService, ProjectService, ProjectResolvers, UserService, UploadService, AvatarService, EmailService],
   exports: [ProjectService],
   controllers: [ProjectController],
 })

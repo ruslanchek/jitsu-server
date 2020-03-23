@@ -14,12 +14,14 @@ import { EErrorMessage } from '../messages';
 import { ENV } from '../env';
 import { UserTokenResponse } from './user.responses';
 import { uniqueNamesGenerator, adjectives, colors, countries } from 'unique-names-generator';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly emailService: EmailService,
   ) {}
 
   private generateNickname() {
@@ -126,6 +128,8 @@ export class UserService {
         emailConfirmationCode,
       });
       if (result.identifiers.length > 0) {
+        const user = await this.findById(result.identifiers[0].id);
+        await this.emailService.sendWelcome(user, {});
         return this.generateTokenResponse(result.identifiers[0].id);
       } else {
         throw new InternalServerErrorException(EErrorMessage.ServerError);

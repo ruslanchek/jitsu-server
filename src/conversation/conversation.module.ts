@@ -13,6 +13,7 @@ import { PubSubService } from '../common/services/pubsub.service';
 import { InviteEntity } from '../invite/invite.entity';
 import { UploadService } from '../upload/upload.service';
 import { AvatarService } from '../avatar/avatar.service';
+import { EmailService } from '../email/email.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ConversationEntity, UserEntity, DocumentEntity, ProjectEntity, InviteEntity])],
@@ -25,6 +26,7 @@ import { AvatarService } from '../avatar/avatar.service';
     ProjectService,
     UploadService,
     AvatarService,
+    EmailService,
   ],
   exports: [ConversationService],
 })

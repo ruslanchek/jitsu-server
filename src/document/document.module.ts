@@ -14,6 +14,7 @@ import { TimelineEntity } from '../timeline/timeline.entity';
 import { InviteEntity } from '../invite/invite.entity';
 import { UploadService } from '../upload/upload.service';
 import { AvatarService } from '../avatar/avatar.service';
+import { EmailService } from '../email/email.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DocumentEntity, UserEntity, ProjectEntity, InviteEntity, TimelineEntity])],
@@ -29,6 +30,7 @@ import { AvatarService } from '../avatar/avatar.service';
     DocumentStatusScalar,
     UploadService,
     AvatarService,
+    EmailService,
   ],
   exports: [DocumentService],
 })
