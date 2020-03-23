@@ -6,5 +6,6 @@ export interface ITemplates {
 }
 
 export interface IEmailDataWelcome {
-
+  username: string;
+  name: string;
 }

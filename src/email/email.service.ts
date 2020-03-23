@@ -5,6 +5,7 @@ import { ENV } from '../env';
 import { readFileSync } from 'fs';
 import { IEmailDataWelcome, ITemplates } from './email.interfaces';
 import { UserEntity } from '../user/user.entity';
+import { URLS } from '../constants';
 
 @Injectable()
 export class EmailService {
@@ -17,11 +18,18 @@ export class EmailService {
   });
 
   private render<TData = any>(template: string, data: TData): ITemplates {
+    const sharedData = {
+      year: new Date().getFullYear(),
+      actionUrl: URLS.ACTION,
+      loginUrl: URLS.LOGIN,
+      helpUrl: URLS.HELP,
+      ...data,
+    };
     const templateHtml = readFileSync(`./email-templates/${template}/content.html`, { encoding: 'utf8' });
     const templateText = readFileSync(`./email-templates/${template}/content.txt`, { encoding: 'utf8' });
     return {
-      html: mustache.render(templateHtml, data),
-      text: mustache.render(templateText, data),
+      html: mustache.render(templateHtml, sharedData),
+      text: mustache.render(templateText, sharedData),
     };
   }
 

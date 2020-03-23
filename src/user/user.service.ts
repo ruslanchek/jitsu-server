@@ -129,7 +129,10 @@ export class UserService {
       });
       if (result.identifiers.length > 0) {
         const user = await this.findById(result.identifiers[0].id);
-        await this.emailService.sendWelcome(user, {});
+        await this.emailService.sendWelcome(user, {
+          username: user.nickname,
+          name: user.nickname,
+        });
         return this.generateTokenResponse(result.identifiers[0].id);
       } else {
         throw new InternalServerErrorException(EErrorMessage.ServerError);
