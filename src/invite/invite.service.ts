@@ -35,13 +35,20 @@ export class InviteService {
     });
   }
 
-  async getInvite(userId: string, inviteId: string): Promise<InviteEntity> {
-    const user = await this.userService.findById(userId);
+  async getInvite(
+    userId: string,
+    inviteId: string,
+    select?: Array<keyof InviteEntity>,
+    relations?: Array<keyof InviteEntity>,
+  ): Promise<InviteEntity> {
+    const invitedByUser = await this.userService.findById(userId);
     const invite = await this.inviteRepository.findOne({
       where: {
         id: inviteId,
-        user,
+        invitedByUser,
       },
+      relations,
+      select,
     });
     if (invite) {
       return invite;
@@ -61,7 +68,7 @@ export class InviteService {
   }
 
   async create(userId: string, projectId: string, input: InviteCreateInput): Promise<InviteEntity> {
-    const user = await this.userService.findById(userId);
+    const invitedByUser = await this.userService.findById(userId);
     const project = await this.projectService.getProject(userId, projectId);
     const alreadyInvitedUser = await this.inviteRepository.findOne({
       where: {
@@ -77,20 +84,21 @@ export class InviteService {
     const code = this.generateCodeHash(`${userId}${projectId}${input.invitedUserEmail}`);
     const result = await this.inviteRepository.insert({
       project,
-      invitedByUser: user,
+      invitedByUser,
       invitedUserEmail: input.invitedUserEmail,
       code,
     });
 
-    const inviteCreated = await this.getInvite(user.id, result.identifiers[0].id);
-    await this.sendInvite(input.invitedUserEmail, user, code);
+    const inviteCreated = await this.getInvite(invitedByUser.id, result.identifiers[0].id);
+    await this.sendInvite(input.invitedUserEmail, invitedByUser, code);
     await this.pubSubService.pubSub.publish(EPubSubTriggers.InviteCreated, { inviteCreated });
     return inviteCreated;
   }
 
   async resend(userId: string, inviteId: string): Promise<InviteEntity> {
-    const invite = await this.getInvite(userId, inviteId);
-    await this.sendInvite(invite.invitedUserEmail, invite.invitedByUser, invite.code);
+    const invitedByUser = await this.userService.findById(userId);
+    const invite = await this.getInvite(userId, inviteId, ['id', 'active', 'date', 'code', 'invitedUserEmail']);
+    await this.sendInvite(invite.invitedUserEmail, invitedByUser, invite.code);
     return invite;
   }
 }

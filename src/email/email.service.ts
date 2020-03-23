@@ -53,7 +53,7 @@ export class EmailService {
 
   public async sendInvite(email: string, data: IEmailDataInvite) {
     try {
-      await this.send('Welcome to Jitsu!', email, this.render<IEmailDataInvite>('welcome', data));
+      await this.send('Welcome to Jitsu!', email, this.render<IEmailDataInvite>('user-invitation', data));
     } catch (e) {
       console.log(e);
     }

@@ -99,11 +99,12 @@ type Query {
   getProject(projectId: String!): ProjectEntity!
   getProjects: [ProjectEntity!]!
   getDocument(documentId: String!): DocumentEntity!
-  getDocuments(projectId: String!): [InviteEntity!]!
+  getDocuments(projectId: String!): [DocumentEntity!]!
   getConversation(conversationId: String!): ConversationEntity!
   getConversations(documentId: String!): [ConversationEntity!]!
   getTimeline(timelineId: String!): TimelineEntity!
   getTimelines(documentId: String!): [TimelineEntity!]!
+  getInvites(projectId: String!): [InviteEntity!]!
   resendInvite(inviteId: String!): InviteEntity!
 }
 

@@ -14,7 +14,7 @@ export class InviteResolvers {
 
   @Query(returns => [InviteEntity])
   @UseGuards(GqlAuthGuard)
-  async getDocuments(
+  async getInvites(
     @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('projectId') projectId: string,
   ): Promise<InviteEntity[]> {
