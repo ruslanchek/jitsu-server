@@ -14,4 +14,7 @@ export const ENV = {
   S3_KEY: process.env.S3_KEY,
   S3_SECRET: process.env.S3_SECRET,
   S3_BUCKET: process.env.S3_BUCKET,
+
+  SMTP_EMAIL_ADDRESS: process.env.SMTP_EMAIL_ADDRESS,
+  SMTP_EMAIL_PASSWORD: process.env.SMTP_EMAIL_PASSWORD,
 };

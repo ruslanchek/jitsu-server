@@ -42,7 +42,7 @@
     "jdenticon": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "mustache": "^4.0.1",
-    "nodemailer": "^6.4.5",
+    "nodemailer": "^6.4.6",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",

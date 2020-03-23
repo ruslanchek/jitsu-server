@@ -19,6 +19,7 @@ import { InviteModule } from '../invite/invite.module';
 import { DateScalar } from '../common/scalars/date.scalar';
 import { UploadModule } from '../upload/upload.module';
 import { AvatarModule } from '../avatar/avatar.module';
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { AvatarModule } from '../avatar/avatar.module';
     InviteModule,
     UploadModule,
     AvatarModule,
+    EmailModule,
   ],
   providers: [DateScalar],
 })
