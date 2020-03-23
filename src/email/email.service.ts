@@ -3,9 +3,9 @@ import nodemailer from 'nodemailer';
 import mustache from 'mustache';
 import { ENV } from '../env';
 import { readFileSync } from 'fs';
-import { IEmailDataWelcome, ITemplates } from './email.interfaces';
+import { IEmailDataInvite, IEmailDataWelcome, ITemplates } from './email.interfaces';
 import { UserEntity } from '../user/user.entity';
-import { URLS } from '../constants';
+import { EMAIL_DATA } from '../constants';
 
 @Injectable()
 export class EmailService {
@@ -20,9 +20,9 @@ export class EmailService {
   private render<TData = any>(template: string, data: TData): ITemplates {
     const sharedData = {
       year: new Date().getFullYear(),
-      actionUrl: URLS.ACTION,
-      loginUrl: URLS.LOGIN,
-      helpUrl: URLS.HELP,
+      loginUrl: EMAIL_DATA.LOGIN,
+      helpUrl: EMAIL_DATA.HELP,
+      supportEmail: EMAIL_DATA.SUPPORT_EMAIL,
       ...data,
     };
     const templateHtml = readFileSync(`./email-templates/${template}/content.html`, { encoding: 'utf8' });
@@ -33,19 +33,27 @@ export class EmailService {
     };
   }
 
-  private async send(subject: string, user: UserEntity, templates: ITemplates) {
+  private async send(subject: string, email: string, templates: ITemplates) {
     return await this.transport.sendMail({
       subject,
-      from: 'mail@jitsu.works',
-      sender: 'Jitsu',
-      to: user.email,
+      from: EMAIL_DATA.EMAIL,
+      sender: EMAIL_DATA.SENDER,
+      to: email,
       ...templates,
     });
   }
 
-  public async sendWelcome(user: UserEntity, data: IEmailDataWelcome) {
+  public async sendWelcome(email: string, data: IEmailDataWelcome) {
     try {
-      await this.send('Welcome to Jitsu!', user, this.render<IEmailDataWelcome>('welcome', data));
+      await this.send('Welcome to Jitsu!', email, this.render<IEmailDataWelcome>('welcome', data));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async sendInvite(email: string, data: IEmailDataInvite) {
+    try {
+      await this.send('Welcome to Jitsu!', email, this.render<IEmailDataInvite>('welcome', data));
     } catch (e) {
       console.log(e);
     }

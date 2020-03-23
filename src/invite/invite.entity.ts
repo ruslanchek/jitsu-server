@@ -37,4 +37,7 @@ export class InviteEntity {
   @Field(type => String)
   @Column({ type: 'text', unique: true })
   invitedUserEmail: string;
+
+  @Column({ default: '' })
+  code: string;
 }

@@ -129,9 +129,10 @@ export class UserService {
       });
       if (result.identifiers.length > 0) {
         const user = await this.findById(result.identifiers[0].id);
-        await this.emailService.sendWelcome(user, {
+        await this.emailService.sendWelcome(user.email, {
           username: user.nickname,
           name: user.nickname,
+          actionUrl: `https://app.jitsu.works`
         });
         return this.generateTokenResponse(result.identifiers[0].id);
       } else {
