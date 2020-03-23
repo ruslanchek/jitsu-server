@@ -61,7 +61,6 @@ export class InviteService {
   }
 
   async create(userId: string, projectId: string, input: InviteCreateInput): Promise<InviteEntity> {
-    const code = this.generateCodeHash(`${userId}${projectId}${input.invitedUserEmail}`);
     const user = await this.userService.findById(userId);
     const project = await this.projectService.getProject(userId, projectId);
     const alreadyInvitedUser = await this.inviteRepository.findOne({
@@ -75,13 +74,16 @@ export class InviteService {
       throw new ConflictException(EErrorMessage.UserAlreadyInvited);
     }
 
+    const code = this.generateCodeHash(`${userId}${projectId}${input.invitedUserEmail}`);
     const result = await this.inviteRepository.insert({
       project,
       invitedByUser: user,
       invitedUserEmail: input.invitedUserEmail,
+      code,
     });
 
     const inviteCreated = await this.getInvite(user.id, result.identifiers[0].id);
+    await this.sendInvite(input.invitedUserEmail, user, code);
     await this.pubSubService.pubSub.publish(EPubSubTriggers.InviteCreated, { inviteCreated });
     return inviteCreated;
   }
