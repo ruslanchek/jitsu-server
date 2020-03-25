@@ -104,6 +104,7 @@ type Query {
   getConversations(documentId: String!): [ConversationEntity!]!
   getTimeline(timelineId: String!): TimelineEntity!
   getTimelines(documentId: String!): [TimelineEntity!]!
+  getInvite(inviteCode: String!): InviteEntity!
   getInvites(projectId: String!): [InviteEntity!]!
   resendInvite(inviteId: String!): InviteEntity!
 }

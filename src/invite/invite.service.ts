@@ -10,6 +10,7 @@ import { EErrorMessage } from '../messages';
 import { EmailService } from '../email/email.service';
 import { UserEntity } from '../user/user.entity';
 import bcrypt from 'bcrypt';
+import { EMAIL_DATA } from '../constants';
 
 @Injectable()
 export class InviteService {
@@ -23,7 +24,7 @@ export class InviteService {
   ) {}
 
   private generateCodeHash(string: string): string {
-    return bcrypt.hashSync(`${string}${Date.now()}`, bcrypt.genSaltSync(10));
+    return encodeURIComponent(bcrypt.hashSync(`${string}${Date.now()}`, bcrypt.genSaltSync(10)));
   }
 
   async sendInvite(email: string, user: UserEntity, code: string) {
@@ -31,7 +32,15 @@ export class InviteService {
       name: email,
       inviteSenderName: user.nickname,
       inviteSenderOrganizationName: 'ORG',
-      actionUrl: `https://app.jitsu.works/invited?code=${code}`,
+      actionUrl: `${EMAIL_DATA.INVITE_LINK}${code}`,
+    });
+  }
+
+  async getInviteByCode(code: string): Promise<InviteEntity> {
+    return await this.inviteRepository.findOne({
+      where: {
+        code,
+      },
     });
   }
 

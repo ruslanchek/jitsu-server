@@ -15,6 +15,7 @@ import { ENV } from '../env';
 import { UserTokenResponse } from './user.responses';
 import { uniqueNamesGenerator, adjectives, colors, countries } from 'unique-names-generator';
 import { EmailService } from '../email/email.service';
+import { EMAIL_DATA } from '../constants';
 
 @Injectable()
 export class UserService {
@@ -37,7 +38,7 @@ export class UserService {
   }
 
   private generateCodeHash(string: string): string {
-    return bcrypt.hashSync(`${string}${Date.now()}`, bcrypt.genSaltSync(10));
+    return encodeURIComponent(bcrypt.hashSync(`${string}${Date.now()}`, bcrypt.genSaltSync(10)));
   }
 
   private generateTokenResponse(id: string) {
@@ -132,7 +133,7 @@ export class UserService {
         await this.emailService.sendWelcome(user.email, {
           username: user.nickname,
           name: user.nickname,
-          actionUrl: `https://app.jitsu.works`
+          actionUrl: EMAIL_DATA.APP_LINK,
         });
         return this.generateTokenResponse(result.identifiers[0].id);
       } else {
