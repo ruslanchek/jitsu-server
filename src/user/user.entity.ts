@@ -3,6 +3,13 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { ConversationEntity } from '../conversation/conversation.entity';
 import { TimelineEntity } from '../timeline/timeline.entity';
+import { AdminEntity } from 'nestjs-admin';
+
+export class UserEntityAdmin extends AdminEntity {
+  entity = UserEntity;
+  listDisplay = ['id', 'email', 'nickname'];
+  searchFields = ['id', 'email', 'nickname'];
+}
 
 @Entity()
 @ObjectType()
@@ -70,7 +77,6 @@ export class UserEntity {
   @OneToMany(
     type => ProjectEntity,
     project => project.user,
-    { lazy: true },
   )
   projects: ProjectEntity[];
 

@@ -1,5 +1,6 @@
 import { ENV } from '../env';
 import { Module } from '@nestjs/common';
+import { DefaultAdminModule } from 'nestjs-admin';
 import { UserModule } from '../user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -20,6 +21,7 @@ import { DateScalar } from '../common/scalars/date.scalar';
 import { UploadModule } from '../upload/upload.module';
 import { AvatarModule } from '../avatar/avatar.module';
 import { EmailModule } from '../email/email.module';
+const AdminUser = require('nestjs-admin').AdminUserEntity;
 
 @Module({
   imports: [
@@ -39,6 +41,7 @@ import { EmailModule } from '../email/email.module';
         ConversationEntity,
         TimelineEntity,
         InviteEntity,
+        AdminUser,
       ],
     }),
     GraphQLModule.forRoot({
@@ -50,6 +53,7 @@ import { EmailModule } from '../email/email.module';
       uploads: true,
       context: ({ req }) => req,
     }),
+    DefaultAdminModule,
     AuthModule,
     UserModule,
     ProjectModule,

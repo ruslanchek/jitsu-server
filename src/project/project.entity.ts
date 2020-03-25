@@ -4,6 +4,13 @@ import { UserEntity } from '../user/user.entity';
 import { DocumentEntity } from '../document/document.entity';
 import GraphQLJSON from 'graphql-type-json';
 import { IUploadResult } from '../upload/upload.service';
+import { AdminEntity } from 'nestjs-admin';
+
+export class ProjectEntityAdmin extends AdminEntity {
+  entity = ProjectEntity;
+  listDisplay = ['id', 'name'];
+  searchFields = ['id', 'name'];
+}
 
 @Entity()
 @ObjectType()
