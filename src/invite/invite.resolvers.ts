@@ -13,9 +13,7 @@ export class InviteResolvers {
   constructor(private readonly pubSubService: PubSubService, private readonly inviteService: InviteService) {}
 
   @Query((returns) => InviteEntity)
-  @UseGuards(GqlAuthGuard)
   async getInvite(
-    @CurrentUser() user: IAuthCurrentUserPayload,
     @Args('inviteCode') inviteCode: string,
   ): Promise<InviteEntity> {
     return await this.inviteService.getInviteByCode(inviteCode);
