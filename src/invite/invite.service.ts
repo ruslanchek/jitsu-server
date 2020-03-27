@@ -36,11 +36,17 @@ export class InviteService {
     });
   }
 
-  async getInviteByCode(code: string): Promise<InviteEntity> {
+  async getInviteByCode(
+    code: string,
+    select?: Array<keyof InviteEntity>,
+    relations?: Array<keyof InviteEntity>,
+  ): Promise<InviteEntity> {
     return await this.inviteRepository.findOne({
       where: {
         code,
       },
+      relations,
+      select,
     });
   }
 
@@ -78,6 +84,11 @@ export class InviteService {
 
   async create(userId: string, projectId: string, input: InviteCreateInput): Promise<InviteEntity> {
     const invitedByUser = await this.userService.findById(userId);
+
+    if (invitedByUser.email === input.invitedUserEmail) {
+      throw new ConflictException(EErrorMessage.SelfInvited);
+    }
+
     const project = await this.projectService.getProject(userId, projectId);
     const alreadyInvitedUser = await this.inviteRepository.findOne({
       where: {
@@ -109,5 +120,24 @@ export class InviteService {
     const invite = await this.getInvite(userId, inviteId, ['id', 'active', 'date', 'code', 'invitedUserEmail']);
     await this.sendInvite(invite.invitedUserEmail, invitedByUser, invite.code);
     return invite;
+  }
+
+  async accept(userId: string, inviteCode: string): Promise<InviteEntity> {
+    const user = await this.userService.findById(userId, ['id', 'email']);
+    const invite = await this.getInviteByCode(inviteCode, ['id', 'invitedUserEmail', 'active']);
+
+    if (!user || !invite || invite.invitedUserEmail !== user.email) {
+      throw new NotFoundException(EErrorMessage.InviteNotFound);
+    }
+
+    if (invite.active) {
+      throw new NotFoundException(EErrorMessage.InviteAlreadyAccepted);
+    }
+
+    invite.active = true;
+    invite.invitedUser = user;
+
+    await this.inviteRepository.save(invite);
+    return await this.getInviteByCode(inviteCode, ['id', 'active', 'date', 'invitedUserEmail']);
   }
 }

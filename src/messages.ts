@@ -22,4 +22,6 @@ export enum EErrorMessage {
   TimelineNotFound = 'TIMELINE_NOT_FOUND',
   UserAlreadyInvited = 'USER_ALREADY_INVITED',
   InviteNotFound = 'INVITE_NOT_FOUND',
+  InviteAlreadyAccepted = 'INVITE_ALREADY_ACCEPTED',
+  SelfInvited = 'SELF_INVITED',
 }

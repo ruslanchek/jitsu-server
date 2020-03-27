@@ -1,20 +1,20 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 import { UserEntity } from '../user/user.entity';
 import { ProjectEntity } from '../project/project.entity';
 
 @Entity()
 @ObjectType()
 export class InviteEntity {
-  @Field(type => ID)
+  @Field((type) => ID)
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Field(type => Boolean)
+  @Field((type) => Boolean)
   @Column({ default: false })
   active: boolean;
 
-  @Field(type => Date)
+  @Field((type) => Date)
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
@@ -22,22 +22,23 @@ export class InviteEntity {
   })
   date: Date;
 
-  @Field(type => UserEntity)
-  @OneToOne(type => UserEntity)
+  @Field((type) => UserEntity)
+  @OneToOne((type) => UserEntity)
   invitedByUser: UserEntity;
 
-  @Field(type => UserEntity)
-  @OneToOne(type => UserEntity)
+  @Field((type) => UserEntity)
+  @OneToOne((type) => UserEntity)
+  @JoinColumn()
   invitedUser: UserEntity;
 
-  @Field(type => ProjectEntity)
-  @OneToOne(type => ProjectEntity)
+  @Field((type) => ProjectEntity)
+  @OneToOne((type) => ProjectEntity)
   project: ProjectEntity;
 
-  @Field(type => String)
+  @Field((type) => String)
   @Column({ type: 'text', unique: true })
   invitedUserEmail: string;
 
-  @Column({ default: '' })
+  @Column({ default: '', unique: true })
   code: string;
 }
