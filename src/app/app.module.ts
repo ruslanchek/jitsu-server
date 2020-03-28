@@ -21,6 +21,7 @@ import { DateScalar } from '../common/scalars/date.scalar';
 import { UploadModule } from '../upload/upload.module';
 import { AvatarModule } from '../avatar/avatar.module';
 import { EmailModule } from '../email/email.module';
+import { AppController } from './app.controller';
 const AdminUser = require('nestjs-admin').AdminUserEntity;
 
 @Module({
@@ -66,5 +67,6 @@ const AdminUser = require('nestjs-admin').AdminUserEntity;
     EmailModule,
   ],
   providers: [DateScalar],
+  controllers: [AppController],
 })
 export class AppModule {}
