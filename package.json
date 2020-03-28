@@ -51,6 +51,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.4",
+    "sendpulse-api": "^1.1.4",
     "sharp": "^0.25.1",
     "type-graphql": "^0.17.6",
     "typeorm": "^0.2.22",

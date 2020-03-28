@@ -4,13 +4,12 @@ import mustache from 'mustache';
 import { ENV } from '../env';
 import { readFileSync } from 'fs';
 import { IEmailDataInvite, IEmailDataWelcome, ITemplates } from './email.interfaces';
-import { UserEntity } from '../user/user.entity';
 import { EMAIL_DATA } from '../constants';
 
 @Injectable()
 export class EmailService {
   private transport = nodemailer.createTransport({
-    service: 'gmail',
+    service: 'SendPulse',
     auth: {
       user: ENV.SMTP_EMAIL_ADDRESS,
       pass: ENV.SMTP_EMAIL_PASSWORD,
