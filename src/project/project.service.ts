@@ -42,12 +42,18 @@ export class ProjectService {
 
   async findProjects(userId: string): Promise<ProjectEntity[]> {
     const user = await this.userService.findById(userId);
-    return this.projectRepository.find({
+    const ownProjects = await this.projectRepository.find({
       join: { alias: 'projects', innerJoin: { user: 'projects.user' } },
       where: {
         user,
       },
     });
+    const invites = await this.projectInviteRepository.find({
+      where: {
+        invitedUser: user,
+      },
+    });
+    return ownProjects;
   }
 
   async create(userId: string, input: ProjectCreateInput): Promise<ProjectEntity> {
