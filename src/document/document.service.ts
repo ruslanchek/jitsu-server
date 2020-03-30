@@ -21,6 +21,7 @@ export class DocumentService {
   async getDocument(userId: string, documentId: string): Promise<DocumentEntity> {
     const user = await this.userService.findById(userId);
     const document = await this.documentRepository.findOne({
+      relations: ['project'],
       where: {
         id: documentId,
       },
