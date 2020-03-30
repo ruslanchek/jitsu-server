@@ -28,9 +28,6 @@ export class ProjectEntity {
   @Column()
   name: string;
 
-  @Field((type) => Boolean)
-  owned: boolean;
-
   @Field((type) => UserEntity)
   @ManyToOne((type) => UserEntity, (user) => user.projects, { lazy: true })
   user: UserEntity;
