@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { EDocumentPriority, EDocumentStatus, EDocumentType } from './document.scalars';
@@ -46,12 +46,12 @@ export class DocumentEntity {
   data: Object;
 
   @Field((type) => UserEntity)
-  @ManyToOne((type) => UserEntity, (user) => user.documents, { eager: true })
+  @ManyToOne((type) => UserEntity, (user) => user.documents, {eager: true})
   user: UserEntity;
 
-  @OneToMany((type) => ConversationEntity, (conversation) => conversation.document, { eager: true })
+  @OneToMany((type) => ConversationEntity, (conversation) => conversation.document)
   conversations: ConversationEntity[];
 
-  @OneToMany((type) => TimelineEntity, (timeline) => timeline.document, { eager: true })
+  @OneToMany((type) => TimelineEntity, (timeline) => timeline.document)
   timelines: TimelineEntity[];
 }

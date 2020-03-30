@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { ConversationEntity } from '../conversation/conversation.entity';
@@ -75,18 +75,18 @@ export class UserEntity {
   })
   registeredDate: Date;
 
-  @OneToMany((type) => DocumentEntity, (document) => document.user, { lazy: true })
+  @OneToMany((type) => DocumentEntity, (document) => document.user)
   documents: DocumentEntity[];
 
-  @OneToMany((type) => ProjectEntity, (project) => project.user, { lazy: true })
+  @OneToMany((type) => ProjectEntity, (project) => project.user)
   projects: ProjectEntity[];
 
-  @ManyToMany((type) => ProjectEntity, { lazy: true })
+  @ManyToMany((type) => ProjectEntity)
   invitedToProjects: ProjectEntity[];
 
-  @OneToMany((type) => ConversationEntity, (conversation) => conversation.user, { lazy: true })
+  @OneToMany((type) => ConversationEntity, (conversation) => conversation.user)
   conversations: ConversationEntity[];
 
-  @OneToMany((type) => TimelineEntity, (timeline) => timeline.user, { lazy: true })
+  @OneToMany((type) => TimelineEntity, (timeline) => timeline.user)
   timelines: TimelineEntity[];
 }
