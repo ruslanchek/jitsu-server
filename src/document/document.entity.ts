@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ProjectEntity } from '../project/project.entity';
 import { EDocumentPriority, EDocumentStatus, EDocumentType } from './document.scalars';
@@ -43,15 +43,15 @@ export class DocumentEntity {
 
   @Field((type) => UserEntity)
   @ManyToOne((type) => UserEntity, (user) => user.documents, { lazy: true })
-  user: UserEntity;
+  user: Promise<UserEntity>;
 
   @Field((type) => GraphQLJSON)
   @Column({ type: 'json', default: [] })
   data: Object;
 
   @OneToMany((type) => ConversationEntity, (conversation) => conversation.document, { lazy: true })
-  conversations: ConversationEntity[];
+  conversations: Promise<ConversationEntity[]>;
 
   @OneToMany((type) => TimelineEntity, (timeline) => timeline.document, { lazy: true })
-  timelines: TimelineEntity[];
+  timelines: Promise<TimelineEntity[]>;
 }

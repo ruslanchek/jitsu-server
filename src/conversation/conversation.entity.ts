@@ -22,9 +22,9 @@ export class ConversationEntity {
   date: Date;
 
   @ManyToOne((type) => DocumentEntity, (document) => document.conversations, { lazy: true })
-  document: DocumentEntity;
+  document: Promise<DocumentEntity>;
 
   @Field((type) => UserEntity)
   @ManyToOne((type) => UserEntity, (user) => user.conversations, { lazy: true })
-  user: UserEntity;
+  user: Promise<UserEntity>;
 }

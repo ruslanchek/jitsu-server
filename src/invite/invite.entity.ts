@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, JoinTable, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 import { ProjectEntity } from '../project/project.entity';
 
@@ -31,13 +31,13 @@ export class InviteEntity {
 
   @Field((type) => UserEntity)
   @ManyToOne((type) => UserEntity, { lazy: true })
-  invitedByUser: UserEntity;
+  invitedByUser: Promise<UserEntity>;
 
   @Field((type) => UserEntity)
   @ManyToOne((type) => UserEntity, { lazy: true })
-  invitedUser: UserEntity;
+  invitedUser: Promise<UserEntity>;
 
   @Field((type) => ProjectEntity)
   @ManyToOne((type) => ProjectEntity, (project) => project.invites, { lazy: true })
-  project: ProjectEntity;
+  project: Promise<ProjectEntity>;
 }

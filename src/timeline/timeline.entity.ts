@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { DocumentEntity } from '../document/document.entity';
 import { UserEntity } from '../user/user.entity';
+import { ProjectEntity } from "../project/project.entity";
 
 @Entity()
 @ObjectType()
@@ -23,8 +24,8 @@ export class TimelineEntity {
   eventName: string;
 
   @ManyToOne((type) => DocumentEntity, (document) => document.timelines, { lazy: true })
-  document: DocumentEntity;
+  document: Promise<DocumentEntity>;
 
   @ManyToOne((type) => UserEntity, (user) => user.timelines, { lazy: true })
-  user: UserEntity;
+  user: Promise<UserEntity>;
 }

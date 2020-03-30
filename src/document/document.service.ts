@@ -30,9 +30,7 @@ export class DocumentService {
       if (project && document) {
         return document;
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
     throw new NotFoundException(EErrorMessage.DocumentNotFound);
   }
 
