@@ -43,18 +43,21 @@ export class ProjectService {
   async findProjects(userId: string): Promise<ProjectEntity[]> {
     const user = await this.userService.findById(userId);
     const ownProjects = await this.projectRepository.find({
-      join: { alias: 'projects', innerJoin: { user: 'projects.user' } },
+      relations: ['user', 'invites'],
       where: {
         user,
       },
     });
-    const invites = await this.projectInviteRepository.find({
+    const invitedProjects: ProjectEntity[] = (await this.projectInviteRepository.find({
+      relations: ['project'],
       where: {
         invitedUser: user,
+        active: true,
       },
-    });
-    console.log(invites)
-    return ownProjects;
+    })).map(invite => invite.project);
+
+    console.log(invitedProjects);
+    return ownProjects.concat(invitedProjects);
   }
 
   async create(userId: string, input: ProjectCreateInput): Promise<ProjectEntity> {
