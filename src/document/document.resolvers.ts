@@ -9,7 +9,7 @@ import { DocumentChangeInput, DocumentCreateInput } from './document.inputs';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 import { ETimelineEventName, TimelineService } from '../timeline/timeline.service';
 
-@Resolver(of => DocumentEntity)
+@Resolver((of) => DocumentEntity)
 export class DocumentResolvers {
   constructor(
     private readonly pubSubService: PubSubService,
@@ -17,7 +17,7 @@ export class DocumentResolvers {
     private readonly timelineService: TimelineService,
   ) {}
 
-  @Query(returns => DocumentEntity)
+  @Query((returns) => DocumentEntity)
   @UseGuards(GqlAuthGuard)
   async getDocument(
     @CurrentUser() user: IAuthCurrentUserPayload,
@@ -26,7 +26,7 @@ export class DocumentResolvers {
     return await this.documentService.getDocument(user.id, documentId);
   }
 
-  @Query(returns => [DocumentEntity])
+  @Query((returns) => [DocumentEntity])
   @UseGuards(GqlAuthGuard)
   async getDocuments(
     @CurrentUser() user: IAuthCurrentUserPayload,
@@ -35,7 +35,7 @@ export class DocumentResolvers {
     return await this.documentService.findDocuments(user.id, projectId);
   }
 
-  @Mutation(returns => DocumentEntity)
+  @Mutation((returns) => DocumentEntity)
   @UseGuards(GqlAuthGuard)
   async createDocument(
     @CurrentUser() user: IAuthCurrentUserPayload,
@@ -50,7 +50,7 @@ export class DocumentResolvers {
     return createdDocument;
   }
 
-  @Mutation(returns => DocumentEntity)
+  @Mutation((returns) => DocumentEntity)
   @UseGuards(GqlAuthGuard)
   async changeDocument(
     @CurrentUser() user: IAuthCurrentUserPayload,
@@ -60,12 +60,17 @@ export class DocumentResolvers {
     return await this.documentService.change(user.id, documentId, input);
   }
 
-  @Subscription(returns => DocumentEntity)
+  @Subscription((returns) => DocumentEntity, {
+    filter: (a, b, c) => {
+      console.log(b, c);
+      return true;
+    },
+  })
   documentCreated() {
     return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.DocumentCreated);
   }
 
-  @Subscription(returns => DocumentEntity)
+  @Subscription((returns) => DocumentEntity)
   documentChanged() {
     return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.DocumentChanged);
   }

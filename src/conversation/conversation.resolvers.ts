@@ -8,14 +8,14 @@ import { ConversationCreateInput } from './conversation.inputs';
 import { ConversationService } from './conversation.service';
 import { EPubSubTriggers, PubSubService } from '../common/services/pubsub.service';
 
-@Resolver(of => ConversationEntity)
+@Resolver((of) => ConversationEntity)
 export class ConversationResolvers {
   constructor(
     private readonly pubSubService: PubSubService,
     private readonly conversationService: ConversationService,
   ) {}
 
-  @Query(returns => ConversationEntity)
+  @Query((returns) => ConversationEntity)
   @UseGuards(GqlAuthGuard)
   async getConversation(
     @CurrentUser() user: IAuthCurrentUserPayload,
@@ -24,7 +24,7 @@ export class ConversationResolvers {
     return await this.conversationService.getConversation(user.id, conversationId);
   }
 
-  @Query(returns => [ConversationEntity])
+  @Query((returns) => [ConversationEntity])
   @UseGuards(GqlAuthGuard)
   async getConversations(
     @CurrentUser() user: IAuthCurrentUserPayload,
@@ -33,7 +33,7 @@ export class ConversationResolvers {
     return await this.conversationService.findConversations(user.id, documentId);
   }
 
-  @Mutation(returns => ConversationEntity)
+  @Mutation((returns) => ConversationEntity)
   @UseGuards(GqlAuthGuard)
   async createConversation(
     @CurrentUser() user: IAuthCurrentUserPayload,
@@ -43,7 +43,7 @@ export class ConversationResolvers {
     return await this.conversationService.create(user.id, documentId, input);
   }
 
-  @Subscription(returns => ConversationEntity)
+  @Subscription((returns) => ConversationEntity)
   conversationCreated() {
     return this.pubSubService.pubSub.asyncIterator(EPubSubTriggers.ConversationCreated);
   }

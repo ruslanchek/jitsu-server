@@ -26,7 +26,6 @@ export class DocumentService {
         id: documentId,
       },
     });
-    console.log(document)
     try {
       const project = await this.projectService.getProject(user.id, document.project.id);
       if (project && document) {

@@ -1,5 +1,5 @@
 import { ENV } from '../env';
-import { Module } from '@nestjs/common';
+import { Module, UnauthorizedException } from '@nestjs/common';
 import { DefaultAdminModule } from 'nestjs-admin';
 import { UserModule } from '../user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -22,6 +22,8 @@ import { UploadModule } from '../upload/upload.module';
 import { AvatarModule } from '../avatar/avatar.module';
 import { EmailModule } from '../email/email.module';
 import { AppController } from './app.controller';
+import { ExtractJwt } from 'passport-jwt';
+import { EErrorMessage } from '../messages';
 const AdminUser = require('nestjs-admin').AdminUserEntity;
 
 @Module({
@@ -51,7 +53,19 @@ const AdminUser = require('nestjs-admin').AdminUserEntity;
       installSubscriptionHandlers: true,
       resolvers: { JSON: GraphQLJSON },
       autoSchemaFile: 'schema.graphql',
-      uploads: true,
+      subscriptions: {
+        onConnect: (connectionParams) => {
+          try {
+            const token = ExtractJwt.fromAuthHeaderAsBearerToken()({
+              headers: {
+                authorization: connectionParams['Authorization'].toLowerCase(),
+              },
+            });
+          } catch (e) {
+            throw new UnauthorizedException(EErrorMessage.Unauthorized);
+          }
+        },
+      },
       context: ({ req }) => req,
     }),
     DefaultAdminModule,
