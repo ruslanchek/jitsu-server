@@ -14,15 +14,15 @@ export class UserEntityAdmin extends AdminEntity {
 @Entity()
 @ObjectType()
 export class UserEntity {
-  @Field(type => ID)
+  @Field((type) => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(type => String)
+  @Field((type) => String)
   @Column({ type: 'text', unique: true })
   email: string;
 
-  @Field(type => String)
+  @Field((type) => String)
   @Column({
     type: 'text',
     unique: true,
@@ -62,11 +62,11 @@ export class UserEntity {
   @Column({ type: 'text', select: false, nullable: true })
   emailConfirmationCode: string;
 
-  @Field(type => Boolean)
+  @Field((type) => Boolean)
   @Column({ type: 'boolean', default: false })
   isEmailConfirmed: boolean;
 
-  @Field(type => Date)
+  @Field((type) => Date)
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
@@ -74,24 +74,15 @@ export class UserEntity {
   })
   registeredDate: Date;
 
-  @OneToMany(
-    type => ProjectEntity,
-    project => project.user,
-  )
+  @OneToMany((type) => ProjectEntity, (project) => project.user, { lazy: true })
   projects: ProjectEntity[];
 
-  @ManyToMany(type => ProjectEntity)
+  @ManyToMany((type) => ProjectEntity, { lazy: true })
   invitedToProjects: ProjectEntity[];
 
-  @OneToMany(
-    type => ConversationEntity,
-    conversation => conversation.user,
-  )
+  @OneToMany((type) => ConversationEntity, (conversation) => conversation.user, { lazy: true })
   conversations: ConversationEntity[];
 
-  @OneToMany(
-    type => TimelineEntity,
-    timeline => timeline.user,
-  )
+  @OneToMany((type) => TimelineEntity, (timeline) => timeline.user, { lazy: true })
   timelines: TimelineEntity[];
 }

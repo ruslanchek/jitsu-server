@@ -11,7 +11,7 @@ import { EmailService } from '../email/email.service';
 import { UserEntity } from '../user/user.entity';
 import bcrypt from 'bcrypt';
 import { EMAIL_DATA } from '../constants';
-import { UnauthorizedError } from 'type-graphql';
+import UnauthenticatedException from "nestjs-admin/dist/src/exceptions/unauthenticated.exception";
 
 @Injectable()
 export class InviteService {
@@ -86,11 +86,6 @@ export class InviteService {
 
   async create(userId: string, projectId: string, input: InviteCreateInput): Promise<InviteEntity> {
     const invitedByUser = await this.userService.findById(userId);
-
-    if (!invitedByUser) {
-      throw new UnauthorizedError();
-    }
-
     if (invitedByUser.email === input.invitedUserEmail) {
       throw new ConflictException(EErrorMessage.SelfInvited);
     }
@@ -123,11 +118,6 @@ export class InviteService {
 
   async resend(userId: string, inviteId: string): Promise<InviteEntity> {
     const invitedByUser = await this.userService.findById(userId);
-
-    if (!invitedByUser) {
-      throw new UnauthorizedError();
-    }
-
     const invite = await this.getInvite(userId, inviteId, ['id', 'active', 'date', 'code', 'invitedUserEmail']);
 
     if (invite.active) {
@@ -142,7 +132,7 @@ export class InviteService {
     const user = await this.userService.findById(userId, ['id', 'email']);
     const invite = await this.getInviteByCode(inviteCode, ['id', 'invitedUserEmail', 'active']);
 
-    if (!user || !invite || invite.invitedUserEmail !== user.email) {
+    if (!invite || invite.invitedUserEmail !== user.email) {
       throw new NotFoundException(EErrorMessage.InviteNotFound);
     }
 

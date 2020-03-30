@@ -57,10 +57,10 @@ type InviteEntity {
   id: ID!
   active: Boolean!
   date: Date!
+  invitedUserEmail: String!
   invitedByUser: UserEntity!
   invitedUser: UserEntity!
   project: ProjectEntity!
-  invitedUserEmail: String!
 }
 
 """
@@ -92,6 +92,7 @@ type ProjectEntity {
   avatar: JSON!
   name: String!
   user: UserEntity!
+  invites: [InviteEntity!]!
 }
 
 type Query {

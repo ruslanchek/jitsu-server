@@ -29,12 +29,13 @@ export class ProjectEntity {
   name: string;
 
   @Field((type) => UserEntity)
-  @ManyToOne((type) => UserEntity, (user) => user.projects)
+  @ManyToOne((type) => UserEntity, (user) => user.projects, { lazy: true })
   user: UserEntity;
 
-  @OneToMany((type) => InviteEntity, (invite) => invite.project)
+  @Field((type) => [InviteEntity])
+  @OneToMany((type) => InviteEntity, (invite) => invite.project, { lazy: true })
   invites: InviteEntity[];
 
-  @OneToMany((type) => DocumentEntity, (document) => document.project)
+  @OneToMany((type) => DocumentEntity, (document) => document.project, { lazy: true })
   documents: DocumentEntity[];
 }

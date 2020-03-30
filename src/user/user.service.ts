@@ -16,6 +16,7 @@ import { UserTokenResponse } from './user.responses';
 import { uniqueNamesGenerator, adjectives, colors, countries } from 'unique-names-generator';
 import { EmailService } from '../email/email.service';
 import { EMAIL_DATA } from '../constants';
+import UnauthenticatedException from "nestjs-admin/dist/src/exceptions/unauthenticated.exception";
 
 @Injectable()
 export class UserService {
@@ -81,6 +82,10 @@ export class UserService {
       relations,
       select,
     });
+
+    if(!user) {
+      throw new UnauthenticatedException();
+    }
 
     return user;
   }

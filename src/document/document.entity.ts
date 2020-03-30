@@ -10,23 +10,19 @@ import { TimelineEntity } from '../timeline/timeline.entity';
 @Entity()
 @ObjectType()
 export class DocumentEntity {
-  @Field(type => ID)
+  @Field((type) => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(type => String)
+  @Field((type) => String)
   @Column()
   name: string;
 
-  @Field(type => ProjectEntity)
-  @ManyToOne(
-    type => ProjectEntity,
-    project => project.documents,
-    { lazy: true },
-  )
+  @Field((type) => ProjectEntity)
+  @ManyToOne((type) => ProjectEntity, (project) => project.documents, { lazy: true })
   project: ProjectEntity;
 
-  @Field(type => Date)
+  @Field((type) => Date)
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
@@ -34,35 +30,29 @@ export class DocumentEntity {
   })
   dueDate: Date;
 
-  @Field(type => EDocumentType)
+  @Field((type) => EDocumentType)
   @Column({ type: 'enum', enum: EDocumentType, default: EDocumentType.Document })
   type: EDocumentType;
 
-  @Field(type => EDocumentPriority)
+  @Field((type) => EDocumentPriority)
   @Column({ type: 'enum', enum: EDocumentPriority, default: EDocumentPriority.Default })
   priority: EDocumentPriority;
 
-  @Field(type => EDocumentStatus)
+  @Field((type) => EDocumentStatus)
   @Column({ type: 'enum', enum: EDocumentStatus, default: EDocumentStatus.Idle })
   status: EDocumentStatus;
 
-  @Field(type => UserEntity)
-  @OneToOne(type => UserEntity)
+  @Field((type) => UserEntity)
+  @OneToOne((type) => UserEntity, { lazy: true })
   user: UserEntity;
 
-  @Field(type => GraphQLJSON)
+  @Field((type) => GraphQLJSON)
   @Column({ type: 'json', default: [] })
   data: Object;
 
-  @OneToMany(
-    type => ConversationEntity,
-    conversation => conversation.document,
-  )
+  @OneToMany((type) => ConversationEntity, (conversation) => conversation.document, { lazy: true })
   conversations: ConversationEntity[];
 
-  @OneToMany(
-    type => TimelineEntity,
-    timeline => timeline.document,
-  )
+  @OneToMany((type) => TimelineEntity, (timeline) => timeline.document)
   timelines: TimelineEntity[];
 }

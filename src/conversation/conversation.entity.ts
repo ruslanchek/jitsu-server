@@ -6,31 +6,25 @@ import { UserEntity } from '../user/user.entity';
 @Entity()
 @ObjectType()
 export class ConversationEntity {
-  @Field(type => ID)
+  @Field((type) => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(type => String)
+  @Field((type) => String)
   @Column()
   text: string;
 
-  @Field(type => Date)
+  @Field((type) => Date)
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   date: Date;
 
-  @ManyToOne(
-    type => DocumentEntity,
-    document => document.conversations,
-  )
+  @ManyToOne((type) => DocumentEntity, (document) => document.conversations, { lazy: true })
   document: DocumentEntity;
 
-  @Field(type => UserEntity)
-  @ManyToOne(
-    type => UserEntity,
-    user => user.conversations,
-  )
+  @Field((type) => UserEntity)
+  @ManyToOne((type) => UserEntity, (user) => user.conversations, { lazy: true })
   user: UserEntity;
 }

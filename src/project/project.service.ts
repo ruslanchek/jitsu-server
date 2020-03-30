@@ -10,6 +10,7 @@ import { InviteEntity } from '../invite/invite.entity';
 import { EUploadDirectory, IFile, IUploadResult, UploadService } from '../upload/upload.service';
 import { AvatarService } from '../avatar/avatar.service';
 import { AVATAR_SIZE } from '../constants';
+import UnauthenticatedException from "nestjs-admin/dist/src/exceptions/unauthenticated.exception";
 
 @Injectable()
 export class ProjectService {
@@ -43,21 +44,17 @@ export class ProjectService {
   async findProjects(userId: string): Promise<ProjectEntity[]> {
     const user = await this.userService.findById(userId);
     const ownProjects = await this.projectRepository.find({
-      relations: ['user', 'invites'],
       where: {
         user,
       },
     });
-    const invitedProjects: ProjectEntity[] = (await this.projectInviteRepository.find({
-      relations: ['project'],
+    const invites = await this.projectInviteRepository.find({
       where: {
         invitedUser: user,
         active: true,
       },
-    })).map(invite => invite.project);
-
-    console.log(invitedProjects);
-    return ownProjects.concat(invitedProjects);
+    });
+    return ownProjects.concat(invites.map(invite => invite.project));
   }
 
   async create(userId: string, input: ProjectCreateInput): Promise<ProjectEntity> {
