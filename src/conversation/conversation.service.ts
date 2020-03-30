@@ -27,22 +27,18 @@ export class ConversationService {
         user,
       },
     });
-
     if (conversation) {
       return conversation;
     }
-
     throw new NotFoundException(EErrorMessage.ConversationNotFound);
   }
 
   async findConversations(userId: string, documentId: string): Promise<ConversationEntity[]> {
     const user = await this.userService.findById(userId);
     const document = await this.documentService.getDocument(user.id, documentId);
-
-    if (!document || !user) {
+    if (!document) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);
     }
-
     return this.conversationRepository.find({
       join: { alias: 'conversation', innerJoinAndSelect: { user: 'conversation.user' } },
       where: {

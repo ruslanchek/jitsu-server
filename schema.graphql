@@ -31,7 +31,6 @@ input DocumentCreateInput {
 type DocumentEntity {
   id: ID!
   name: String!
-  project: ProjectEntity!
   dueDate: Date!
   type: DocumentType!
   priority: DocumentPriority!
@@ -93,6 +92,7 @@ type ProjectEntity {
   name: String!
   user: UserEntity!
   invites: [InviteEntity!]!
+  documents: [DocumentEntity!]!
 }
 
 type Query {

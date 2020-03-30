@@ -23,11 +23,15 @@ export class DocumentService {
     const document = await this.documentRepository.findOne({
       where: {
         id: documentId,
-        user,
       },
     });
-    if (document) {
-      return document;
+    try {
+      const project = await this.projectService.getProject(user.id, (await document.project).id);
+      if (project && document) {
+        return document;
+      }
+    } catch (e) {
+      console.log(e)
     }
     throw new NotFoundException(EErrorMessage.DocumentNotFound);
   }
@@ -35,12 +39,7 @@ export class DocumentService {
   async findDocuments(userId: string, projectId: string): Promise<DocumentEntity[]> {
     const user = await this.userService.findById(userId);
     const project = await this.projectService.getProject(user.id, projectId);
-    return await this.documentRepository.find({
-      where: {
-        project,
-        user,
-      },
-    });
+    return await project.documents;
   }
 
   async create(userId: string, projectId: string, input: DocumentCreateInput): Promise<DocumentEntity> {

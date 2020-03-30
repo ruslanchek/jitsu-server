@@ -4,6 +4,7 @@ import { ProjectEntity } from '../project/project.entity';
 import { ConversationEntity } from '../conversation/conversation.entity';
 import { TimelineEntity } from '../timeline/timeline.entity';
 import { AdminEntity } from 'nestjs-admin';
+import { DocumentEntity } from '../document/document.entity';
 
 export class UserEntityAdmin extends AdminEntity {
   entity = UserEntity;
@@ -73,6 +74,9 @@ export class UserEntity {
     nullable: true,
   })
   registeredDate: Date;
+
+  @OneToMany((type) => DocumentEntity, (document) => document.user, { lazy: true })
+  documents: DocumentEntity[];
 
   @OneToMany((type) => ProjectEntity, (project) => project.user, { lazy: true })
   projects: ProjectEntity[];

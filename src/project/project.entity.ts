@@ -36,6 +36,7 @@ export class ProjectEntity {
   @OneToMany((type) => InviteEntity, (invite) => invite.project, { lazy: true })
   invites: InviteEntity[];
 
+  @Field((type) => [DocumentEntity])
   @OneToMany((type) => DocumentEntity, (document) => document.project, { lazy: true })
   documents: DocumentEntity[];
 }

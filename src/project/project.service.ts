@@ -32,7 +32,6 @@ export class ProjectService {
         user,
       },
     });
-
     if (!project) {
       const invite = await this.projectInviteRepository.findOne({
         where: {
@@ -43,16 +42,13 @@ export class ProjectService {
           },
         },
       });
-
       if (invite) {
         project = invite.project;
       }
     }
-
     if (project) {
       return project;
     }
-
     throw new NotFoundException(EErrorMessage.ProjectNotFound);
   }
 

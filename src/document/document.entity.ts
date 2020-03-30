@@ -18,7 +18,6 @@ export class DocumentEntity {
   @Column()
   name: string;
 
-  @Field((type) => ProjectEntity)
   @ManyToOne((type) => ProjectEntity, (project) => project.documents, { lazy: true })
   project: ProjectEntity;
 
@@ -43,7 +42,7 @@ export class DocumentEntity {
   status: EDocumentStatus;
 
   @Field((type) => UserEntity)
-  @OneToOne((type) => UserEntity, { lazy: true })
+  @ManyToOne((type) => UserEntity, (user) => user.documents, { lazy: true })
   user: UserEntity;
 
   @Field((type) => GraphQLJSON)
@@ -53,6 +52,6 @@ export class DocumentEntity {
   @OneToMany((type) => ConversationEntity, (conversation) => conversation.document, { lazy: true })
   conversations: ConversationEntity[];
 
-  @OneToMany((type) => TimelineEntity, (timeline) => timeline.document)
+  @OneToMany((type) => TimelineEntity, (timeline) => timeline.document, { lazy: true })
   timelines: TimelineEntity[];
 }
