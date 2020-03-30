@@ -9,12 +9,14 @@ import { EMAIL_DATA } from '../constants';
 
 @Injectable()
 export class EmailService {
-  private transport = nodemailer.createTransport(sgTransport({
-    auth: {
-      api_user: 'SENDGRID_USERNAME',
-      api_key: 'SENDGRID_PASSWORD'
-    }
-  }));
+  private transport = nodemailer.createTransport(
+    sgTransport({
+      auth: {
+        api_user: ENV.SENDGRID_USER,
+        api_key: ENV.SENDGRID_KEY,
+      },
+    }),
+  );
 
   private render<TData = any>(template: string, data: TData): ITemplates {
     const sharedData = {
