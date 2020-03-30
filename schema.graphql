@@ -35,8 +35,8 @@ type DocumentEntity {
   type: DocumentType!
   priority: DocumentPriority!
   status: DocumentStatus!
-  user: UserEntity!
   data: JSON!
+  user: UserEntity!
 }
 
 """DocumentPriority custom scalar type"""

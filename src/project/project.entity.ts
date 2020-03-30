@@ -29,12 +29,12 @@ export class ProjectEntity {
   name: string;
 
   @Field((type) => UserEntity)
-  @ManyToOne((type) => UserEntity, (user) => user.projects, { lazy: true })
-  user: Promise<UserEntity>;
+  @ManyToOne((type) => UserEntity, (user) => user.projects, { eager: true })
+  user: UserEntity;
 
-  @OneToMany((type) => InviteEntity, (invite) => invite.project, { lazy: true })
-  invites: Promise<InviteEntity[]>;
+  @OneToMany((type) => InviteEntity, (invite) => invite.project)
+  invites: InviteEntity[];
 
-  @OneToMany((type) => DocumentEntity, (document) => document.project, { lazy: true })
-  documents: Promise<DocumentEntity[]>;
+  @OneToMany((type) => DocumentEntity, (document) => document.project)
+  documents: DocumentEntity[];
 }

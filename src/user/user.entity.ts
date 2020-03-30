@@ -76,17 +76,17 @@ export class UserEntity {
   registeredDate: Date;
 
   @OneToMany((type) => DocumentEntity, (document) => document.user, { lazy: true })
-  documents: Promise<DocumentEntity[]>;
+  documents: DocumentEntity[];
 
   @OneToMany((type) => ProjectEntity, (project) => project.user, { lazy: true })
-  projects: Promise<ProjectEntity[]>;
+  projects: ProjectEntity[];
 
   @ManyToMany((type) => ProjectEntity, { lazy: true })
-  invitedToProjects: Promise<ProjectEntity[]>;
+  invitedToProjects: ProjectEntity[];
 
   @OneToMany((type) => ConversationEntity, (conversation) => conversation.user, { lazy: true })
-  conversations: Promise<ConversationEntity[]>;
+  conversations: ConversationEntity[];
 
   @OneToMany((type) => TimelineEntity, (timeline) => timeline.user, { lazy: true })
-  timelines: Promise<TimelineEntity[]>;
+  timelines: TimelineEntity[];
 }

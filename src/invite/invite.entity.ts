@@ -30,14 +30,14 @@ export class InviteEntity {
   code: string;
 
   @Field((type) => UserEntity)
-  @ManyToOne((type) => UserEntity, { lazy: true })
-  invitedByUser: Promise<UserEntity>;
+  @ManyToOne((type) => UserEntity, { eager: true })
+  invitedByUser: UserEntity;
 
   @Field((type) => UserEntity)
-  @ManyToOne((type) => UserEntity, { lazy: true })
-  invitedUser: Promise<UserEntity>;
+  @ManyToOne((type) => UserEntity, { eager: true })
+  invitedUser: UserEntity;
 
   @Field((type) => ProjectEntity)
-  @ManyToOne((type) => ProjectEntity, (project) => project.invites, { lazy: true })
-  project: Promise<ProjectEntity>;
+  @ManyToOne((type) => ProjectEntity, (project) => project.invites, { eager: true })
+  project: ProjectEntity;
 }

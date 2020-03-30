@@ -48,8 +48,8 @@ export class ConversationService {
   }
 
   async create(userId: string, documentId: string, input: ConversationCreateInput): Promise<ConversationEntity> {
-    const document = this.documentService.getDocument(userId, documentId);
-    const user = this.userService.findById(userId);
+    const document = await this.documentService.getDocument(userId, documentId);
+    const user = await this.userService.findById(userId);
 
     if (!await document || !await user) {
       throw new NotFoundException(EErrorMessage.DocumentNotFound);

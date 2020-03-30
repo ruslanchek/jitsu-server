@@ -11,7 +11,6 @@ import { EmailService } from '../email/email.service';
 import { UserEntity } from '../user/user.entity';
 import bcrypt from 'bcrypt';
 import { EMAIL_DATA } from '../constants';
-import UnauthenticatedException from "nestjs-admin/dist/src/exceptions/unauthenticated.exception";
 
 @Injectable()
 export class InviteService {
@@ -42,13 +41,17 @@ export class InviteService {
     select?: Array<keyof InviteEntity>,
     relations?: Array<keyof InviteEntity>,
   ): Promise<InviteEntity> {
-    return await this.inviteRepository.findOne({
+    const invite = await this.inviteRepository.findOne({
       where: {
         code,
       },
       relations,
       select,
     });
+    if (invite) {
+      return invite;
+    }
+    throw new NotFoundException(EErrorMessage.InviteNotFound);
   }
 
   async getInvite(
@@ -76,7 +79,6 @@ export class InviteService {
     const user = await this.userService.findById(userId);
     const project = await this.projectService.getProject(user.id, projectId);
     return await this.inviteRepository.find({
-      relations: ['project'],
       where: {
         project,
         user,

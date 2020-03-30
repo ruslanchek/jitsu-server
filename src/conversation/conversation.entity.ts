@@ -21,10 +21,10 @@ export class ConversationEntity {
   })
   date: Date;
 
-  @ManyToOne((type) => DocumentEntity, (document) => document.conversations, { lazy: true })
-  document: Promise<DocumentEntity>;
+  @ManyToOne((type) => DocumentEntity, (document) => document.conversations)
+  document: DocumentEntity;
 
   @Field((type) => UserEntity)
-  @ManyToOne((type) => UserEntity, (user) => user.conversations, { lazy: true })
-  user: Promise<UserEntity>;
+  @ManyToOne((type) => UserEntity, (user) => user.conversations, { eager: true })
+  user: UserEntity;
 }

@@ -18,7 +18,7 @@ export class DocumentEntity {
   @Column()
   name: string;
 
-  @ManyToOne((type) => ProjectEntity, (project) => project.documents, { lazy: true })
+  @ManyToOne((type) => ProjectEntity, (project) => project.documents)
   project: ProjectEntity;
 
   @Field((type) => Date)
@@ -41,17 +41,17 @@ export class DocumentEntity {
   @Column({ type: 'enum', enum: EDocumentStatus, default: EDocumentStatus.Idle })
   status: EDocumentStatus;
 
-  @Field((type) => UserEntity)
-  @ManyToOne((type) => UserEntity, (user) => user.documents, { lazy: true })
-  user: Promise<UserEntity>;
-
   @Field((type) => GraphQLJSON)
   @Column({ type: 'json', default: [] })
   data: Object;
 
-  @OneToMany((type) => ConversationEntity, (conversation) => conversation.document, { lazy: true })
-  conversations: Promise<ConversationEntity[]>;
+  @Field((type) => UserEntity)
+  @ManyToOne((type) => UserEntity, (user) => user.documents, { eager: true })
+  user: UserEntity;
 
-  @OneToMany((type) => TimelineEntity, (timeline) => timeline.document, { lazy: true })
-  timelines: Promise<TimelineEntity[]>;
+  @OneToMany((type) => ConversationEntity, (conversation) => conversation.document, { eager: true })
+  conversations: ConversationEntity[];
+
+  @OneToMany((type) => TimelineEntity, (timeline) => timeline.document, { eager: true })
+  timelines: TimelineEntity[];
 }
