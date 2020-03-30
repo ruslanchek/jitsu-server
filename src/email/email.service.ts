@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import nodemailer from 'nodemailer';
+import sgTransport from 'nodemailer-sendgrid-transport';
 import mustache from 'mustache';
 import { ENV } from '../env';
 import { readFileSync } from 'fs';
@@ -8,13 +9,12 @@ import { EMAIL_DATA } from '../constants';
 
 @Injectable()
 export class EmailService {
-  private transport = nodemailer.createTransport({
-    service: 'SendPulse',
+  private transport = nodemailer.createTransport(sgTransport({
     auth: {
-      user: ENV.SMTP_EMAIL_ADDRESS,
-      pass: ENV.SMTP_EMAIL_PASSWORD,
-    },
-  });
+      api_user: 'SENDGRID_USERNAME',
+      api_key: 'SENDGRID_PASSWORD'
+    }
+  }));
 
   private render<TData = any>(template: string, data: TData): ITemplates {
     const sharedData = {
