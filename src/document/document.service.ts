@@ -39,7 +39,11 @@ export class DocumentService {
   async findDocuments(userId: string, projectId: string): Promise<DocumentEntity[]> {
     const user = await this.userService.findById(userId);
     const project = await this.projectService.getProject(user.id, projectId);
-    return await project.documents;
+    return await this.documentRepository.find({
+      where: {
+        project,
+      },
+    });
   }
 
   async create(userId: string, projectId: string, input: DocumentCreateInput): Promise<DocumentEntity> {

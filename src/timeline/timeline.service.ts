@@ -42,7 +42,6 @@ export class TimelineService {
     return await this.timelineRepository.find({
       where: {
         document,
-        user,
       },
     });
   }
