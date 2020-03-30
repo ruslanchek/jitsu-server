@@ -39,13 +39,11 @@ export class InviteService {
   async getInviteByCode(
     code: string,
     select?: Array<keyof InviteEntity>,
-    relations?: Array<keyof InviteEntity>,
   ): Promise<InviteEntity> {
     const invite = await this.inviteRepository.findOne({
       where: {
         code,
       },
-      relations,
       select,
     });
     if (invite) {

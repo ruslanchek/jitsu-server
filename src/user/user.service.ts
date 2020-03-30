@@ -57,36 +57,29 @@ export class UserService {
   async findByEmail(
     email: string,
     select?: Array<keyof UserEntity>,
-    relations?: Array<keyof UserEntity>,
   ): Promise<UserEntity | undefined> {
     const items = await this.userRepository.find({
       where: {
         email,
       },
       select,
-      relations,
     });
-
     return items.length > 0 ? items[0] : undefined;
   }
 
   async findById(
     id: string,
     select?: Array<keyof UserEntity>,
-    relations?: Array<keyof UserEntity>,
   ): Promise<UserEntity | undefined> {
     const user = await this.userRepository.findOne({
       where: {
         id,
       },
-      relations,
       select,
     });
-
     if(!user) {
       throw new UnauthenticatedException();
     }
-
     return user;
   }
 
@@ -96,7 +89,6 @@ export class UserService {
       select: fields ? fields : undefined,
       take: 1,
     });
-
     if (users.length > 0) {
       return users[0];
     }
