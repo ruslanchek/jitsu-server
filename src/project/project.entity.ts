@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { AfterLoad, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { UserEntity } from '../user/user.entity';
 import { DocumentEntity } from '../document/document.entity';
@@ -27,6 +27,9 @@ export class ProjectEntity {
   @Field((type) => String)
   @Column()
   name: string;
+
+  @Field((type) => Boolean)
+  owned: boolean;
 
   @Field((type) => UserEntity)
   @ManyToOne((type) => UserEntity, (user) => user.projects, { lazy: true })

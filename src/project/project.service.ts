@@ -44,7 +44,7 @@ export class ProjectService {
         },
       });
 
-      if(invite) {
+      if (invite) {
         project = invite.project;
       }
     }

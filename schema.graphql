@@ -91,6 +91,7 @@ type ProjectEntity {
   id: ID!
   avatar: JSON!
   name: String!
+  owned: Boolean!
   user: UserEntity!
   invites: [InviteEntity!]!
 }
