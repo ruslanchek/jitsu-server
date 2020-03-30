@@ -36,7 +36,6 @@
     "class-validator": "^0.12.0-rc.0",
     "dotenv": "^8.2.0",
     "file-extension": "^4.0.5",
-    "graphql": "^14.6.0",
     "graphql-subscriptions": "^1.1.0",
     "graphql-tools": "^4.0.6",
     "graphql-type-json": "^0.3.1",
