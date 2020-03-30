@@ -1,23 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import nodemailer from 'nodemailer';
-import sgTransport from 'nodemailer-sendgrid-transport';
+import sgMail from '@sendgrid/mail';
 import mustache from 'mustache';
 import { ENV } from '../env';
 import { readFileSync } from 'fs';
 import { IEmailDataInvite, IEmailDataWelcome, ITemplates } from './email.interfaces';
 import { EMAIL_DATA } from '../constants';
 
+sgMail.setApiKey(ENV.SENDGRID_KEY);
+
 @Injectable()
 export class EmailService {
-  private transport = nodemailer.createTransport(
-    sgTransport({
-      auth: {
-        api_user: ENV.SENDGRID_USER,
-        api_key: ENV.SENDGRID_KEY,
-      },
-    }),
-  );
-
   private render<TData = any>(template: string, data: TData): ITemplates {
     const sharedData = {
       year: new Date().getFullYear(),
@@ -35,10 +27,12 @@ export class EmailService {
   }
 
   private async send(subject: string, email: string, templates: ITemplates) {
-    return await this.transport.sendMail({
+    return await sgMail.send({
       subject,
-      from: EMAIL_DATA.EMAIL,
-      sender: EMAIL_DATA.SENDER,
+      from: {
+        name: EMAIL_DATA.SENDER,
+        email: EMAIL_DATA.EMAIL,
+      },
       to: email,
       ...templates,
     });

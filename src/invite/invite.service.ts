@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from '../user/user.service';
 import { InviteEntity } from './invite.entity';
@@ -11,6 +11,7 @@ import { EmailService } from '../email/email.service';
 import { UserEntity } from '../user/user.entity';
 import bcrypt from 'bcrypt';
 import { EMAIL_DATA } from '../constants';
+import { UnauthorizedError } from 'type-graphql';
 
 @Injectable()
 export class InviteService {
@@ -30,7 +31,7 @@ export class InviteService {
   async sendInvite(email: string, user: UserEntity, code: string) {
     await this.emailService.sendInvite(email, {
       name: email,
-      inviteSenderName: user.nickname,
+      inviteSenderName: user.email,
       inviteSenderOrganizationName: 'ORG',
       actionUrl: `${EMAIL_DATA.INVITE_LINK}${code}`,
     });
@@ -75,6 +76,7 @@ export class InviteService {
     const user = await this.userService.findById(userId);
     const project = await this.projectService.getProject(user.id, projectId);
     return await this.inviteRepository.find({
+      relations: ['project'],
       where: {
         project,
         user,
@@ -84,6 +86,10 @@ export class InviteService {
 
   async create(userId: string, projectId: string, input: InviteCreateInput): Promise<InviteEntity> {
     const invitedByUser = await this.userService.findById(userId);
+
+    if (!invitedByUser) {
+      throw new UnauthorizedError();
+    }
 
     if (invitedByUser.email === input.invitedUserEmail) {
       throw new ConflictException(EErrorMessage.SelfInvited);
@@ -117,7 +123,17 @@ export class InviteService {
 
   async resend(userId: string, inviteId: string): Promise<InviteEntity> {
     const invitedByUser = await this.userService.findById(userId);
+
+    if (!invitedByUser) {
+      throw new UnauthorizedError();
+    }
+
     const invite = await this.getInvite(userId, inviteId, ['id', 'active', 'date', 'code', 'invitedUserEmail']);
+
+    if (invite.active) {
+      throw new BadRequestException(EErrorMessage.InviteAlreadyAccepted);
+    }
+
     await this.sendInvite(invite.invitedUserEmail, invitedByUser, invite.code);
     return invite;
   }

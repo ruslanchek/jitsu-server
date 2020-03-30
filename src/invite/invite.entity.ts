@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, JoinTable, ManyToOne } from "typeorm";
 import { UserEntity } from '../user/user.entity';
 import { ProjectEntity } from '../project/project.entity';
 
@@ -32,7 +32,7 @@ export class InviteEntity {
   invitedUser: UserEntity;
 
   @Field((type) => ProjectEntity)
-  @OneToOne((type) => ProjectEntity)
+  @ManyToOne((type) => ProjectEntity, project => project.invites)
   project: ProjectEntity;
 
   @Field((type) => String)

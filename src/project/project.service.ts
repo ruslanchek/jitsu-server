@@ -53,6 +53,7 @@ export class ProjectService {
         invitedUser: user,
       },
     });
+    console.log(invites)
     return ownProjects;
   }
 

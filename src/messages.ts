@@ -3,6 +3,7 @@ export enum EErrorMessage {
   IsUrl = 'NOT_AN_URL',
   EmptyPassword = 'EMPTY_PASSWORD',
   UserNotFound = 'USER_NOT_FOUND',
+  Unauthorized = 'UNAUTHORIZED',
   UserAlreadyExists = 'USER_EXISTS',
   PasswordMinLength = 'PASSWORD_MIN_LENGTH',
   PasswordMaxLength = 'PASSWORD_MAX_LENGTH',

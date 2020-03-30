@@ -15,6 +15,5 @@ export const ENV = {
   S3_SECRET: process.env.S3_SECRET,
   S3_BUCKET: process.env.S3_BUCKET,
 
-  SENDGRID_USER: process.env.SENDGRID_USER,
   SENDGRID_KEY: process.env.SENDGRID_KEY,
 };
