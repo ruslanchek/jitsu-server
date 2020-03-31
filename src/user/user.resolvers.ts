@@ -18,7 +18,7 @@ export class UserResolvers {
     return await this.userService.findById(user.id);
   }
 
-  @Query(returns => UserTokenResponse)
+  @Mutation(returns => UserTokenResponse)
   async login(@Args('input') input: UserInputLogin): Promise<UserTokenResponse> {
     return await this.userService.login(input.email, input.password);
   }
