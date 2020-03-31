@@ -1,4 +1,6 @@
 export enum EErrorMessage {
+  UnknownError = 'UNKNOWN_ERROR',
+  BadRequest = 'BAD_REQUEST',
   IsEmail = 'NOT_AN_EMAIL',
   IsUrl = 'NOT_AN_URL',
   EmptyPassword = 'EMPTY_PASSWORD',
@@ -25,4 +27,10 @@ export enum EErrorMessage {
   InviteNotFound = 'INVITE_NOT_FOUND',
   InviteAlreadyAccepted = 'INVITE_ALREADY_ACCEPTED',
   SelfInvited = 'SELF_INVITED',
+}
+
+export const errorMessages: EErrorMessage[] = [];
+
+for(const key in EErrorMessage) {
+  errorMessages.push(EErrorMessage[key]);
 }

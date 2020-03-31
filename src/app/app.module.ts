@@ -1,6 +1,6 @@
 import { ENV } from '../env';
-import { Module, UnauthorizedException } from '@nestjs/common';
-import { DefaultAdminModule } from "nestjs-admin";
+import { InternalServerErrorException, Module, UnauthorizedException } from '@nestjs/common';
+import { DefaultAdminModule } from 'nestjs-admin';
 import { UserModule } from '../user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -23,7 +23,8 @@ import { AvatarModule } from '../avatar/avatar.module';
 import { EmailModule } from '../email/email.module';
 import { AppController } from './app.controller';
 import { ExtractJwt } from 'passport-jwt';
-import { EErrorMessage } from '../messages';
+import { EErrorMessage, errorMessages } from '../messages';
+
 const AdminUser = require('nestjs-admin').AdminUserEntity;
 
 @Module({
@@ -53,6 +54,42 @@ const AdminUser = require('nestjs-admin').AdminUserEntity;
       installSubscriptionHandlers: true,
       resolvers: { JSON: GraphQLJSON },
       autoSchemaFile: 'schema.graphql',
+      formatError: (error) => {
+        let fields = [];
+
+        try {
+          let additionalErrorMessage = error?.extensions?.exception?.message;
+
+          if(error?.extensions?.exception?.response?.message) {
+            fields = error?.extensions?.exception?.response?.message;
+          }
+
+          switch (additionalErrorMessage) {
+            case 'Bad Request Exception' : {
+              additionalErrorMessage = EErrorMessage.BadRequest;
+              break;
+            }
+          }
+
+          let message = additionalErrorMessage || (error.message.toUpperCase() as EErrorMessage);
+
+          if (!errorMessages.includes(message)) {
+            message = EErrorMessage.UnknownError;
+          }
+
+          return {
+            fields,
+            message,
+            path: error.path,
+          };
+        } catch (e) {
+          return {
+            fields,
+            message: EErrorMessage.ServerError,
+            path: error?.path || [],
+          };
+        }
+      },
       subscriptions: {
         onConnect: (connectionParams) => {
           try {
