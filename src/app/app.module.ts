@@ -1,5 +1,5 @@
 import { ENV } from '../env';
-import { InternalServerErrorException, Module, UnauthorizedException } from '@nestjs/common';
+import { Module, UnauthorizedException } from '@nestjs/common';
 import { DefaultAdminModule } from 'nestjs-admin';
 import { UserModule } from '../user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
