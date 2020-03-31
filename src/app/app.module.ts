@@ -1,6 +1,6 @@
 import { ENV } from '../env';
 import { Module, UnauthorizedException } from '@nestjs/common';
-import { DefaultAdminModule } from 'nestjs-admin';
+import { DefaultAdminModule } from "nestjs-admin";
 import { UserModule } from '../user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';

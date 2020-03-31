@@ -4,6 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -16,7 +17,6 @@ import { UserTokenResponse } from './user.responses';
 import { uniqueNamesGenerator, adjectives, colors, countries } from 'unique-names-generator';
 import { EmailService } from '../email/email.service';
 import { EMAIL_DATA } from '../constants';
-import UnauthenticatedException from "nestjs-admin/dist/src/exceptions/unauthenticated.exception";
 
 @Injectable()
 export class UserService {
@@ -54,10 +54,7 @@ export class UserService {
     return tokenResponse;
   }
 
-  async findByEmail(
-    email: string,
-    select?: Array<keyof UserEntity>,
-  ): Promise<UserEntity | undefined> {
+  async findByEmail(email: string, select?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {
     const items = await this.userRepository.find({
       where: {
         email,
@@ -67,18 +64,15 @@ export class UserService {
     return items.length > 0 ? items[0] : undefined;
   }
 
-  async findById(
-    id: string,
-    select?: Array<keyof UserEntity>,
-  ): Promise<UserEntity | undefined> {
+  async findById(id: string, select?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {
     const user = await this.userRepository.findOne({
       where: {
         id,
       },
       select,
     });
-    if(!user) {
-      throw new UnauthenticatedException();
+    if (!user) {
+      throw new UnauthorizedException();
     }
     return user;
   }
