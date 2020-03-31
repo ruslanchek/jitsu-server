@@ -60,12 +60,16 @@ const AdminUser = require('nestjs-admin').AdminUserEntity;
         try {
           let additionalErrorMessage = error?.extensions?.exception?.message;
 
-          if(error?.extensions?.exception?.response?.message) {
-            fields = error?.extensions?.exception?.response?.message;
+          if (error?.extensions?.exception?.response?.message) {
+            if (typeof error?.extensions?.exception?.response?.message === 'string') {
+              additionalErrorMessage = String(fields).toUpperCase();
+            } else {
+              fields = error?.extensions?.exception?.response?.message;
+            }
           }
 
           switch (additionalErrorMessage) {
-            case 'Bad Request Exception' : {
+            case 'Bad Request Exception': {
               additionalErrorMessage = EErrorMessage.BadRequest;
               break;
             }
