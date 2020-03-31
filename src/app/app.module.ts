@@ -102,6 +102,8 @@ const AdminUser = require('nestjs-admin').AdminUserEntity;
                 authorization: connectionParams['Authorization'].toLowerCase(),
               },
             });
+            
+            console.log(token)
           } catch (e) {
             throw new UnauthorizedException(EErrorMessage.Unauthorized);
           }
