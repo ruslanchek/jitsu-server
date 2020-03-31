@@ -62,7 +62,7 @@ export class DocumentResolvers {
 
   @Subscription((returns) => DocumentEntity, {
     filter: (a, b, c) => {
-      console.log(b, c);
+      console.log(a, b, c);
       return true;
     },
   })
