@@ -94,21 +94,6 @@ const AdminUser = require('nestjs-admin').AdminUserEntity;
           };
         }
       },
-      subscriptions: {
-        onConnect: (connectionParams) => {
-          try {
-            const token = ExtractJwt.fromAuthHeaderAsBearerToken()({
-              headers: {
-                authorization: connectionParams['Authorization'].toLowerCase(),
-              },
-            });
-            
-            console.log(token)
-          } catch (e) {
-            throw new UnauthorizedException(EErrorMessage.Unauthorized);
-          }
-        },
-      },
       context: ({ req }) => req,
     }),
     DefaultAdminModule,

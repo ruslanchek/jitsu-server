@@ -7,5 +7,5 @@ export const EMAIL_DATA = {
   SUPPORT_EMAIL: 'help@jitsu.works',
   SENDER: 'Jitsu',
   APP_LINK: 'https://app.jitsu.works',
-  INVITE_LINK: 'https://app.jitsu.works/invite/',
+  INVITE_LINK: 'https://app.jitsu.works/auth/invite/',
 };
