@@ -58,7 +58,6 @@ type InviteEntity {
   date: Date!
   invitedUserEmail: String!
   invitedByUser: UserEntity!
-  invitedUser: UserEntity!
   project: ProjectEntity!
 }
 

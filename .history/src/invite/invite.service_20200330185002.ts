@@ -36,7 +36,10 @@ export class InviteService {
     });
   }
 
-  async getInviteByCode(code: string, select?: Array<keyof InviteEntity>): Promise<InviteEntity> {
+  async getInviteByCode(
+    code: string,
+    select?: Array<keyof InviteEntity>,
+  ): Promise<InviteEntity> {
     const invite = await this.inviteRepository.findOne({
       where: {
         code,

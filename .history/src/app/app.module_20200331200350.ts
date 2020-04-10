@@ -79,7 +79,6 @@ const AdminUser = require('nestjs-admin').AdminUserEntity;
 
           if (!errorMessages.includes(message)) {
             message = EErrorMessage.UnknownError;
-            console.log(error);
           }
 
           return {

@@ -33,6 +33,7 @@ export class InviteEntity {
   @ManyToOne((type) => UserEntity, { eager: true })
   invitedByUser: UserEntity;
 
+  @Field((type) => UserEntity)
   @ManyToOne((type) => UserEntity, { eager: true })
   invitedUser: UserEntity;
 

@@ -108,6 +108,8 @@ export class InviteService {
     });
 
     const inviteCreated = await this.getInvite(invitedByUser.id, result.identifiers[0].id);
+    console.log(inviteCreated);
+
     await this.sendInvite(input.invitedUserEmail, invitedByUser, code);
     await this.pubSubService.pubSub.publish(EPubSubTriggers.InviteCreated, { inviteCreated });
     return inviteCreated;
