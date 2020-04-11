@@ -13,7 +13,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { EErrorMessage } from '../messages';
 import { ENV } from '../env';
-import { UserTokenResponse } from './user.responses';
+import { UserCheckAuthResponse, UserTokenResponse } from './user.responses';
 import { uniqueNamesGenerator, adjectives, colors, countries } from 'unique-names-generator';
 import { EmailService } from '../email/email.service';
 import { EMAIL_DATA } from '../constants';
@@ -75,6 +75,20 @@ export class UserService {
       throw new UnauthorizedException();
     }
     return user;
+  }
+
+  async checkAuth(userId: string): Promise<UserCheckAuthResponse> {
+    try {
+      const user = await this.userRepository.findOne(userId);
+      if (user && user.id === userId) {
+        return {
+          result: true,
+        };
+      }
+    } catch (e) {}
+    return {
+      result: false,
+    };
   }
 
   async findByWhere(where: Partial<UserEntity>, fields?: Array<keyof UserEntity>): Promise<UserEntity | undefined> {
