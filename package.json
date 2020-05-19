@@ -2,7 +2,7 @@
   "name": "jitsu-server",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Ruslan Shashkov <rshashkov@icloud.com>",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
@@ -96,5 +96,7 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:ruslanchek/jitsu-server.git"
 }
